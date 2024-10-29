@@ -24,20 +24,26 @@
 import React from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import Navbar from './Navbar/Navbar';
-import Home from './Homepage/Homepage';
+;
 import ChatInterface from './ChatWindow/ChatInterface';
+import Homepage from './Homepage/Homepage';
 
 
 const App: React.FC = () => {
   return (
     <Router>
+
       <Navbar />
-      <ChatInterface />
+      {/* <ChatInterface /> */}
       <Routes>
-        <Route path="/home" element={<Home />} />
-        {/* <Route path="/about" element={<About />} />
-        <Route path="/services" element={<Services />} />
-        <Route path="/contact" element={<Contact />} /> */}
+        <Route path="/" element={<Homepage />} />
+
+        <Route path ="/chat" element ={<ChatInterface />}></Route>
+        
+        {
+        // /* <Route path="/about" element={<About />} />
+        
+        }
       </Routes>
     </Router>
   );
