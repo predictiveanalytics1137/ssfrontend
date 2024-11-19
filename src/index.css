@@ -1,0 +1,28 @@
+/* @tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+You can add custom styles below */
+
+
+/* src/index.css or src/App.css */
+
+/* Add these styles if not already present */
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Custom styles for NotebookUI */
+.notebook-cell {
+  @apply transition-all duration-200;
+}
+
+.notebook-cell:focus-within {
+  @apply ring-2 ring-indigo-500 ring-opacity-50;
+}
+
+.sidebar-transition {
+  @apply transition-all duration-300 ease-in-out;
+}
+
+/* Add any other custom styles you need */
