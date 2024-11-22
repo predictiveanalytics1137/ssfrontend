@@ -71,7 +71,7 @@ import ChatInterface from './ChatWindow/ChatInterface';
 import InitialPage from './InitialPage/InitialPage';
 import HomePage from './HomePage/HomePage';
 import NotebookLayout from './NotebookUI/NotebookLayout';
-import ErrorBoundary from './ErrorBoundary';
+import ErrorBoundary from './Errorboundary';
 
 const App: React.FC = () => {
   return (
