@@ -64,6 +64,10 @@ const ChatInterface: React.FC = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [isUploading, setIsUploading] = useState(false);
 
+  // const [canGenerateNotebook, setCanGenerateNotebook] = useState(false); // Track readiness for notebook generation
+  const [canGenerateNotebook, setCanGenerateNotebook] = useState(false);
+
+
   /**
    * Handles creating a new chat.
    */
@@ -496,3 +500,6 @@ const ChatInterface: React.FC = () => {
 };
 
 export default ChatInterface;
+
+
+
