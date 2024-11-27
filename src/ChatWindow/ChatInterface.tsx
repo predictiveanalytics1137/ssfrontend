@@ -14,7 +14,9 @@ interface Message {
   text: string;
   timestamp: string;
   button?: boolean; // Flag to render a button (e.g., Generate Notebook)
+  
 }
+
 
 /**
  * Chat Interface
@@ -29,6 +31,7 @@ interface Chat {
 
 const ChatInterface: React.FC = () => {
   // Default assistant message
+  const [disableChat, setDisableChat] = useState(false);
   const defaultMessage = `Hi! 👋 I'm your AI assistant.\nI'll assist you in formulating a predictive question. I'll then create a SQL notebook to build a training set.\nSo, what would you like to predict?`;
 
   // State for all chats
@@ -64,9 +67,6 @@ const ChatInterface: React.FC = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [isUploading, setIsUploading] = useState(false);
 
-  // const [canGenerateNotebook, setCanGenerateNotebook] = useState(false); // Track readiness for notebook generation
-  const [canGenerateNotebook, setCanGenerateNotebook] = useState(false);
-
 
   /**
    * Handles creating a new chat.
@@ -88,6 +88,8 @@ const ChatInterface: React.FC = () => {
     setChats((prev) => [newChat, ...prev]);
     setCurrentChat(newChat);
   };
+
+  
 
   /**
    * Handles deleting a chat from the history.
@@ -229,10 +231,127 @@ const ChatInterface: React.FC = () => {
   /**
    * Handles sending a chat message to the backend.
    */
+  // const handleSendMessage = async () => {
+  //   if (!inputMessage.trim()) return;
+  //   if (!currentChat) return;
+
+  //   // Create a user message
+  //   const userMessage: Message = {
+  //     id: uuidv4(),
+  //     sender: 'user',
+  //     text: inputMessage,
+  //     timestamp: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
+  //   };
+
+    
+
+  //   // Append the user message to the current chat
+  //   const updatedChat = {
+  //     ...currentChat,
+  //     messages: [...currentChat.messages, userMessage],
+  //   };
+
+  //   setChats((prevChats) =>
+  //     prevChats.map((chat) => (chat.id === currentChat.id ? updatedChat : chat))
+  //   );
+
+  //   setCurrentChat(updatedChat);
+  //   setInputMessage('');
+  //   setIsLoading(true);
+
+  //   try {
+  //     // Send the chat message to the backend
+  //     const response = await fetch('http://localhost:8000/api/chatgpt/', {
+  //       method: 'POST',
+  //       headers: { 'Content-Type': 'application/json' },
+  //       body: JSON.stringify({ message: inputMessage }),
+  //     });
+
+  //     if (!response.ok) {
+  //       throw new Error(`Failed to send message: ${response.statusText}`);
+  //     }
+
+  //     const data = await response.json();
+
+  //     // Create an assistant message with the response
+  //     const botMessage: Message = {
+  //       id: uuidv4(),
+  //       sender: 'assistant',
+  //       text: data.response,
+  //       timestamp: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
+  //     };
+
+  //     // If the response includes a prompt to generate a notebook, add a button
+  //     if (data.response.toLowerCase().includes('proceed to model creation')) {
+  //       botMessage.button = true;
+  //     }
+
+  //     // Append the assistant message to the current chat
+  //     const updatedMessages = [...updatedChat.messages, botMessage];
+
+  //     setChats((prevChats) =>
+  //       prevChats.map((chat) =>
+  //         chat.id === currentChat.id
+  //           ? { ...chat, messages: updatedMessages }
+  //           : chat
+  //       )
+  //     );
+
+  //     setCurrentChat((prevChat) =>
+  //       prevChat
+  //         ? { ...prevChat, messages: updatedMessages }
+  //         : null
+  //     );
+
+  //   } catch (error) {
+  //     console.error('Error sending message:', error);
+  //     const errorMessage: Message = {
+  //       id: uuidv4(),
+  //       sender: 'assistant',
+  //       text: 'Sorry, I encountered an issue. Please try again later.',
+  //       timestamp: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
+  //     };
+
+  //     // Append the error message to the current chat
+  //     setChats((prevChats) =>
+  //       prevChats.map((chat) =>
+  //         chat.id === currentChat.id
+  //           ? { ...chat, messages: [...chat.messages, errorMessage] }
+  //           : chat
+  //       )
+  //     );
+  //   } finally {
+  //     setIsLoading(false);
+  //   }
+  // };
+
+  const handleReset = () => {
+    // Enable chat functionality on reset
+    setDisableChat(false);
+
+    // Optionally, clear the chat messages or reset the current chat
+    setCurrentChat((prevChat) =>
+      prevChat
+        ? {
+            ...prevChat,
+            messages: [
+              {
+                id: uuidv4(),
+                sender: 'assistant',
+                text: defaultMessage,
+                timestamp: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
+              },
+            ],
+          }
+        : null
+    );
+  };
+
+
   const handleSendMessage = async () => {
     if (!inputMessage.trim()) return;
     if (!currentChat) return;
-
+  
     // Create a user message
     const userMessage: Message = {
       id: uuidv4(),
@@ -240,51 +359,58 @@ const ChatInterface: React.FC = () => {
       text: inputMessage,
       timestamp: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
     };
-
+  
     // Append the user message to the current chat
     const updatedChat = {
       ...currentChat,
       messages: [...currentChat.messages, userMessage],
     };
-
+  
     setChats((prevChats) =>
       prevChats.map((chat) => (chat.id === currentChat.id ? updatedChat : chat))
     );
-
+  
     setCurrentChat(updatedChat);
     setInputMessage('');
     setIsLoading(true);
-
+  
     try {
-      // Send the chat message to the backend
+      // Send the chat message to the backend, including user_id
       const response = await fetch('http://localhost:8000/api/chatgpt/', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ message: inputMessage }),
+        body: JSON.stringify({ message: inputMessage, user_id: 'default_user' }), // Replace 'default_user' with actual user_id if available
       });
-
+  
       if (!response.ok) {
         throw new Error(`Failed to send message: ${response.statusText}`);
       }
-
+  
       const data = await response.json();
-
+  
+      // Initialize variables
+      let botText = data.response;
+      let showButtons = false;
+  
+      // Check if the response includes 'GENERATE_NOTEBOOK_PROMPT' at the end
+      if (botText.trim().endsWith('GENERATE_NOTEBOOK_PROMPT')) {
+        showButtons = true; // Set the flag to render buttons
+        // Remove 'GENERATE_NOTEBOOK_PROMPT' from the text
+        botText = botText.replace('GENERATE_NOTEBOOK_PROMPT', '').trim();
+      }
+  
       // Create an assistant message with the response
       const botMessage: Message = {
         id: uuidv4(),
         sender: 'assistant',
-        text: data.response,
+        text: botText,
         timestamp: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
+        button: showButtons,
       };
-
-      // If the response includes a prompt to generate a notebook, add a button
-      if (data.response.toLowerCase().includes('proceed to model creation')) {
-        botMessage.button = true;
-      }
-
+  
       // Append the assistant message to the current chat
       const updatedMessages = [...updatedChat.messages, botMessage];
-
+  
       setChats((prevChats) =>
         prevChats.map((chat) =>
           chat.id === currentChat.id
@@ -292,13 +418,13 @@ const ChatInterface: React.FC = () => {
             : chat
         )
       );
-
+  
       setCurrentChat((prevChat) =>
         prevChat
           ? { ...prevChat, messages: updatedMessages }
           : null
       );
-
+  
     } catch (error) {
       console.error('Error sending message:', error);
       const errorMessage: Message = {
@@ -307,7 +433,7 @@ const ChatInterface: React.FC = () => {
         text: 'Sorry, I encountered an issue. Please try again later.',
         timestamp: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
       };
-
+  
       // Append the error message to the current chat
       setChats((prevChats) =>
         prevChats.map((chat) =>
@@ -321,6 +447,72 @@ const ChatInterface: React.FC = () => {
     }
   };
 
+  // const handleGenerateNotebook = () => {
+  //   // Trigger notebook generation
+  //   alert('Notebook generation triggered!');
+
+  //   // Disable chat functionality
+  //   setDisableChat(true);
+  // };
+
+//   const handleGenerateNotebook = () => {
+//     // Locate the summary response in the current chat's messages
+//     if (!currentChat) return;
+
+//     const summaryMessage = currentChat.messages.find(
+//         (message) =>
+//             // message.sender === 'assistant' && message.text.startsWith("Great! To summarize:")
+//         message.sender === 'assistant' && message.text.startsWith("summarize:")
+//     );
+
+//     if (summaryMessage) {
+//         console.log("Summary:", summaryMessage.text); // Print the summary in the console
+//         alert(summaryMessage.text); // Optionally, show the summary as an alert
+//     } else {
+//         console.log("No summary found.");
+//         alert("No summary available to generate the note.");
+//     }
+
+//     // Disable chat functionality
+//     setDisableChat(true);
+// };
+
+
+const handleGenerateNotebook = () => {
+  // Ensure there is a current chat
+  if (!currentChat || !currentChat.messages || currentChat.messages.length === 0) {
+      alert("No messages found in the chat.");
+      return;
+  }
+
+  // Locate the assistant's last summary response
+  const summaryMessage = currentChat.messages.reverse().find(
+      (message) =>
+          message.sender === "assistant" &&
+          (message.text.startsWith("Great! To summarize:") || message.text.includes("To summarize"))
+  );
+
+  if (summaryMessage) {
+      console.log("Summary:", summaryMessage.text); // Print the summary in the console
+      alert(summaryMessage.text); // Show the summary in an alert dialog
+  } else {
+      console.log("No summary found."); // Log for debugging
+      alert("No summary available to generate the notebook.");
+  }
+
+  // Revert the message order after searching
+  currentChat.messages.reverse();
+
+  // Disable chat functionality
+  setDisableChat(true);
+};
+
+
+  
+
+
+
+  
   return (
     <div className="h-screen flex bg-gray-50">
       {/* Sidebar for Chat History */}
@@ -410,14 +602,38 @@ const ChatInterface: React.FC = () => {
                 </div>
 
                 {/* Render button if the message includes it */}
-                {message.button && (
+                {/* {message.button && (
                   <button
                     className="mt-2 px-4 py-2 bg-teal-500 text-white text-xs rounded hover:bg-teal-600"
                     onClick={() => window.location.href = '/generate-notebook'}
                   >
                     Generate Notebook
                   </button>
-                )}
+                )} */}
+
+
+
+                {/* Render buttons if the message includes them */}
+                  {message.button && (
+                    <div className="mt-2 flex gap-2">
+                      <button
+                        className="px-4 py-2 bg-teal-500 text-white text-xs rounded hover:bg-teal-600"
+                        // onClick={() => window.location.href = '/generate-notebook'}
+                        onClick={handleGenerateNotebook}
+                        disabled={disableChat}
+                      >
+                        Generate Notebook
+                      </button>
+                      <button
+                        className="px-4 py-2 bg-gray-500 text-white text-xs rounded hover:bg-gray-600"
+                        onClick={handleReset}
+                        disabled={!disableChat}
+                      >
+                        Reset
+                      </button>
+                    </div>
+                  )}
+
               </div>
             </div>
           ))}
@@ -471,6 +687,7 @@ const ChatInterface: React.FC = () => {
                 multiple
                 className="hidden"
                 onChange={handleFileSelect}
+                disabled={disableChat} // Disable file selection
               />
               <FiPaperclip size={16} />
             </label>
@@ -483,6 +700,7 @@ const ChatInterface: React.FC = () => {
               onKeyPress={(e) => e.key === 'Enter' && handleSendMessage()}
               placeholder="Type your message..."
               className="flex-1 text-sm border border-gray-200 rounded-lg px-3 py-2 focus:outline-none focus:border-teal-400"
+              disabled={disableChat} // Disable text input
             />
 
             {/* Send Button */}
