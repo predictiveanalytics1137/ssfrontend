@@ -9,6 +9,8 @@ import InitialPage from './InitialPage/InitialPage';
 import HomePage from './HomePage/HomePage';
 import NotebookLayout from './NotebookUI/NotebookLayout';
 import ErrorBoundary from './Errorboundary';
+import Dashboard from './Dashboard/Dashboard';
+import PerformanceConsistency from './Dashboard/PerformanceConsistency';
 
 const App: React.FC = () => {
   return (
@@ -20,7 +22,7 @@ const App: React.FC = () => {
 
 const MainContent: React.FC = () => {
   const location = useLocation();
-  const hideNavbarRoutes = ['/Home', '/chat', '/notebook'];
+  const hideNavbarRoutes = ['/Home', '/chat', '/notebook', '/Dashboard'];
 
   return (
     <>
@@ -29,6 +31,8 @@ const MainContent: React.FC = () => {
         <Route path="/" element={<InitialPage />} />
         <Route path="/Home" element={<HomePage />} />
         <Route path="/chat" element={<ChatInterface />} />
+        <Route path="/Dashboard" element={<Dashboard />} />
+        <Route path="/PerformanceConsistency" element={<PerformanceConsistency />} />
         {/* <Route path="/notebook" element={<NotebookLayout />} /> */}
         <Route
           path="/notebook"
