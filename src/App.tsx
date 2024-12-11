@@ -11,6 +11,8 @@ import NotebookLayout from './NotebookUI/NotebookLayout';
 import ErrorBoundary from './Errorboundary';
 import Dashboard from './Dashboard/Dashboard';
 import PerformanceConsistency from './Dashboard/PerformanceConsistency';
+// import PredictNewData from './Predict/PredictNewData';
+import PredictionsUI from './Predict/PredictNewData';
 
 const App: React.FC = () => {
   return (
@@ -22,7 +24,7 @@ const App: React.FC = () => {
 
 const MainContent: React.FC = () => {
   const location = useLocation();
-  const hideNavbarRoutes = ['/Home', '/chat', '/notebook', '/Dashboard'];
+  const hideNavbarRoutes = ['/Home', '/chat', '/notebook', '/Dashboard','/PredictNewData'];
 
   return (
     <>
@@ -32,6 +34,7 @@ const MainContent: React.FC = () => {
         <Route path="/Home" element={<HomePage />} />
         <Route path="/chat" element={<ChatInterface />} />
         <Route path="/Dashboard" element={<Dashboard />} />
+        <Route path="/PredictNewData" element={<PredictionsUI />} />
         <Route path="/PerformanceConsistency" element={<PerformanceConsistency />} />
         {/* <Route path="/notebook" element={<NotebookLayout />} /> */}
         <Route
