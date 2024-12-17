@@ -27,7 +27,7 @@ const App: React.FC = () => {
 
 const MainContent: React.FC = () => {
   const location = useLocation();
-  const hideNavbarRoutes = ['/Home', '/chat', '/notebook', '/Dashboard','/PredictNewData', '/register', '/login'];
+  const hideNavbarRoutes = ['/Home', '/chat', '/notebook', '/Dashboard','/PredictNewData', '/register', '/login', '/training'];
 
   return (
     <>
@@ -41,7 +41,7 @@ const MainContent: React.FC = () => {
         <Route path="/PredictNewData" element={<PredictionsUI />} />
         <Route path="/register" element={<Register />} />
         <Route path="/login" element={<Login />} />
-        <Route path="/PerformanceConsistency" element={<PerformanceConsistency />} />
+        {/* <Route path="/PerformanceConsistency" element={<PerformanceConsistency />} /> */}
         {/* <Route path="/notebook" element={<NotebookLayout />} /> */}
         <Route
           path="/notebook"
