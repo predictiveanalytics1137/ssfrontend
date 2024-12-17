@@ -15,6 +15,7 @@ import PerformanceConsistency from './Dashboard/PerformanceConsistency';
 import PredictionsUI from './Predict/PredictNewData';
 import Login from './Auth/Login';
 import Register from './Auth/Register';
+import TrainingInProgress from './Dashboard/traininginprogress';
 
 const App: React.FC = () => {
   return (
@@ -36,6 +37,7 @@ const MainContent: React.FC = () => {
         <Route path="/Home" element={<HomePage />} />
         <Route path="/chat" element={<ChatInterface />} />
         <Route path="/Dashboard" element={<Dashboard />} />
+        <Route path="/training" element={<TrainingInProgress />} />
         <Route path="/PredictNewData" element={<PredictionsUI />} />
         <Route path="/register" element={<Register />} />
         <Route path="/login" element={<Login />} />
