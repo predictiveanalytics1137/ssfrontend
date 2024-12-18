@@ -3323,6 +3323,7 @@ import {
 import { motion, AnimatePresence } from 'framer-motion';
 import { v4 as uuidv4 } from 'uuid';
 import { useNavigate } from 'react-router-dom';
+import { useAuth } from '../Auth/AuthContext';
 
 interface Message {
   id: string;
@@ -3342,6 +3343,13 @@ interface Chat {
   messages: Message[];
   isHistory?: boolean; 
 }
+// const auth = useAuth();
+// console.log(auth?.user?.username);
+// console.log(auth?.user?.id);
+// console.log(".....................................................");
+  // const auth = useAuth();
+  // console.log('User ID:', auth.user?.id);
+  // console.log('Username:', auth.user?.username);
 
 const SchemaTable: React.FC<{ schema: Array<{ column_name: string; data_type: string }> }> = ({ schema }) => {
   return (
@@ -3406,6 +3414,16 @@ function formatTimestamp(ts: string): string {
 const ChatInterface: React.FC = () => {
   const defaultMessage = `Hi! 👋 I'm your AI assistant.\nI'll assist you in formulating a predictive question. I'll then create a SQL notebook to build a training set.\nSo, what would you like to predict?`;
 
+
+
+  // const { user } = useAuth();
+  const { user, loading } = useAuth();
+  // const userId = user?.id || 'Unknown';
+  // console.log('User ID:', userId);
+  console.log('.................................................');
+
+  const userId = user?.id;
+  console.log('User ID:', userId);
   const [chats, setChats] = useState<Chat[]>([]);
   const [currentChat, setCurrentChat] = useState<Chat | null>(null);
   const [showSidebar, setShowSidebar] = useState(true);
@@ -3426,80 +3444,165 @@ const ChatInterface: React.FC = () => {
   const [generatedFeatures, setGeneratedFeatures] = useState<string[] | undefined>(undefined);
   const [generatedUserId, setGeneratedUserId] = useState<string | undefined>(undefined);
   const [generatedChatId, setGeneratedChatId] = useState<string | undefined>(undefined);
+  
 
   const navigate = useNavigate();
 
+  // useEffect(() => {
+  //   const fetchChatHistory = async () => {
+  //     if (!userId) return;
+  //     try {
+  //       // const response = await fetch('http://localhost:8000/api/chat_history?user_id=12'); ${userId} 
+  //       // const response = await fetch('http://localhost:8000/api/chat_history?user_id=${userId}');
+  //       const response = await fetch(`http://localhost:8000/api/chat_history?user_id=${userId}`);
+  //       console.log(response);
+  //       console.log(`http://localhost:8000/api/chat_history?user_id=${userId}`);
+
+  //       // if (!response.ok) {
+  //       //   initializeDefaultChat();
+  //       //   return;
+  //       // }
+
+  //       if (!response.ok) {
+  //         throw new Error("Failed to fetch chat history");
+  //       }
+
+  //       const data = await response.json();
+  //       if (Array.isArray(data) && data.length > 0) {
+  //         const fetchedChats: Chat[] = data.map((chatItem: any) => {
+  //           const allMessagesRaw = [
+  //             ...chatItem.user_messages.map((m: any) => ({ ...m, sender: 'user' })),
+  //             ...chatItem.assistant_messages.map((m: any) => ({ ...m, sender: 'assistant' })),
+  //           ];
+
+  //           allMessagesRaw.sort((a: any, b: any) => new Date(a.timestamp).getTime() - new Date(b.timestamp).getTime());
+
+  //           const allMessages: Message[] = allMessagesRaw.map((msg: any) => {
+  //             return {
+  //               id: uuidv4(),
+  //               sender: msg.sender,
+  //               text: msg.text,
+  //               timestamp: formatTimestamp(msg.timestamp),
+  //               animated: false 
+  //             };
+  //           });
+
+  //           return {
+  //             id: chatItem.chat_id,
+  //             title: chatItem.title,
+  //             timestamp: allMessages.length > 0 ? allMessages[allMessages.length - 1].timestamp : '',
+  //             messages: allMessages,
+  //             isHistory: true
+  //           };
+  //         });
+
+  //         setChats(fetchedChats);
+  //         setCurrentChat(fetchedChats[0]);
+  //       } else {
+  //         initializeDefaultChat();
+  //       }
+  //     } catch (error) {
+  //       console.error('Error fetching chat history:', error);
+  //       initializeDefaultChat();
+  //     }
+  //   };
+
+  //   const initializeDefaultChat = () => {
+  //     const initialChat: Chat = {
+  //       id: '1',
+  //       title: 'New Prediction',
+  //       timestamp: new Date().toLocaleString(),
+  //       messages: [
+  //         {
+  //           id: uuidv4(),
+  //           sender: 'assistant',
+  //           text: defaultMessage,
+  //           timestamp: formatTimestamp(new Date().toISOString()),
+  //           animated: true
+  //         },
+  //       ],
+  //       isHistory: false
+  //     };
+  //     setChats([initialChat]);
+  //     setCurrentChat(initialChat);
+  //   };
+
+  //   fetchChatHistory();
+  // }, [defaultMessage]);
+
   useEffect(() => {
     const fetchChatHistory = async () => {
+      if (loading || !userId) return; // Wait until AuthContext is ready and userId is available
+  
       try {
-        const response = await fetch('http://localhost:8000/api/chat_history?user_id=12');
+        console.log(`Fetching chat history for user ID: ${userId}`);
+        const response = await fetch(`http://localhost:8000/api/chat_history?user_id=${userId}`);
+        
         if (!response.ok) {
-          initializeDefaultChat();
-          return;
+          throw new Error("Failed to fetch chat history");
         }
-
+  
         const data = await response.json();
         if (Array.isArray(data) && data.length > 0) {
           const fetchedChats: Chat[] = data.map((chatItem: any) => {
-            const allMessagesRaw = [
-              ...chatItem.user_messages.map((m: any) => ({ ...m, sender: 'user' })),
-              ...chatItem.assistant_messages.map((m: any) => ({ ...m, sender: 'assistant' })),
-            ];
-
-            allMessagesRaw.sort((a: any, b: any) => new Date(a.timestamp).getTime() - new Date(b.timestamp).getTime());
-
-            const allMessages: Message[] = allMessagesRaw.map((msg: any) => {
-              return {
+            const allMessages = [
+              ...chatItem.user_messages.map((m: any) => ({
                 id: uuidv4(),
-                sender: msg.sender,
-                text: msg.text,
-                timestamp: formatTimestamp(msg.timestamp),
-                animated: false 
-              };
-            });
-
+                sender: "user",
+                text: m.text,
+                timestamp: formatTimestamp(m.timestamp),
+              })),
+              ...chatItem.assistant_messages.map((m: any) => ({
+                id: uuidv4(),
+                sender: "assistant",
+                text: m.text,
+                timestamp: formatTimestamp(m.timestamp),
+              })),
+            ];
+  
             return {
               id: chatItem.chat_id,
               title: chatItem.title,
-              timestamp: allMessages.length > 0 ? allMessages[allMessages.length - 1].timestamp : '',
+              timestamp: allMessages.length > 0 ? allMessages[allMessages.length - 1].timestamp : "",
               messages: allMessages,
-              isHistory: true
+              isHistory: true,
             };
           });
-
+  
           setChats(fetchedChats);
           setCurrentChat(fetchedChats[0]);
         } else {
           initializeDefaultChat();
         }
       } catch (error) {
-        console.error('Error fetching chat history:', error);
+        console.error("Error fetching chat history:", error);
         initializeDefaultChat();
       }
     };
-
+  
     const initializeDefaultChat = () => {
       const initialChat: Chat = {
-        id: '1',
-        title: 'New Prediction',
+        id: "1",
+        title: "New Prediction",
         timestamp: new Date().toLocaleString(),
         messages: [
           {
             id: uuidv4(),
-            sender: 'assistant',
+            sender: "assistant",
             text: defaultMessage,
             timestamp: formatTimestamp(new Date().toISOString()),
-            animated: true
+            animated: true,
           },
         ],
-        isHistory: false
+        isHistory: false,
       };
       setChats([initialChat]);
       setCurrentChat(initialChat);
     };
-
+  
     fetchChatHistory();
-  }, [defaultMessage]);
+  }, [userId, loading, defaultMessage]);
+  
 
   const handleNewChat = () => {
     const newChat: Chat = {

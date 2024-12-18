@@ -16,11 +16,22 @@ import PredictionsUI from './Predict/PredictNewData';
 import Login from './Auth/Login';
 import Register from './Auth/Register';
 import TrainingInProgress from './Dashboard/traininginprogress';
+import { AuthProvider } from './Auth/AuthContext';
+
+// const App: React.FC = () => {
+//   return (
+//     <Router>
+//       <MainContent />
+//     </Router>
+//   );
+// };
 
 const App: React.FC = () => {
   return (
     <Router>
-      <MainContent />
+      <AuthProvider>
+        <MainContent />
+      </AuthProvider>
     </Router>
   );
 };
@@ -58,3 +69,4 @@ const MainContent: React.FC = () => {
 };
 
 export default App;
+
