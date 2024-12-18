@@ -3531,9 +3531,59 @@ const ChatInterface: React.FC = () => {
   // }, [defaultMessage]);
 
   useEffect(() => {
+    // const fetchChatHistory = async () => {
+    //   if (loading || !userId) return; // Wait until AuthContext is ready and userId is available
+  
+    //   try {
+    //     console.log(`Fetching chat history for user ID: ${userId}`);
+    //     const response = await fetch(`http://localhost:8000/api/chat_history?user_id=${userId}`);
+        
+    //     if (!response.ok) {
+    //       throw new Error("Failed to fetch chat history");
+    //     }
+  
+    //     const data = await response.json();
+    //     if (Array.isArray(data) && data.length > 0) {
+    //       const fetchedChats: Chat[] = data.map((chatItem: any) => {
+    //         const allMessages = [
+    //           ...chatItem.user_messages.map((m: any) => ({
+    //             id: uuidv4(),
+    //             sender: "user",
+    //             text: m.text,
+    //             timestamp: formatTimestamp(m.timestamp),
+    //           })),
+    //           ...chatItem.assistant_messages.map((m: any) => ({
+    //             id: uuidv4(),
+    //             sender: "assistant",
+    //             text: m.text,
+    //             timestamp: formatTimestamp(m.timestamp),
+    //           })),
+    //         ];
+  
+    //         return {
+    //           id: chatItem.chat_id,
+    //           title: chatItem.title,
+    //           timestamp: allMessages.length > 0 ? allMessages[allMessages.length - 1].timestamp : "",
+    //           messages: allMessages,
+    //           isHistory: true,
+    //         };
+    //       });
+  
+    //       setChats(fetchedChats);
+    //       setCurrentChat(fetchedChats[0]);
+    //     } else {
+    //       initializeDefaultChat();
+    //     }
+    //   } catch (error) {
+    //     console.error("Error fetching chat history:", error);
+    //     initializeDefaultChat();
+    //   }
+    // };
+
+
     const fetchChatHistory = async () => {
       if (loading || !userId) return; // Wait until AuthContext is ready and userId is available
-  
+    
       try {
         console.log(`Fetching chat history for user ID: ${userId}`);
         const response = await fetch(`http://localhost:8000/api/chat_history?user_id=${userId}`);
@@ -3541,34 +3591,38 @@ const ChatInterface: React.FC = () => {
         if (!response.ok) {
           throw new Error("Failed to fetch chat history");
         }
-  
+    
         const data = await response.json();
         if (Array.isArray(data) && data.length > 0) {
           const fetchedChats: Chat[] = data.map((chatItem: any) => {
+            // Combine user and assistant messages into one list
             const allMessages = [
               ...chatItem.user_messages.map((m: any) => ({
                 id: uuidv4(),
                 sender: "user",
                 text: m.text,
-                timestamp: formatTimestamp(m.timestamp),
+                timestamp: m.timestamp, // Keep original timestamp
               })),
               ...chatItem.assistant_messages.map((m: any) => ({
                 id: uuidv4(),
                 sender: "assistant",
                 text: m.text,
-                timestamp: formatTimestamp(m.timestamp),
+                timestamp: m.timestamp, // Keep original timestamp
               })),
             ];
-  
+    
+            // Sort messages by timestamp
+            allMessages.sort((a, b) => new Date(a.timestamp).getTime() - new Date(b.timestamp).getTime());
+    
             return {
               id: chatItem.chat_id,
               title: chatItem.title,
-              timestamp: allMessages.length > 0 ? allMessages[allMessages.length - 1].timestamp : "",
+              timestamp: allMessages.length > 0 ? formatTimestamp(allMessages[allMessages.length - 1].timestamp) : "",
               messages: allMessages,
               isHistory: true,
             };
           });
-  
+    
           setChats(fetchedChats);
           setCurrentChat(fetchedChats[0]);
         } else {
@@ -3579,6 +3633,7 @@ const ChatInterface: React.FC = () => {
         initializeDefaultChat();
       }
     };
+    
   
     const initializeDefaultChat = () => {
       const initialChat: Chat = {
@@ -3604,9 +3659,35 @@ const ChatInterface: React.FC = () => {
   }, [userId, loading, defaultMessage]);
   
 
+  // const handleNewChat = () => {
+  //   const newChat: Chat = {
+  //     id: uuidv4(),
+  //     title: 'New Prediction',
+  //     timestamp: new Date().toLocaleString(),
+  //     messages: [
+  //       {
+  //         id: uuidv4(),
+  //         sender: 'assistant',
+  //         text: defaultMessage,
+  //         timestamp: formatTimestamp(new Date().toISOString()),
+  //         animated: true
+  //       },
+  //     ],
+  //     isHistory: false
+  //   };
+  //   setChats((prev) => [newChat, ...prev]);
+  //   setCurrentChat(newChat);
+
+  //   setIsGeneratingNotebook(false);
+  //   setNotebookGenerated(false);
+  //   setGeneratedNotebookData(null);
+  // };
+
+
+
   const handleNewChat = () => {
     const newChat: Chat = {
-      id: uuidv4(),
+      id: '', // Set empty to let the backend generate a new chat_id
       title: 'New Prediction',
       timestamp: new Date().toLocaleString(),
       messages: [
@@ -3622,11 +3703,15 @@ const ChatInterface: React.FC = () => {
     };
     setChats((prev) => [newChat, ...prev]);
     setCurrentChat(newChat);
-
-    setIsGeneratingNotebook(false);
-    setNotebookGenerated(false);
-    setGeneratedNotebookData(null);
   };
+  
+
+
+
+
+
+
+
 
   const handleFileSelect = (e: React.ChangeEvent<HTMLInputElement>) => {
     const files = e.target.files;
@@ -3740,66 +3825,161 @@ Please confirm:
     }
   };
 
+  // const handleSendMessage = async () => {
+  //   if (!inputMessage.trim()) return;
+  //   if (!currentChat) return;
+
+  //   if (currentChat.isHistory) return;
+
+  //   const userMessage: Message = {
+  //     id: uuidv4(),
+  //     sender: 'user',
+  //     text: inputMessage,
+  //     timestamp: formatTimestamp(new Date().toISOString()),
+  //     animated: false
+  //   };
+
+  //   const updatedChat = {
+  //     ...currentChat,
+  //     messages: [...currentChat.messages, userMessage],
+  //     timestamp: userMessage.timestamp,
+  //   };
+
+  //   setChats((prevChats) => prevChats.map((chat) => (chat.id === currentChat.id ? updatedChat : chat)));
+  //   setCurrentChat(updatedChat);
+  //   setInputMessage('');
+  //   setIsLoading(true);
+
+  //   try {
+  //     const response = await fetch('http://localhost:8000/api/chatgpt/', {
+  //       method: 'POST',
+  //       headers: { 'Content-Type': 'application/json' },
+  //       body: JSON.stringify({ message: userMessage.text, user_id: userId }),
+  //     });
+
+  //     if (!response.ok) {
+  //       throw new Error(`Failed to send message: ${response.statusText}`);
+  //     }
+
+  //     const data = await response.json();
+  //     let showGenerateButton = data.show_generate_notebook || false;
+
+  //     const botMessage: Message = {
+  //       id: uuidv4(),
+  //       sender: 'assistant',
+  //       text: data.response,
+  //       timestamp: formatTimestamp(new Date().toISOString()),
+  //       button: showGenerateButton,
+  //       animated: true
+  //     };
+
+  //     const updatedMessages = [...updatedChat.messages, botMessage];
+
+  //     setChats((prevChats) =>
+  //       prevChats.map((chat) =>
+  //         chat.id === currentChat.id ? { ...chat, messages: [...updatedMessages] } : chat
+  //       )
+  //     );
+
+  //     setCurrentChat((prevChat) =>
+  //       prevChat ? { ...prevChat, messages: [...updatedMessages] } : null
+  //     );
+
+  //     setIsGeneratingNotebook(false);
+  //     setNotebookGenerated(false);
+  //     setGeneratedNotebookData(null);
+  //   } catch (error) {
+  //     console.error('Error sending message:', error);
+  //     const errorMessage: Message = {
+  //       id: uuidv4(),
+  //       sender: 'assistant',
+  //       text: 'Sorry, I encountered an issue. Please try again later.',
+  //       timestamp: formatTimestamp(new Date().toISOString()),
+  //       animated: true
+  //     };
+
+  //     setChats((prevChats) =>
+  //       prevChats.map((chat) =>
+  //         chat.id === currentChat.id ? { ...chat, messages: [...chat.messages, errorMessage] } : chat
+  //       )
+  //     );
+  //   } finally {
+  //     setIsLoading(false);
+  //   }
+  // };
+
+
   const handleSendMessage = async () => {
     if (!inputMessage.trim()) return;
     if (!currentChat) return;
-
-    if (currentChat.isHistory) return;
-
+  
+    // if (currentChat.isHistory) return;
+  
     const userMessage: Message = {
       id: uuidv4(),
       sender: 'user',
       text: inputMessage,
       timestamp: formatTimestamp(new Date().toISOString()),
-      animated: false
+      animated: false,
     };
-
+  
     const updatedChat = {
       ...currentChat,
       messages: [...currentChat.messages, userMessage],
       timestamp: userMessage.timestamp,
     };
-
-    setChats((prevChats) => prevChats.map((chat) => (chat.id === currentChat.id ? updatedChat : chat)));
+  
+    setChats((prevChats) =>
+      prevChats.map((chat) => (chat.id === currentChat.id ? updatedChat : chat))
+    );
     setCurrentChat(updatedChat);
     setInputMessage('');
     setIsLoading(true);
-
+  
     try {
       const response = await fetch('http://localhost:8000/api/chatgpt/', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ message: userMessage.text, user_id: 'default_user' }),
+        body: JSON.stringify({
+          message: userMessage.text,
+          user_id: userId,
+          chat_id: currentChat.id || '', // Send existing chat_id or empty string
+        }),
       });
-
+  
       if (!response.ok) {
         throw new Error(`Failed to send message: ${response.statusText}`);
       }
-
+  
       const data = await response.json();
       let showGenerateButton = data.show_generate_notebook || false;
-
+  
+      // Update chat ID if a new one is generated
+      const newChatId = data.chat_id || currentChat.id;
+  
       const botMessage: Message = {
         id: uuidv4(),
         sender: 'assistant',
         text: data.response,
         timestamp: formatTimestamp(new Date().toISOString()),
         button: showGenerateButton,
-        animated: true
+        animated: true,
       };
-
+  
       const updatedMessages = [...updatedChat.messages, botMessage];
-
+  
       setChats((prevChats) =>
         prevChats.map((chat) =>
-          chat.id === currentChat.id ? { ...chat, messages: [...updatedMessages] } : chat
+          chat.id === currentChat.id
+            ? { ...chat, id: newChatId, messages: updatedMessages }
+            : chat
         )
       );
-
+  
       setCurrentChat((prevChat) =>
-        prevChat ? { ...prevChat, messages: [...updatedMessages] } : null
+        prevChat ? { ...prevChat, id: newChatId, messages: updatedMessages } : null
       );
-
+  
       setIsGeneratingNotebook(false);
       setNotebookGenerated(false);
       setGeneratedNotebookData(null);
@@ -3810,18 +3990,21 @@ Please confirm:
         sender: 'assistant',
         text: 'Sorry, I encountered an issue. Please try again later.',
         timestamp: formatTimestamp(new Date().toISOString()),
-        animated: true
+        animated: true,
       };
-
+  
       setChats((prevChats) =>
         prevChats.map((chat) =>
-          chat.id === currentChat.id ? { ...chat, messages: [...chat.messages, errorMessage] } : chat
+          chat.id === currentChat.id
+            ? { ...chat, messages: [...chat.messages, errorMessage] }
+            : chat
         )
       );
     } finally {
       setIsLoading(false);
     }
   };
+  
 
   const handleGenerateNotebook = async () => {
     if (!currentChat) return;
@@ -3831,7 +4014,7 @@ Please confirm:
       const response = await fetch('http://localhost:8000/api/chatgpt/', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ action: 'generate_notebook', user_id: 'default_user' }),
+        body: JSON.stringify({ action: 'generate_notebook', user_id: userId }),
       });
 
       if (!response.ok) {
@@ -3903,7 +4086,7 @@ Please confirm:
     await fetch('http://localhost:8000/api/chatgpt/', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ action: 'reset', user_id: 'default_user' }),
+      body: JSON.stringify({ action: 'reset', user_id: userId }),
     });
 
     const initialChat: Chat = {
@@ -4118,11 +4301,11 @@ Please confirm:
         <div className="p-4 border-t border-gray-200 bg-white">
           <div 
             className="flex items-center gap-2"
-            style={{ cursor: isHistoryChat ? 'not-allowed' : 'auto' }}
-            title={isHistoryChat ? "🚫 You cannot compose messages in history chats" : ""}
+            // style={{ cursor: isHistoryChat ? 'not-allowed' : 'auto' }}
+            // title={isHistoryChat ? "🚫 You cannot compose messages in history chats" : ""}
           >
             <label className={`cursor-pointer text-gray-400 hover:text-gray-600 ${isHistoryChat ? 'opacity-50 cursor-not-allowed' : ''}`} title={isHistoryChat ? "🚫 You cannot attach files in history chats" : ""}>
-              <input type="file" multiple className="hidden" onChange={handleFileSelect} disabled={isHistoryChat ? true : false} />
+              <input type="file" multiple className="hidden" onChange={handleFileSelect}  />
               <FiPaperclip size={16} />
             </label>
             <input
@@ -4134,16 +4317,16 @@ Please confirm:
               }}
               placeholder="Type your message..."
               className="flex-1 text-sm border border-gray-200 rounded-lg px-3 py-2 focus:outline-none focus:border-teal-400"
-              disabled={isHistoryChat ? true : false}
-              style={{ cursor: isHistoryChat ? 'not-allowed' : 'text' }}
-              title={isHistoryChat ? "🚫 You cannot compose messages in history chats" : ""}
+              // disabled={isHistoryChat ? true : false}
+              // style={{ cursor: isHistoryChat ? 'not-allowed' : 'text' }}
+              // title={isHistoryChat ? "🚫 You cannot compose messages in history chats" : ""}
             />
             <button 
               onClick={handleSendMessage} 
               className="text-teal-700 hover:text-teal-800"
-              disabled={isHistoryChat ? true : false}
-              style={{ cursor: isHistoryChat ? 'not-allowed' : 'pointer' }}
-              title={isHistoryChat ? "🚫 You cannot compose messages in history chats" : ""}
+              // disabled={isHistoryChat ? true : false}
+              // style={{ cursor: isHistoryChat ? 'not-allowed' : 'pointer' }}
+              // title={isHistoryChat ? "🚫 You cannot compose messages in history chats" : ""}
             >
               <FiSend size={16} />
             </button>
