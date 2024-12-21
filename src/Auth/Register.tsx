@@ -308,47 +308,97 @@ const Register: React.FC = () => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
+  // const handleSubmit = async (e: React.FormEvent) => {
+  //   e.preventDefault();
+  //   setError("");
+  //   setIsSubmitting(true);
+
+  //   // Enhanced Validation
+  //   const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  //   if (!formData.username) {
+  //     setError("Username is required");
+  //     setIsSubmitting(false);
+  //     return;
+  //   }
+  //   if (!formData.email) {
+  //     setError("Email is required");
+  //     setIsSubmitting(false);
+  //     return;
+  //   }
+  //   if (!emailRegex.test(formData.email)) {
+  //     setError("Please enter a valid email address");
+  //     setIsSubmitting(false);
+  //     return;
+  //   }
+  //   if (formData.password.length < 8) {
+  //     setError("Password must be at least 8 characters long");
+  //     setIsSubmitting(false);
+  //     return;
+  //   }
+
+  //   try {
+  //     await axios.post("http://localhost:8000/api/auth/register/", formData);
+  //     navigate("/login");
+  //   } catch (err: any) {
+  //     if (err.response && err.response.data) {
+  //       setError(err.response.data.detail || "Registration failed");
+  //     } else {
+  //       setError("An unexpected error occurred");
+  //     }
+  //   } finally {
+  //     setIsSubmitting(false);
+  //   }
+  // };
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setError("");
     setIsSubmitting(true);
 
-    // Enhanced Validation
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     if (!formData.username) {
-      setError("Username is required");
-      setIsSubmitting(false);
-      return;
+        setError("Username is required");
+        setIsSubmitting(false);
+        return;
     }
     if (!formData.email) {
-      setError("Email is required");
-      setIsSubmitting(false);
-      return;
+        setError("Email is required");
+        setIsSubmitting(false);
+        return;
     }
     if (!emailRegex.test(formData.email)) {
-      setError("Please enter a valid email address");
-      setIsSubmitting(false);
-      return;
+        setError("Please enter a valid email address");
+        setIsSubmitting(false);
+        return;
     }
     if (formData.password.length < 8) {
-      setError("Password must be at least 8 characters long");
-      setIsSubmitting(false);
-      return;
+        setError("Password must be at least 8 characters long");
+        setIsSubmitting(false);
+        return;
     }
 
     try {
-      await axios.post("http://localhost:8000/api/auth/register/", formData);
-      navigate("/login");
+        const response = await axios.post("http://localhost:8000/api/auth/register/", formData);
+
+        // Log and display user_id or other data
+        console.log("Response from server:", response.data);
+
+        if (response.data) {
+            console.log("User ID:", response.data.id || "N/A"); // Replace 'id' with the correct key
+        }
+
+        navigate("/login");
     } catch (err: any) {
-      if (err.response && err.response.data) {
-        setError(err.response.data.detail || "Registration failed");
-      } else {
-        setError("An unexpected error occurred");
-      }
+        if (err.response && err.response.data) {
+            console.error("Error response:", err.response.data);
+            setError(err.response.data.detail || "Registration failed");
+        } else {
+            console.error("Unexpected error:", err);
+            setError("An unexpected error occurred");
+        }
     } finally {
-      setIsSubmitting(false);
+        setIsSubmitting(false);
     }
-  };
+};
 
   const togglePasswordVisibility = () => {
     setShowPassword(!showPassword);

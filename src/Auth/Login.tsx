@@ -289,7 +289,7 @@ const Login: React.FC = () => {
       login(user);
 
       // Redirect to dashboard
-      navigate("/dashboard");
+      navigate("/");
     } catch (err: any) {
       setError(err.response?.data?.error || "Login failed");
     } finally {

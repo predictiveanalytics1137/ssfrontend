@@ -3,7 +3,7 @@
 export interface NotebookTab {
     id: string;
     title: string;
-    icon: React.ReactNode;
+    icon?: React.ReactNode;
   }
   
   export interface NavbarProps {
