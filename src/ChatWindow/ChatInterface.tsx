@@ -8338,14 +8338,16 @@ No date column was detected, so we'll proceed with a non-time-based approach.
                       ) : notebookGenerated ? (
                         <button
                           onClick={handleOpenNotebook}
-                          className="px-4 py-2 bg-teal-500 text-white text-xs rounded hover:bg-teal-600"
+                          // className="px-4 py-2 bg-teal-700 text-white text-xs rounded hover:bg-teal-600"
+                          className="px-4 py-2 bg-teal-700 text-white text-xs rounded shadow-lg hover:bg-teal-600 transform hover:scale-105 transition-transform duration-300"
                         >
                           Open Notebook
                         </button>
                       ) : (
                         <button
                           onClick={handleGenerateNotebook}
-                          className="px-4 py-2 bg-teal-500 text-white text-xs rounded hover:bg-teal-600"
+                          // className="px-4 py-2 bg-teal-700 text-white text-xs rounded hover:bg-teal-600"
+                          className="px-4 py-2 bg-teal-700 text-white text-xs rounded shadow-lg hover:bg-teal-600 transform hover:scale-105 transition-transform duration-300"
                         >
                           Generate Notebook
                         </button>
