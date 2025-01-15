@@ -1860,7 +1860,11 @@ const NotebookLayout: React.FC = () => {
               )}
             </div>
 
-            <Dashboard user_id={user_id} chat_id={chat_id} data={dashboardData} />
+            {/* <Dashboard user_id={user_id} chat_id={chat_id} data={dashboardData} /> */}
+
+            <div style={{ display: activeTab === 'dashboard' ? 'block' : 'none' }}>
+  <Dashboard user_id={user_id} chat_id={chat_id} data={dashboardData} />
+</div>
 
             {/* Dashboard Tab (always mounted)
             <div style={{ display: activeTab === 'dashboard' ? 'block' : 'none' }}>
