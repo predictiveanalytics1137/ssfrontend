@@ -1860,7 +1860,9 @@ const NotebookLayout: React.FC = () => {
               )}
             </div>
 
-            {/* Dashboard Tab (always mounted) */}
+            <Dashboard user_id={user_id} chat_id={chat_id} data={dashboardData} />
+
+            {/* Dashboard Tab (always mounted)
             <div style={{ display: activeTab === 'dashboard' ? 'block' : 'none' }}>
               {!isTrained ? (
                 <div className="flex items-center justify-center h-[calc(100vh-8rem)]">
@@ -1877,7 +1879,7 @@ const NotebookLayout: React.FC = () => {
               ) : (
                 <Dashboard user_id={user_id} chat_id={chat_id} data={dashboardData} />
               )}
-            </div>
+            </div> */}
 
             {/* Predict Tab (always mounted) */}
             <div style={{ display: activeTab === 'predict' ? 'block' : 'none' }}>

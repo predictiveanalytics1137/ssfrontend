@@ -1371,12 +1371,149 @@
 
 
 
+// import React, { useEffect, useState } from "react";
+// import { motion, AnimatePresence } from "framer-motion";
+// import PerformanceConsistency from "./PerformanceConsistency";
+// import FeatureImportanceProps from "./FeatureImportanceProps";
+// import ModelEvaluation from "./ModelEvaluation";
+
+// interface Metrics {
+//   rmse: number;
+//   r2_score: number;
+//   mae: number;
+// }
+
+// interface ModelMetrics {
+//   training: Metrics;
+//   testing: Metrics;
+//   assessment: string;
+// }
+
+// interface MetricsData {
+//   model_metrics: ModelMetrics;
+//   feature_importance: Record<string, number>;
+//   predictions: {
+//     actual: number[];
+//     predicted: number[];
+//   };
+//   user_id: string;
+//   chat_id: string;
+// }
+
+// interface DashboardProps {
+//   user_id: string;
+//   chat_id: string;
+//   data?: MetricsData | null; // Optional data prop
+// }
+
+// const ExpandableBox: React.FC<{ title: string; children?: React.ReactNode }> = ({
+//   title,
+//   children,
+// }) => {
+//   const [isOpen, setIsOpen] = useState(false);
+
+//   return (
+//     <motion.div className="border rounded-lg mb-4 p-4 shadow-sm bg-white">
+//       <div
+//         className="flex justify-between items-center cursor-pointer"
+//         onClick={() => setIsOpen(!isOpen)}
+//       >
+//         <h3 className="text-base font-semibold text-gray-700">{title}</h3>
+//         <motion.button
+//           className="text-blue-500 focus:outline-none"
+//           animate={{ rotate: isOpen ? 180 : 0 }}
+//         >
+//           {isOpen ? "-" : "+"}
+//         </motion.button>
+//       </div>
+//       <AnimatePresence>
+//         {isOpen && <motion.div className="mt-4">{children}</motion.div>}
+//       </AnimatePresence>
+//     </motion.div>
+//   );
+// };
+
+// const Dashboard: React.FC<DashboardProps> = ({ user_id, chat_id, data }) => {
+//   console.log("Dashboard received user_id:", user_id, "and chat_id:", chat_id);
+//   const [dashboardData, setDashboardData] = useState<MetricsData | null>(data || null);
+//   const [loading, setLoading] = useState(!data); // Skip loading if data is provided
+//   const [error, setError] = useState<string | null>(null);
+
+//   useEffect(() => {
+//     if (!data) {
+//       // Fetch data only if not passed via props
+//       const fetchData = async () => {
+//         try {
+//           console.log("Fetching data for Dashboard...");
+//           const url = `http://127.0.0.1:8000/model/modelget/?user_id=${user_id}&chat_id=${chat_id}`;
+//           const response = await fetch(url);
+//           if (!response.ok) throw new Error("Failed to fetch dashboard data");
+//           const result = await response.json();
+//           setDashboardData(result);
+//         } catch (err) {
+//           setError(err instanceof Error ? err.message : "Unknown error occurred");
+//         } finally {
+//           setLoading(false);
+//         }
+//       };
+//       fetchData();
+//     }
+//   }, [user_id, chat_id, data]);
+
+//   if (loading) return <div>Loading Dashboard...</div>;
+//   if (error) return <div>Error: {error}</div>;
+//   if (!dashboardData) return <div>No data available</div>;
+
+//   return (
+//     <div className="p-4">
+//       <h2 className="text-xl font-bold mb-4">Model Dashboard</h2>
+//       <ExpandableBox title="Metrics Analysis">
+//         <ModelEvaluation modelData={dashboardData} />
+//       </ExpandableBox>
+//       <ExpandableBox title="Performance Consistency">
+//         <PerformanceConsistency
+//           modelMetrics={dashboardData.model_metrics}
+//           headings={{
+//             main: "Model Performance Consistency",
+//             description: "Compare your model's training and testing R² scores.",
+//           }}
+//           labels={{
+//             training: "Training R² Score",
+//             testing: "Testing R² Score",
+//           }}
+//           warnings={{
+//             condition: !!dashboardData.model_metrics.assessment,
+//             message:
+//               dashboardData.model_metrics.assessment || "No assessment provided.",
+//           }}
+//         />
+//       </ExpandableBox>
+//       <ExpandableBox title="Feature Importance">
+//         <FeatureImportanceProps modelData={dashboardData} />
+//       </ExpandableBox>
+//     </div>
+//   );
+// };
+
+// export default Dashboard;
+
+
+
+
+
+
+
+
+
+
+
 import React, { useEffect, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import PerformanceConsistency from "./PerformanceConsistency";
 import FeatureImportanceProps from "./FeatureImportanceProps";
 import ModelEvaluation from "./ModelEvaluation";
 
+// ~~~--- Types ---~~~
 interface Metrics {
   rmse: number;
   r2_score: number;
@@ -1403,9 +1540,93 @@ interface MetricsData {
 interface DashboardProps {
   user_id: string;
   chat_id: string;
-  data?: MetricsData | null; // Optional data prop
+  data?: MetricsData | null; // If you already have the data
 }
 
+// ~~~--- A small step progress UI component ---~~~
+const StepProgressBar: React.FC<{ status: string }> = ({ status }) => {
+  // We map each status to a stepIndex, so we know how many steps are "complete"
+  let stepIndex = 0;
+  // Adjust this logic to match your backend statuses:
+  // e.g. "step1", "step2", "step3", "success"
+  switch (status) {
+    case "step1":
+      stepIndex = 1;
+      break;
+    case "step2":
+      stepIndex = 2;
+      break;
+    case "step3":
+      stepIndex = 3;
+      break;
+    case "success":
+      stepIndex = 4;
+      break;
+    default:
+      stepIndex = 0; // unknown or not started
+  }
+
+  // We'll have 4 steps total: Step 1, Step 2, Step 3, Finish
+  // If stepIndex >= 1 => step1 done, if >= 2 => step2 done, etc.
+  const steps = [
+    { label: "Step 1" },
+    { label: "Step 2" },
+    { label: "Step 3" },
+    { label: "Finish" },
+  ];
+
+  return (
+    <div className="flex items-center justify-between w-full max-w-xl mx-auto my-6">
+      {steps.map((step, idx) => {
+        const isCompleted = stepIndex >= idx + 1; // e.g. stepIndex=2 => steps 1&2 completed
+        return (
+          <div key={step.label} className="flex-1 flex items-center">
+            {/* Circle */}
+            <div className="relative flex flex-col items-center text-center">
+              <div
+                className={`h-10 w-10 rounded-full border-2 flex items-center justify-center ${
+                  isCompleted
+                    ? "bg-green-500 border-green-500"
+                    : "bg-gray-200 border-gray-400"
+                }`}
+              >
+                {isCompleted ? (
+                  <svg
+                    className="text-white w-5 h-5"
+                    fill="none"
+                    stroke="currentColor"
+                    strokeWidth={2}
+                    viewBox="0 0 24 24"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      d="M5 13l4 4L19 7"
+                    />
+                  </svg>
+                ) : (
+                  <span className="text-xs text-gray-700">{idx + 1}</span>
+                )}
+              </div>
+              {/* Label */}
+              <span className="text-xs mt-2 text-gray-800">{step.label}</span>
+            </div>
+            {/* Connector line except for the last step */}
+            {idx < steps.length - 1 && (
+              <div
+                className={`flex-auto border-t-2 mx-2 ${
+                  stepIndex > idx + 1 ? "border-green-500" : "border-gray-300"
+                }`}
+              />
+            )}
+          </div>
+        );
+      })}
+    </div>
+  );
+};
+
+// ~~~--- ExpandableBox for each dashboard section ---~~~
 const ExpandableBox: React.FC<{ title: string; children?: React.ReactNode }> = ({
   title,
   children,
@@ -1433,37 +1654,111 @@ const ExpandableBox: React.FC<{ title: string; children?: React.ReactNode }> = (
   );
 };
 
+// ~~~--- The main Dashboard component ---~~~
 const Dashboard: React.FC<DashboardProps> = ({ user_id, chat_id, data }) => {
   console.log("Dashboard received user_id:", user_id, "and chat_id:", chat_id);
-  const [dashboardData, setDashboardData] = useState<MetricsData | null>(data || null);
-  const [loading, setLoading] = useState(!data); // Skip loading if data is provided
-  const [error, setError] = useState<string | null>(null);
 
+  // We'll fetch the "metadata" from GET /api/get_prediction_metadata/?user_id=xxx&chat_id=yyy
+  const [progressStatus, setProgressStatus] = useState<string>("");
+  const [progressLoading, setProgressLoading] = useState(true);
+  const [progressError, setProgressError] = useState<string | null>(null);
+
+  // Then for the final model results (the original Dashboard data):
+  const [dashboardData, setDashboardData] = useState<MetricsData | null>(data || null);
+  const [loadingData, setLoadingData] = useState(!data); // if data is provided, skip loading
+  const [errorData, setErrorData] = useState<string | null>(null);
+
+  // 1) Fetch the step-based metadata
   useEffect(() => {
-    if (!data) {
-      // Fetch data only if not passed via props
-      const fetchData = async () => {
+    const fetchMetadata = async () => {
+      try {
+        setProgressLoading(true);
+        const url = `http://127.0.0.1:8000/api/get_prediction_metadata/?user_id=${user_id}&chat_id=${chat_id}`;
+        const resp = await fetch(url);
+        if (!resp.ok) {
+          throw new Error(`Failed to fetch prediction metadata: ${resp.statusText}`);
+        }
+        const result = await resp.json();
+        // We assume the shape is { metadata: [ { status: "step2" } ] }
+        if (!result.metadata || !result.metadata.length) {
+          throw new Error("No metadata found.");
+        }
+        const item = result.metadata[0];
+        console.log("Fetched metadata:", item);
+        setProgressStatus(item.status || "");
+      } catch (err: any) {
+        console.error("Error fetching prediction metadata:", err);
+        setProgressError(
+          err instanceof Error ? err.message : "Unknown error occurred."
+        );
+      } finally {
+        setProgressLoading(false);
+      }
+    };
+    fetchMetadata();
+  }, [user_id, chat_id]);
+
+  // 2) If the status is success, fetch the normal dashboard data (unless it's already passed in as props)
+  useEffect(() => {
+    if (!data && progressStatus === "success") {
+      // status = success => let's fetch the normal modelget data
+      const fetchDashboardData = async () => {
         try {
-          console.log("Fetching data for Dashboard...");
+          setLoadingData(true);
           const url = `http://127.0.0.1:8000/model/modelget/?user_id=${user_id}&chat_id=${chat_id}`;
           const response = await fetch(url);
-          if (!response.ok) throw new Error("Failed to fetch dashboard data");
+          if (!response.ok) {
+            throw new Error("Failed to fetch dashboard data");
+          }
           const result = await response.json();
           setDashboardData(result);
         } catch (err) {
-          setError(err instanceof Error ? err.message : "Unknown error occurred");
+          setErrorData(
+            err instanceof Error ? err.message : "Unknown error occurred"
+          );
         } finally {
-          setLoading(false);
+          setLoadingData(false);
         }
       };
-      fetchData();
+      fetchDashboardData();
     }
-  }, [user_id, chat_id, data]);
+  }, [progressStatus, data, user_id, chat_id]);
 
-  if (loading) return <div>Loading Dashboard...</div>;
-  if (error) return <div>Error: {error}</div>;
-  if (!dashboardData) return <div>No data available</div>;
+  // Render logic
+  // If still loading metadata, show a "loading..."
+  if (progressLoading) {
+    return <div>Loading progress status...</div>;
+  }
+  if (progressError) {
+    return <div className="text-red-500">{progressError}</div>;
+  }
 
+  // If status != 'success', show the step progress bar:
+  if (progressStatus !== "success") {
+    return (
+      <div className="p-6">
+        <h2 className="text-xl font-bold mb-2">Model Building Progress</h2>
+        <p className="text-sm text-gray-600 mb-4">
+          Hang tight! Your model/predictions are still processing...
+        </p>
+        <StepProgressBar status={progressStatus} />
+      </div>
+    );
+  }
+
+  // If we get here, status == "success". We proceed with the normal Dashboard UI.
+  // We can still be loading or have an error for the "modelget" data
+  if (loadingData) {
+    return <div>Loading Dashboard data...</div>;
+  }
+  if (errorData) {
+    return <div className="text-red-500">Error: {errorData}</div>;
+  }
+  if (!dashboardData) {
+    return <div>No data available for the dashboard</div>;
+  }
+
+  // Finally, we show the standard Dashboard sections:
   return (
     <div className="p-4">
       <h2 className="text-xl font-bold mb-4">Model Dashboard</h2>
