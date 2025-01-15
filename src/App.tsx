@@ -29,7 +29,7 @@ const App: React.FC = () => {
 
 const MainContent: React.FC = () => {
   const location = useLocation();
-  const hideNavbarRoutes = ['/Home', '/chat', '/notebook', '/Dashboard','/PredictNewData', '/register', '/login', '/training'];
+  const hideNavbarRoutes = ['/home', '/chat', '/notebook', '/Dashboard','/PredictNewData', '/register', '/login', '/training'];
 
   return (
     <>
@@ -40,7 +40,7 @@ const MainContent: React.FC = () => {
       )}
       <Routes>
         <Route path="/" element={<InitialPage />} />
-        <Route path="/Home" element={<HomePage />} />
+        <Route path="/home" element={<HomePage />} />
         <Route path="/chat" element={<ChatInterface />} />
         {/* <Route path="/Dashboard" element={<Dashboard user_id={''} chat_id={''} />} /> */}
         <Route path="/training" element={<TrainingInProgress />} />
@@ -49,14 +49,22 @@ const MainContent: React.FC = () => {
         <Route path="/login" element={<Login />} />
         {/* <Route path="/PerformanceConsistency" element={<PerformanceConsistency />} /> */}
         {/* <Route path="/notebook" element={<NotebookLayout />} /> */}
-        <Route
+        {/* <Route
           path="/notebook"
           element={
             <ErrorBoundary>
               <NotebookLayout />
             </ErrorBoundary>
           }
-        />
+        /> */}
+          <Route
+        path="/notebook/:user_id/:chat_id"
+          element={
+        <ErrorBoundary>
+          <NotebookLayout />
+        </ErrorBoundary>
+      }
+    />
         {/* <Route path="/about" element={<About />} /> */}
       </Routes>
     </>
