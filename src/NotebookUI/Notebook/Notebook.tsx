@@ -4702,6 +4702,1154 @@
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+// import React, {
+//   useEffect,
+//   useState,
+//   forwardRef,
+//   useImperativeHandle,
+//   useRef
+// } from 'react';
+// import Editor from '@monaco-editor/react';
+// import {
+//   Play,
+//   ChevronDown,
+//   ChevronUp,
+//   AlertCircle,
+//   X,
+//   Plus,
+//   Loader2
+// } from 'lucide-react';
+
+// // Each column in the query result
+// interface Column {
+//   name: string;
+//   type: string;
+// }
+
+// interface Cell {
+//   id: number;
+//   type: 'code' | 'markdown';
+//   content: string;
+//   query: string;
+//   result: any[];
+//   columns: Column[];
+//   error: string | null;
+//   isExpanded: boolean;
+//   executionTime: string | null;
+
+//   // Pagination
+//   currentPage: number;
+//   pageSize: number;
+
+//   // Loading state
+//   isLoading?: boolean;
+// }
+
+// interface SQLNotebookProps {
+//   activeTab: string;
+//   notebookContent: {
+//     file_url: string;
+//     entity_column: string;
+//     target_column: string;
+//     features: string[];
+//     user_id: string;
+//     chat_id: string;
+//     isTrained: boolean;
+//     handleTrainModel: () => void;
+//     cells: any[];
+//   };
+// }
+
+// // We define a new type for the "imperative handle"
+// // so the parent can call .runAllCellsAndGetResults() on the ref
+// export interface SQLNotebookRef {
+//   runAllCellsAndGetResults: () => Promise<
+//     Array<{
+//       cellId: number;
+//       query: string;
+//       columns: Column[];
+//       rows: any[];
+//     }>
+//   >;
+// }
+
+// // We'll wrap the component in `forwardRef` so we can pass a ref from the parent
+// const SQLNotebook = forwardRef<SQLNotebookRef, SQLNotebookProps>(
+//   ({ activeTab, notebookContent }, ref) => {
+//     const { cells: notebookCells, isTrained } = notebookContent;
+
+//     const [cells, setCells] = useState<Cell[]>([]);
+//     const [loadingCellId, setLoadingCellId] = useState<number | null>(null);
+
+//     // On initial load, parse the notebook JSON
+//     useEffect(() => {
+//       console.log('Received notebook content:', notebookContent);
+//       if (notebookCells && notebookCells.length > 0) {
+//         const initialCells = notebookCells.map((cell: any, index: number) => {
+//           if (cell.cell_type === 'code') {
+//             const query = Array.isArray(cell.source) ? cell.source.join('') : cell.source;
+
+//             let result: any[] = [];
+//             let columns: Column[] = [];
+//             let error: string | null = null;
+
+//             if (cell.outputs && cell.outputs.length > 0) {
+//               const output = cell.outputs[0];
+//               if (output.output_type === 'execute_result' && output.data) {
+//                 const jsonData = output.data['application/json'];
+//                 if (jsonData && Array.isArray(jsonData.rows) && Array.isArray(jsonData.columns)) {
+//                   result = jsonData.rows;
+//                   columns = jsonData.columns;
+//                 }
+//               } else if (output.output_type === 'error') {
+//                 error = output.evalue || 'Unknown error';
+//               }
+//             }
+
+//             return {
+//               id: index + 1,
+//               type: 'code' as 'code',
+//               content: '',
+//               query: query || '',
+//               result,
+//               columns,
+//               error,
+//               isExpanded: true,
+//               executionTime: null,
+//               currentPage: 1,
+//               pageSize: 10,
+//               isLoading: false,
+//             };
+//           } else if (cell.cell_type === 'markdown') {
+//             const content = Array.isArray(cell.source) ? cell.source.join('') : cell.source;
+//             return {
+//               id: index + 1,
+//               type: 'markdown' as 'markdown',
+//               content,
+//               query: '',
+//               result: [],
+//               columns: [],
+//               error: null,
+//               isExpanded: true,
+//               executionTime: null,
+//               currentPage: 1,
+//               pageSize: 10,
+//               isLoading: false,
+//             };
+//           }
+//           return null;
+//         }).filter((c: any) => c !== null);
+
+        
+//         setCells(initialCells.filter(cell => cell !== null) as Cell[]);
+
+//       } else {
+//         setCells([
+//           {
+//             id: 1,
+//             type: 'code',
+//             content: '',
+//             query: '',
+//             result: [],
+//             columns: [],
+//             error: null,
+//             isExpanded: true,
+//             executionTime: null,
+//             currentPage: 1,
+//             pageSize: 10,
+//             isLoading: false,
+//           },
+//         ]);
+//       }
+//     }, [notebookCells, notebookContent]);
+
+
+//       // Helper to compute dynamic editor height
+//   const calculateEditorHeight = (content: string) => {
+//     const lineCount = (content.match(/\n/g) || []).length + 1;
+//     const baseHeight = 150;
+//     const lineHeight = 20;
+//     const maxHeight = 500;
+//     return `${Math.min(Math.max(baseHeight, lineCount * lineHeight), maxHeight)}px`;
+//   };
+
+//     // ---------------
+//     // The existing single-cell run
+//     // ---------------
+//     const executeQuery = async (cellId: number) => {
+//       const cell = cells.find((c) => c.id === cellId);
+//       if (!cell || cell.type !== 'code') return;
+
+//       setLoadingCellId(cellId);
+//       updateCell(cellId, { isLoading: true, error: null, result: [], columns: [] });
+
+//       const startTime = Date.now();
+
+//       try {
+//         const response = await fetch('http://localhost:8000/api/execute-sql/', {
+//           method: 'POST',
+//           headers: {
+//             'Content-Type': 'application/json',
+//             'Authorization': 'Token d36e47f0e5c0a356d35a7d6d407aab93f6b0d36b',
+//           },
+//           body: JSON.stringify({ query: cell.query }),
+//         });
+
+//         const endTime = Date.now();
+//         const timeTaken = endTime - startTime;
+//         const formattedTime = formatTime(timeTaken);
+
+//         if (!response.ok) {
+//           const errorData = await response.json().catch(() => ({ error: 'Unknown error occurred' }));
+//           throw new Error(errorData.error || 'Query execution failed');
+//         }
+
+//         const data = await response.json();
+
+//         if (
+//           data.columns.length > 0 &&
+//           data.rows.length > 0 &&
+//           data.columns.length !== Object.keys(data.rows[0]).length
+//         ) {
+//           throw new Error('Mismatch between columns and data.');
+//         }
+
+//         updateCell(cellId, {
+//           result: data.rows,
+//           columns: data.columns,
+//           error: null,
+//           executionTime: formattedTime,
+//         });
+//       } catch (err: any) {
+//         console.error(`Error executing query for cell ${cellId}:`, err);
+//         updateCell(cellId, {
+//           error: err.message || 'Unknown error',
+//           result: [],
+//           columns: [],
+//           executionTime: null,
+//         });
+//       } finally {
+//         setLoadingCellId(null);
+//         updateCell(cellId, { isLoading: false });
+//       }
+//     };
+
+//     // ---------------
+//     // NEW: runAllCellsAndGetResults
+//     // ---------------
+//     const runAllCellsAndGetResults = async () => {
+//       // We'll gather results in an array
+//       const results: Array<{
+//         cellId: number;
+//         query: string;
+//         columns: Column[];
+//         rows: any[];
+//       }> = [];
+
+//       // We only run "code" cells
+//       for (let i = 0; i < cells.length; i++) {
+//         const cell = cells[i];
+//         if (cell.type === 'code') {
+//           // Force run the cell
+//           await executeQuery(cell.id); 
+//           // After the run, get the updated cell from state
+//           const updatedCell = getCellById(cell.id);
+//           if (updatedCell) {
+//             results.push({
+//               cellId: updatedCell.id,
+//               query: updatedCell.query,
+//               columns: updatedCell.columns,
+//               rows: updatedCell.result,
+//             });
+//           }
+//         }
+//       }
+
+//       return results;
+//     };
+
+//     // We'll expose runAllCellsAndGetResults via an imperative handle
+//     useImperativeHandle(ref, () => ({
+//       runAllCellsAndGetResults,
+//     }));
+
+//     // Helper function to get the latest cell from state
+//     const getCellById = (id: number) => {
+//       return cells.find((c) => c.id === id);
+//     };
+
+//     // Helper to update cell in state
+//     const updateCell = (cellId: number, newProps: Partial<Cell>) => {
+//       setCells((prev) =>
+//         prev.map((c) => (c.id === cellId ? { ...c, ...newProps } : c))
+//       );
+//     };
+
+//     const formatTime = (ms: number) => {
+//       if (ms < 1000) {
+//         return `${ms} ms`;
+//       }
+//       return `${(ms / 1000).toFixed(2)} s`;
+//     };
+
+//     const deleteCell = (id: number) => {
+//       setCells((prev) => prev.filter((cell) => cell.id !== id));
+//     };
+
+//     const toggleExpand = (id: number) => {
+//       setCells((prev) =>
+//         prev.map((cell) =>
+//           cell.id === id ? { ...cell, isExpanded: !cell.isExpanded } : cell
+//         )
+//       );
+//     };
+
+//     const addCell = () => {
+//       setCells((prev) => [
+//         ...prev,
+//         {
+//           id: prev.length + 1,
+//           type: 'code',
+//           content: '',
+//           query: '',
+//           result: [],
+//           columns: [],
+//           error: null,
+//           isExpanded: true,
+//           executionTime: null,
+//           currentPage: 1,
+//           pageSize: 10,
+//           isLoading: false,
+//         },
+//       ]);
+//     };
+
+//     const handlePageChange = (cellId: number, newPage: number) => {
+//       setCells((prev) =>
+//         prev.map((c) =>
+//           c.id === cellId
+//             ? { ...c, currentPage: newPage }
+//             : c
+//         )
+//       );
+//     };
+
+//     const renderPagination = (cell: Cell) => {
+//       const totalRows = cell.result.length;
+//       const totalPages = Math.ceil(totalRows / cell.pageSize);
+//       if (totalPages <= 1) return null;
+
+//       const { currentPage } = cell;
+
+//       const handleNext = () => {
+//         if (currentPage < totalPages) {
+//           handlePageChange(cell.id, currentPage + 1);
+//         }
+//       };
+
+//       const handlePrev = () => {
+//         if (currentPage > 1) {
+//           handlePageChange(cell.id, currentPage - 1);
+//         }
+//       };
+
+//       return (
+//         <div className="flex items-center justify-between p-2 text-xs text-gray-700">
+//           <div className="font-semibold text-gray-800">
+//             Showing rows {(currentPage - 1) * cell.pageSize + 1} to{' '}
+//             {Math.min(currentPage * cell.pageSize, totalRows)} of {totalRows}
+//           </div>
+//           <div className="flex items-center space-x-2">
+//             <button
+//               onClick={handlePrev}
+//               disabled={currentPage === 1}
+//               className="px-2 py-1 border rounded disabled:opacity-50 font-semibold text-gray-800"
+//             >
+//               Prev
+//             </button>
+//             <span className="font-semibold text-gray-800">
+//               Page {currentPage} of {totalPages}
+//             </span>
+//             <button
+//               onClick={handleNext}
+//               disabled={currentPage === totalPages}
+//               className="px-2 py-1 border rounded disabled:opacity-50 font-semibold text-gray-800"
+//             >
+//               Next
+//             </button>
+//           </div>
+//         </div>
+//       );
+//     };
+
+   
+//     return (
+//       <div className="w-full space-y-4 p-6">
+//         {/* Header */}
+//         <div className="text-lg font-medium text-center pb-3 border-b border-teal-700">
+//           <span className="bg-gradient-to-r from-teal-600 to-emerald-500 bg-clip-text text-transparent">
+//             {activeTab === 'entity_target_notebook' && 'Entity & Target Analysis Notebook'}
+//             {activeTab === 'features_notebook' && 'Features Analysis Notebook'}
+//             {activeTab === 'time_based_notebook' && 'Time-Based Analysis Notebook'}
+//           </span>
+//         </div>
+
+//         <div className="space-y-4">
+//           {cells.map((cell) => (
+//             <div
+//               key={cell.id}
+//               className="bg-white rounded-lg border border-gray-100 shadow-sm hover:shadow-md group"
+//             >
+//               <div className="p-4">
+//                 {/* Cell Header */}
+//                 <div className="flex items-center justify-between mb-2">
+//                   <div className="flex items-center space-x-2">
+//                     <span className="text-xs font-medium text-gray-400">
+//                       {cell.type === 'code' ? `Code Cell ${cell.id}` : `Markdown Cell ${cell.id}`}
+//                     </span>
+//                     <button
+//                       onClick={() => toggleExpand(cell.id)}
+//                       className="p-1 hover:bg-gray-100 rounded-md"
+//                     >
+//                       {cell.isExpanded ? (
+//                         <ChevronUp className="h-4 w-4 text-gray-400" />
+//                       ) : (
+//                         <ChevronDown className="h-4 w-4 text-gray-400" />
+//                       )}
+//                     </button>
+//                   </div>
+
+//                   <div className="flex items-center space-x-2">
+//                     {cell.type === 'code' && (
+//                       <button
+//                         onClick={() => executeQuery(cell.id)}
+//                         className="flex items-center px-3 py-1.5 text-xs font-medium text-teal-700 bg-teal-50 rounded-md hover:bg-teal-100"
+//                         disabled={loadingCellId === cell.id}
+//                       >
+//                         {cell.isLoading ? (
+//                           <Loader2 className="h-3 w-3 mr-1 animate-spin" />
+//                         ) : (
+//                           <Play className="h-3 w-3 mr-1" />
+//                         )}
+//                         Run
+//                       </button>
+//                     )}
+//                     {cell.executionTime && (
+//                       <span className="text-xs text-gray-500 ml-2">
+//                         ({cell.executionTime})
+//                       </span>
+//                     )}
+//                     <button
+//                       onClick={() => deleteCell(cell.id)}
+//                       className="p-1.5 text-gray-400 hover:text-red-500 hover:bg-gray-100 rounded-md"
+//                     >
+//                       <X className="h-4 w-4" />
+//                     </button>
+//                   </div>
+//                 </div>
+
+//                 {/* Cell Body */}
+//                 {cell.isExpanded && (
+//                   <>
+//                     {cell.type === 'code' ? (
+//                       <>
+//                         <div className="border rounded-lg overflow-hidden bg-gray-50">
+//                           <Editor
+//                             height={calculateEditorHeight(cell.query)}
+//                             defaultLanguage="sql"
+//                             value={cell.query}
+//                             onChange={(value) =>
+//                               updateCell(cell.id, { query: value || '' })
+//                             }
+//                             options={{
+//                               minimap: { enabled: false },
+//                               fontSize: 13,
+//                               lineHeight: 1.5,
+//                               padding: { top: 8, bottom: 8 },
+//                               scrollBeyondLastLine: false,
+//                             }}
+//                           />
+//                         </div>
+
+//                         {cell.error && (
+//                           <div className="mt-3 flex items-start px-4 py-3 bg-red-50 border border-red-100 rounded-lg">
+//                             <AlertCircle className="h-4 w-4 text-red-500 mt-0.5" />
+//                             <span className="text-xs text-red-600 ml-2">{cell.error}</span>
+//                           </div>
+//                         )}
+
+//                         {cell.result.length > 0 && (
+//                           <div className="mt-4 border rounded-lg bg-gray-50 overflow-x-auto">
+//                             {renderPagination(cell)}
+//                             <table className="w-full text-xs">
+//                               <thead>
+//                                 <tr className="bg-gray-100">
+//                                   {cell.columns.map((col) => (
+//                                     <th
+//                                       key={col.name}
+//                                       className="px-4 py-2 text-left font-medium text-gray-700 uppercase tracking-wider"
+//                                     >
+//                                       <div className="flex flex-col items-start">
+//                                         <span>{col.name}</span>
+//                                         <span
+//                                           style={{
+//                                             fontSize: '10px',
+//                                             color: '#9CA3AF',
+//                                             fontWeight: '400',
+//                                             letterSpacing: '0.09em',
+//                                           }}
+//                                         >
+//                                           {col.type}
+//                                         </span>
+//                                       </div>
+//                                     </th>
+//                                   ))}
+//                                 </tr>
+//                               </thead>
+//                               <tbody>
+//                                 {cell.result
+//                                   .slice(
+//                                     (cell.currentPage - 1) * cell.pageSize,
+//                                     cell.currentPage * cell.pageSize
+//                                   )
+//                                   .map((row, idx) => (
+//                                     <tr key={idx} className="hover:bg-gray-200">
+//                                       {cell.columns.map((col) => (
+//                                         <td key={col.name} className="px-4 py-2 text-gray-800">
+//                                           {row[col.name] !== null && row[col.name] !== undefined
+//                                             ? row[col.name].toString()
+//                                             : 'NULL'}
+//                                         </td>
+//                                       ))}
+//                                     </tr>
+//                                   ))}
+//                               </tbody>
+//                             </table>
+//                           </div>
+//                         )}
+//                       </>
+//                     ) : (
+//                       <div className="prose">
+//                         <div dangerouslySetInnerHTML={{ __html: cell.content }} />
+//                       </div>
+//                     )}
+//                   </>
+//                 )}
+//               </div>
+//             </div>
+//           ))}
+//         </div>
+
+//         {/* "Add Cell" Button */}
+//         <button
+//           onClick={addCell}
+//           className="flex items-center px-4 py-2 text-xs font-medium text-teal-700 bg-teal-50 rounded-md hover:bg-teal-100"
+//         >
+//           <Plus className="h-4 w-4 mr-1" />
+//           Add Cell
+//         </button>
+
+//         {isTrained && (
+//           <div className="mt-6 p-4 bg-green-50 border border-green-100 rounded-lg text-green-700">
+//             Model training completed successfully! You can now view the Dashboard or make Predictions.
+//           </div>
+//         )}
+//       </div>
+//     );
+//   }
+// );
+
+// export default SQLNotebook;
+
+
+
+
+
+
+
+
+
+
+
+
+
+// import React, {
+//   useEffect,
+//   useState,
+//   forwardRef,
+//   useImperativeHandle,
+//   useRef
+// } from 'react';
+// import Editor from '@monaco-editor/react';
+// import {
+//   Play,
+//   ChevronDown,
+//   ChevronUp,
+//   AlertCircle,
+//   X,
+//   Plus,
+//   Loader2
+// } from 'lucide-react';
+
+// interface Column {
+//   name: string;
+//   type: string;
+// }
+
+// interface Cell {
+//   id: number;
+//   type: 'code' | 'markdown';
+//   content: string;
+//   query: string;
+//   result: any[];
+//   columns: Column[];
+//   error: string | null;
+//   isExpanded: boolean;
+//   executionTime: string | null;
+//   currentPage: number;
+//   pageSize: number;
+//   isLoading?: boolean;
+// }
+
+// interface SQLNotebookProps {
+//   activeTab: string;
+//   notebookContent: {
+//     file_url: string;
+//     entity_column: string;
+//     target_column: string;
+//     features: string[];
+//     user_id: string;
+//     chat_id: string;
+//     isTrained: boolean;
+//     handleTrainModel: () => void;
+//     cells: any[]; // raw JSON from nbformat
+//   };
+// }
+
+// export interface SQLNotebookRef {
+//   runAllCellsAndGetResults: () => Promise<
+//     Array<{
+//       cellId: number;
+//       query: string;
+//       columns: Column[];
+//       rows: any[];
+//     }>
+//   >;
+// }
+
+// const SQLNotebook = forwardRef<SQLNotebookRef, SQLNotebookProps>(
+//   ({ activeTab, notebookContent }, ref) => {
+//     const { cells: rawNotebookCells } = notebookContent;
+
+//     const [cells, setCells] = useState<Cell[]>([]);
+//     const [loadingCellId, setLoadingCellId] = useState<number | null>(null);
+
+//     // This ref ensures we only parse rawNotebookCells -> setCells once
+//     const hasInitialized = useRef(false);
+
+//     // 1) Initialize local `cells` once, ignoring subsequent re-renders
+//     useEffect(() => {
+//       if (!hasInitialized.current && rawNotebookCells?.length > 0) {
+//         // Parse the rawNotebookCells from the JSON
+//         const initialCells: Cell[] = rawNotebookCells.map((cell: any, index: number) => {
+//           if (cell.cell_type === 'code') {
+//             const query = Array.isArray(cell.source)
+//               ? cell.source.join('')
+//               : cell.source;
+
+//             let result: any[] = [];
+//             let columns: Column[] = [];
+//             let error: string | null = null;
+
+//             if (cell.outputs && cell.outputs.length > 0) {
+//               const output = cell.outputs[0];
+//               if (output.output_type === 'execute_result' && output.data) {
+//                 const jsonData = output.data['application/json'];
+//                 if (jsonData && Array.isArray(jsonData.rows) && Array.isArray(jsonData.columns)) {
+//                   result = jsonData.rows;
+//                   columns = jsonData.columns;
+//                 }
+//               } else if (output.output_type === 'error') {
+//                 error = output.evalue || 'Unknown error';
+//               }
+//             }
+
+//             return {
+//               id: index + 1,
+//               type: 'code',
+//               content: '',
+//               query: query || '',
+//               result,
+//               columns,
+//               error,
+//               isExpanded: true,
+//               executionTime: null,
+//               currentPage: 1,
+//               pageSize: 10,
+//               isLoading: false,
+//             };
+//           } else if (cell.cell_type === 'markdown') {
+//             const content = Array.isArray(cell.source)
+//               ? cell.source.join('')
+//               : cell.source;
+//             return {
+//               id: index + 1,
+//               type: 'markdown',
+//               content,
+//               query: '',
+//               result: [],
+//               columns: [],
+//               error: null,
+//               isExpanded: true,
+//               executionTime: null,
+//               currentPage: 1,
+//               pageSize: 10,
+//               isLoading: false,
+//             };
+//           }
+//           return null;
+//         }).filter(Boolean) as Cell[];
+
+//         setCells(initialCells);
+//         hasInitialized.current = true;
+//       } else if (!hasInitialized.current && (!rawNotebookCells || rawNotebookCells.length === 0)) {
+//         // If there's no raw cells, just create an empty code cell
+//         setCells([
+//           {
+//             id: 1,
+//             type: 'code',
+//             content: '',
+//             query: '',
+//             result: [],
+//             columns: [],
+//             error: null,
+//             isExpanded: true,
+//             executionTime: null,
+//             currentPage: 1,
+//             pageSize: 10,
+//             isLoading: false,
+//           },
+//         ]);
+//         hasInitialized.current = true;
+//       }
+//     }, [rawNotebookCells]);
+
+//     // 2) Single-cell "Run" logic
+//     const executeQuery = async (cellId: number) => {
+//       const cell = cells.find((c) => c.id === cellId && c.type === 'code');
+//       if (!cell) return;
+
+//       setLoadingCellId(cellId);
+//       updateCell(cellId, {
+//         isLoading: true,
+//         error: null,
+//         result: [],
+//         columns: [],
+//       });
+
+//       const startTime = Date.now();
+//       try {
+//         const response = await fetch('http://localhost:8000/api/execute-sql/', {
+//           method: 'POST',
+//           headers: {
+//             'Content-Type': 'application/json',
+//             'Authorization': 'Token d36e47f0e5c0a356d35a7d6d407aab93f6b0d36b',
+//           },
+//           body: JSON.stringify({ query: cell.query }),
+//         });
+
+//         const endTime = Date.now();
+//         const timeTaken = endTime - startTime;
+//         const formattedTime = formatTime(timeTaken);
+
+//         if (!response.ok) {
+//           const errorData = await response.json().catch(() => ({
+//             error: 'Unknown error occurred',
+//           }));
+//           throw new Error(errorData.error || 'Query execution failed');
+//         }
+
+//         const data = await response.json();
+//         if (
+//           data.columns.length > 0 &&
+//           data.rows.length > 0 &&
+//           data.columns.length !== Object.keys(data.rows[0]).length
+//         ) {
+//           throw new Error('Mismatch between columns and data.');
+//         }
+
+//         updateCell(cellId, {
+//           result: data.rows,
+//           columns: data.columns,
+//           error: null,
+//           executionTime: formattedTime,
+//         });
+//       } catch (err: any) {
+//         console.error(`Error executing query for cell ${cellId}:`, err);
+//         updateCell(cellId, {
+//           error: err.message || 'Unknown error',
+//           result: [],
+//           columns: [],
+//           executionTime: null,
+//         });
+//       } finally {
+//         setLoadingCellId(null);
+//         updateCell(cellId, { isLoading: false });
+//       }
+//     };
+
+//     // 3) Run all code cells in order
+//     const runAllCellsAndGetResults = async () => {
+//       const results: Array<{
+//         cellId: number;
+//         query: string;
+//         columns: Column[];
+//         rows: any[];
+//       }> = [];
+
+//       for (const cell of cells) {
+//         if (cell.type === 'code') {
+//           await executeQuery(cell.id);
+//           const updatedCell = getCellById(cell.id);
+//           if (updatedCell) {
+//             results.push({
+//               cellId: updatedCell.id,
+//               query: updatedCell.query,
+//               columns: updatedCell.columns,
+//               rows: updatedCell.result,
+//             });
+//           }
+//         }
+//       }
+//       return results;
+//     };
+
+//     // Expose runAllCellsAndGetResults to the parent
+//     useImperativeHandle(ref, () => ({
+//       runAllCellsAndGetResults,
+//     }));
+
+//     // Helpers
+//     const getCellById = (id: number) => {
+//       return cells.find((c) => c.id === id);
+//     };
+
+//     const updateCell = (cellId: number, newProps: Partial<Cell>) => {
+//       setCells((prev) =>
+//         prev.map((c) => (c.id === cellId ? { ...c, ...newProps } : c))
+//       );
+//     };
+
+//     const formatTime = (ms: number) => {
+//       if (ms < 1000) return `${ms} ms`;
+//       return `${(ms / 1000).toFixed(2)} s`;
+//     };
+
+//     const deleteCell = (id: number) => {
+//       setCells((prev) => prev.filter((cell) => cell.id !== id));
+//     };
+
+//     const toggleExpand = (id: number) => {
+//       setCells((prev) =>
+//         prev.map((cell) =>
+//           cell.id === id ? { ...cell, isExpanded: !cell.isExpanded } : cell
+//         )
+//       );
+//     };
+
+//     const addCell = () => {
+//       setCells((prev) => [
+//         ...prev,
+//         {
+//           id: prev.length + 1,
+//           type: 'code',
+//           content: '',
+//           query: '',
+//           result: [],
+//           columns: [],
+//           error: null,
+//           isExpanded: true,
+//           executionTime: null,
+//           currentPage: 1,
+//           pageSize: 10,
+//           isLoading: false,
+//         },
+//       ]);
+//     };
+
+//     const handlePageChange = (cellId: number, newPage: number) => {
+//       setCells((prev) =>
+//         prev.map((c) =>
+//           c.id === cellId ? { ...c, currentPage: newPage } : c
+//         )
+//       );
+//     };
+
+//     const renderPagination = (cell: Cell) => {
+//       const totalRows = cell.result.length;
+//       const totalPages = Math.ceil(totalRows / cell.pageSize);
+//       if (totalPages <= 1) return null;
+
+//       const { currentPage } = cell;
+
+//       const handleNext = () => {
+//         if (currentPage < totalPages) {
+//           handlePageChange(cell.id, currentPage + 1);
+//         }
+//       };
+
+//       const handlePrev = () => {
+//         if (currentPage > 1) {
+//           handlePageChange(cell.id, currentPage - 1);
+//         }
+//       };
+
+//       return (
+//         <div className="flex items-center justify-between p-2 text-xs text-gray-700">
+//           <div className="font-semibold text-gray-800">
+//             Showing rows {(currentPage - 1) * cell.pageSize + 1} to{' '}
+//             {Math.min(currentPage * cell.pageSize, totalRows)} of {totalRows}
+//           </div>
+//           <div className="flex items-center space-x-2">
+//             <button
+//               onClick={handlePrev}
+//               disabled={currentPage === 1}
+//               className="px-2 py-1 border rounded disabled:opacity-50 font-semibold text-gray-800"
+//             >
+//               Prev
+//             </button>
+//             <span className="font-semibold text-gray-800">
+//               Page {currentPage} of {totalPages}
+//             </span>
+//             <button
+//               onClick={handleNext}
+//               disabled={currentPage === totalPages}
+//               className="px-2 py-1 border rounded disabled:opacity-50 font-semibold text-gray-800"
+//             >
+//               Next
+//             </button>
+//           </div>
+//         </div>
+//       );
+//     };
+
+//     // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+//     // Render the notebook UI
+//     // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+//     return (
+//       <div className="w-full space-y-4 p-6">
+//         {/* Notebook Title */}
+//         <div className="text-lg font-medium text-center pb-3 border-b border-teal-700">
+//           <span className="bg-gradient-to-r from-teal-600 to-emerald-500 bg-clip-text text-transparent">
+//             {activeTab === 'entity_target_notebook' && 'Entity & Target Analysis Notebook'}
+//             {activeTab === 'features_notebook' && 'Features Analysis Notebook'}
+//             {activeTab === 'time_based_notebook' && 'Time-Based Analysis Notebook'}
+//           </span>
+//         </div>
+
+//         <div className="space-y-4">
+//           {cells.map((cell) => (
+//             <div
+//               key={cell.id}
+//               className="bg-white rounded-lg border border-gray-100 shadow-sm hover:shadow-md group"
+//             >
+//               <div className="p-4">
+//                 {/* Cell Header */}
+//                 <div className="flex items-center justify-between mb-2">
+//                   <div className="flex items-center space-x-2">
+//                     <span className="text-xs font-medium text-gray-400">
+//                       {cell.type === 'code'
+//                         ? `Code Cell ${cell.id}`
+//                         : `Markdown Cell ${cell.id}`}
+//                     </span>
+//                     <button
+//                       onClick={() => toggleExpand(cell.id)}
+//                       className="p-1 hover:bg-gray-100 rounded-md"
+//                     >
+//                       {cell.isExpanded ? (
+//                         <ChevronUp className="h-4 w-4 text-gray-400" />
+//                       ) : (
+//                         <ChevronDown className="h-4 w-4 text-gray-400" />
+//                       )}
+//                     </button>
+//                   </div>
+
+//                   <div className="flex items-center space-x-2">
+//                     {cell.type === 'code' && (
+//                       <button
+//                         onClick={() => executeQuery(cell.id)}
+//                         className="flex items-center px-3 py-1.5 text-xs font-medium text-teal-700 bg-teal-50 rounded-md hover:bg-teal-100"
+//                         disabled={loadingCellId === cell.id}
+//                       >
+//                         {cell.isLoading ? (
+//                           <Loader2 className="h-3 w-3 mr-1 animate-spin" />
+//                         ) : (
+//                           <Play className="h-3 w-3 mr-1" />
+//                         )}
+//                         Run
+//                       </button>
+//                     )}
+//                     {cell.executionTime && (
+//                       <span className="text-xs text-gray-500 ml-2">
+//                         ({cell.executionTime})
+//                       </span>
+//                     )}
+//                     <button
+//                       onClick={() => deleteCell(cell.id)}
+//                       className="p-1.5 text-gray-400 hover:text-red-500 hover:bg-gray-100 rounded-md"
+//                     >
+//                       <X className="h-4 w-4" />
+//                     </button>
+//                   </div>
+//                 </div>
+
+//                 {/* Cell Body */}
+//                 {cell.isExpanded && (
+//                   <>
+//                     {cell.type === 'code' ? (
+//                       <>
+//                         <div className="border rounded-lg overflow-hidden bg-gray-50">
+//                           <Editor
+//                             height={calculateEditorHeight(cell.query)}
+//                             defaultLanguage="sql"
+//                             value={cell.query}
+//                             onChange={(value) =>
+//                               updateCell(cell.id, { query: value || '' })
+//                             }
+//                             options={{
+//                               minimap: { enabled: false },
+//                               fontSize: 13,
+//                               lineHeight: 1.5,
+//                               padding: { top: 8, bottom: 8 },
+//                               scrollBeyondLastLine: false,
+//                             }}
+//                           />
+//                         </div>
+
+//                         {/* If there's an error */}
+//                         {cell.error && (
+//                           <div className="mt-3 flex items-start px-4 py-3 bg-red-50 border border-red-100 rounded-lg">
+//                             <AlertCircle className="h-4 w-4 text-red-500 mt-0.5" />
+//                             <span className="text-xs text-red-600 ml-2">{cell.error}</span>
+//                           </div>
+//                         )}
+
+//                         {/* If there's a result */}
+//                         {cell.result.length > 0 && (
+//                           <div className="mt-4 border rounded-lg bg-gray-50 overflow-x-auto">
+//                             {renderPagination(cell)}
+//                             <table className="w-full text-xs">
+//                               <thead>
+//                                 <tr className="bg-gray-100">
+//                                   {cell.columns.map((col) => (
+//                                     <th
+//                                       key={col.name}
+//                                       className="px-4 py-2 text-left font-medium text-gray-700 uppercase tracking-wider"
+//                                     >
+//                                       <div className="flex flex-col items-start">
+//                                         <span>{col.name}</span>
+//                                         <span
+//                                           style={{
+//                                             fontSize: '10px',
+//                                             color: '#9CA3AF',
+//                                             fontWeight: '400',
+//                                             letterSpacing: '0.09em',
+//                                           }}
+//                                         >
+//                                           {col.type}
+//                                         </span>
+//                                       </div>
+//                                     </th>
+//                                   ))}
+//                                 </tr>
+//                               </thead>
+//                               <tbody>
+//                                 {cell.result
+//                                   .slice(
+//                                     (cell.currentPage - 1) * cell.pageSize,
+//                                     cell.currentPage * cell.pageSize
+//                                   )
+//                                   .map((row, idx) => (
+//                                     <tr key={idx} className="hover:bg-gray-200">
+//                                       {cell.columns.map((col) => (
+//                                         <td key={col.name} className="px-4 py-2 text-gray-800">
+//                                           {row[col.name] != null
+//                                             ? row[col.name].toString()
+//                                             : 'NULL'}
+//                                         </td>
+//                                       ))}
+//                                     </tr>
+//                                   ))}
+//                               </tbody>
+//                             </table>
+//                           </div>
+//                         )}
+//                       </>
+//                     ) : (
+//                       <div className="prose">
+//                         <div
+//                           dangerouslySetInnerHTML={{ __html: cell.content }}
+//                         />
+//                       </div>
+//                     )}
+//                   </>
+//                 )}
+//               </div>
+//             </div>
+//           ))}
+//         </div>
+
+//         {/* "Add Cell" Button */}
+//         <button
+//           onClick={addCell}
+//           className="flex items-center px-4 py-2 text-xs font-medium text-teal-700 bg-teal-50 rounded-md hover:bg-teal-100"
+//         >
+//           <Plus className="h-4 w-4 mr-1" />
+//           Add Cell
+//         </button>
+//       </div>
+//     );
+//   }
+// );
+
+// export default SQLNotebook;
+
+// // ~~~~~ Helper to compute dynamic editor height ~~~~~
+// function calculateEditorHeight(query: string) {
+//   const lines = query.split('\n').length;
+//   const baseHeight = 150;
+//   const lineHeight = 20;
+//   const maxHeight = 500;
+//   const computed = Math.min(baseHeight + lineHeight * (lines - 1), maxHeight);
+//   return `${computed}px`;
+// }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 import React, {
   useEffect,
   useState,
@@ -4720,7 +5868,6 @@ import {
   Loader2
 } from 'lucide-react';
 
-// Each column in the query result
 interface Column {
   name: string;
   type: string;
@@ -4736,12 +5883,8 @@ interface Cell {
   error: string | null;
   isExpanded: boolean;
   executionTime: string | null;
-
-  // Pagination
   currentPage: number;
   pageSize: number;
-
-  // Loading state
   isLoading?: boolean;
 }
 
@@ -4756,12 +5899,10 @@ interface SQLNotebookProps {
     chat_id: string;
     isTrained: boolean;
     handleTrainModel: () => void;
-    cells: any[];
+    cells: any[]; // raw JSON from nbformat
   };
 }
 
-// We define a new type for the "imperative handle"
-// so the parent can call .runAllCellsAndGetResults() on the ref
 export interface SQLNotebookRef {
   runAllCellsAndGetResults: () => Promise<
     Array<{
@@ -4773,21 +5914,23 @@ export interface SQLNotebookRef {
   >;
 }
 
-// We'll wrap the component in `forwardRef` so we can pass a ref from the parent
 const SQLNotebook = forwardRef<SQLNotebookRef, SQLNotebookProps>(
   ({ activeTab, notebookContent }, ref) => {
-    const { cells: notebookCells, isTrained } = notebookContent;
+    const { cells: rawNotebookCells } = notebookContent;
 
     const [cells, setCells] = useState<Cell[]>([]);
     const [loadingCellId, setLoadingCellId] = useState<number | null>(null);
 
-    // On initial load, parse the notebook JSON
+    // Only parse the notebook JSON once
+    const hasInitialized = useRef(false);
+
     useEffect(() => {
-      console.log('Received notebook content:', notebookContent);
-      if (notebookCells && notebookCells.length > 0) {
-        const initialCells = notebookCells.map((cell: any, index: number) => {
+      if (!hasInitialized.current && rawNotebookCells?.length > 0) {
+        const initialCells: Cell[] = rawNotebookCells.map((cell: any, index: number) => {
           if (cell.cell_type === 'code') {
-            const query = Array.isArray(cell.source) ? cell.source.join('') : cell.source;
+            const query = Array.isArray(cell.source)
+              ? cell.source.join('')
+              : cell.source;
 
             let result: any[] = [];
             let columns: Column[] = [];
@@ -4808,7 +5951,7 @@ const SQLNotebook = forwardRef<SQLNotebookRef, SQLNotebookProps>(
 
             return {
               id: index + 1,
-              type: 'code' as 'code',
+              type: 'code',
               content: '',
               query: query || '',
               result,
@@ -4821,10 +5964,12 @@ const SQLNotebook = forwardRef<SQLNotebookRef, SQLNotebookProps>(
               isLoading: false,
             };
           } else if (cell.cell_type === 'markdown') {
-            const content = Array.isArray(cell.source) ? cell.source.join('') : cell.source;
+            const content = Array.isArray(cell.source)
+              ? cell.source.join('')
+              : cell.source;
             return {
               id: index + 1,
-              type: 'markdown' as 'markdown',
+              type: 'markdown',
               content,
               query: '',
               result: [],
@@ -4838,12 +5983,12 @@ const SQLNotebook = forwardRef<SQLNotebookRef, SQLNotebookProps>(
             };
           }
           return null;
-        }).filter((c: any) => c !== null);
+        }).filter(Boolean) as Cell[];
 
-        
-        setCells(initialCells.filter(cell => cell !== null) as Cell[]);
-
-      } else {
+        setCells(initialCells);
+        hasInitialized.current = true;
+      } else if (!hasInitialized.current && (!rawNotebookCells || rawNotebookCells.length === 0)) {
+        // No raw cells => create an empty default code cell
         setCells([
           {
             id: 1,
@@ -4860,31 +6005,19 @@ const SQLNotebook = forwardRef<SQLNotebookRef, SQLNotebookProps>(
             isLoading: false,
           },
         ]);
+        hasInitialized.current = true;
       }
-    }, [notebookCells, notebookContent]);
+    }, [rawNotebookCells]);
 
-
-      // Helper to compute dynamic editor height
-  const calculateEditorHeight = (content: string) => {
-    const lineCount = (content.match(/\n/g) || []).length + 1;
-    const baseHeight = 150;
-    const lineHeight = 20;
-    const maxHeight = 500;
-    return `${Math.min(Math.max(baseHeight, lineCount * lineHeight), maxHeight)}px`;
-  };
-
-    // ---------------
-    // The existing single-cell run
-    // ---------------
+    // Single-cell run
     const executeQuery = async (cellId: number) => {
-      const cell = cells.find((c) => c.id === cellId);
-      if (!cell || cell.type !== 'code') return;
+      const cell = cells.find((c) => c.id === cellId && c.type === 'code');
+      if (!cell) return;
 
       setLoadingCellId(cellId);
       updateCell(cellId, { isLoading: true, error: null, result: [], columns: [] });
 
       const startTime = Date.now();
-
       try {
         const response = await fetch('http://localhost:8000/api/execute-sql/', {
           method: 'POST',
@@ -4900,12 +6033,13 @@ const SQLNotebook = forwardRef<SQLNotebookRef, SQLNotebookProps>(
         const formattedTime = formatTime(timeTaken);
 
         if (!response.ok) {
-          const errorData = await response.json().catch(() => ({ error: 'Unknown error occurred' }));
+          const errorData = await response.json().catch(() => ({
+            error: 'Unknown error occurred',
+          }));
           throw new Error(errorData.error || 'Query execution failed');
         }
 
         const data = await response.json();
-
         if (
           data.columns.length > 0 &&
           data.rows.length > 0 &&
@@ -4934,11 +6068,8 @@ const SQLNotebook = forwardRef<SQLNotebookRef, SQLNotebookProps>(
       }
     };
 
-    // ---------------
-    // NEW: runAllCellsAndGetResults
-    // ---------------
+    // Run all code cells
     const runAllCellsAndGetResults = async () => {
-      // We'll gather results in an array
       const results: Array<{
         cellId: number;
         query: string;
@@ -4946,13 +6077,9 @@ const SQLNotebook = forwardRef<SQLNotebookRef, SQLNotebookProps>(
         rows: any[];
       }> = [];
 
-      // We only run "code" cells
-      for (let i = 0; i < cells.length; i++) {
-        const cell = cells[i];
+      for (const cell of cells) {
         if (cell.type === 'code') {
-          // Force run the cell
-          await executeQuery(cell.id); 
-          // After the run, get the updated cell from state
+          await executeQuery(cell.id);
           const updatedCell = getCellById(cell.id);
           if (updatedCell) {
             results.push({
@@ -4964,31 +6091,25 @@ const SQLNotebook = forwardRef<SQLNotebookRef, SQLNotebookProps>(
           }
         }
       }
-
       return results;
     };
 
-    // We'll expose runAllCellsAndGetResults via an imperative handle
+    // Expose runAllCellsAndGetResults
     useImperativeHandle(ref, () => ({
       runAllCellsAndGetResults,
     }));
 
-    // Helper function to get the latest cell from state
+    // Helpers
+    const updateCell = (cellId: number, newProps: Partial<Cell>) => {
+      setCells((prev) => prev.map((c) => (c.id === cellId ? { ...c, ...newProps } : c)));
+    };
+
     const getCellById = (id: number) => {
       return cells.find((c) => c.id === id);
     };
 
-    // Helper to update cell in state
-    const updateCell = (cellId: number, newProps: Partial<Cell>) => {
-      setCells((prev) =>
-        prev.map((c) => (c.id === cellId ? { ...c, ...newProps } : c))
-      );
-    };
-
     const formatTime = (ms: number) => {
-      if (ms < 1000) {
-        return `${ms} ms`;
-      }
+      if (ms < 1000) return `${ms} ms`;
       return `${(ms / 1000).toFixed(2)} s`;
     };
 
@@ -5027,9 +6148,7 @@ const SQLNotebook = forwardRef<SQLNotebookRef, SQLNotebookProps>(
     const handlePageChange = (cellId: number, newPage: number) => {
       setCells((prev) =>
         prev.map((c) =>
-          c.id === cellId
-            ? { ...c, currentPage: newPage }
-            : c
+          c.id === cellId ? { ...c, currentPage: newPage } : c
         )
       );
     };
@@ -5082,10 +6201,9 @@ const SQLNotebook = forwardRef<SQLNotebookRef, SQLNotebookProps>(
       );
     };
 
-   
     return (
       <div className="w-full space-y-4 p-6">
-        {/* Header */}
+        {/* Notebook Title */}
         <div className="text-lg font-medium text-center pb-3 border-b border-teal-700">
           <span className="bg-gradient-to-r from-teal-600 to-emerald-500 bg-clip-text text-transparent">
             {activeTab === 'entity_target_notebook' && 'Entity & Target Analysis Notebook'}
@@ -5105,7 +6223,9 @@ const SQLNotebook = forwardRef<SQLNotebookRef, SQLNotebookProps>(
                 <div className="flex items-center justify-between mb-2">
                   <div className="flex items-center space-x-2">
                     <span className="text-xs font-medium text-gray-400">
-                      {cell.type === 'code' ? `Code Cell ${cell.id}` : `Markdown Cell ${cell.id}`}
+                      {cell.type === 'code'
+                        ? `Code Cell ${cell.id}`
+                        : `Markdown Cell ${cell.id}`}
                     </span>
                     <button
                       onClick={() => toggleExpand(cell.id)}
@@ -5171,6 +6291,7 @@ const SQLNotebook = forwardRef<SQLNotebookRef, SQLNotebookProps>(
                           />
                         </div>
 
+                        {/* If there's an error */}
                         {cell.error && (
                           <div className="mt-3 flex items-start px-4 py-3 bg-red-50 border border-red-100 rounded-lg">
                             <AlertCircle className="h-4 w-4 text-red-500 mt-0.5" />
@@ -5178,6 +6299,7 @@ const SQLNotebook = forwardRef<SQLNotebookRef, SQLNotebookProps>(
                           </div>
                         )}
 
+                        {/* If there's a result */}
                         {cell.result.length > 0 && (
                           <div className="mt-4 border rounded-lg bg-gray-50 overflow-x-auto">
                             {renderPagination(cell)}
@@ -5216,7 +6338,7 @@ const SQLNotebook = forwardRef<SQLNotebookRef, SQLNotebookProps>(
                                     <tr key={idx} className="hover:bg-gray-200">
                                       {cell.columns.map((col) => (
                                         <td key={col.name} className="px-4 py-2 text-gray-800">
-                                          {row[col.name] !== null && row[col.name] !== undefined
+                                          {row[col.name] != null
                                             ? row[col.name].toString()
                                             : 'NULL'}
                                         </td>
@@ -5230,7 +6352,9 @@ const SQLNotebook = forwardRef<SQLNotebookRef, SQLNotebookProps>(
                       </>
                     ) : (
                       <div className="prose">
-                        <div dangerouslySetInnerHTML={{ __html: cell.content }} />
+                        <div
+                          dangerouslySetInnerHTML={{ __html: cell.content }}
+                        />
                       </div>
                     )}
                   </>
@@ -5248,15 +6372,19 @@ const SQLNotebook = forwardRef<SQLNotebookRef, SQLNotebookProps>(
           <Plus className="h-4 w-4 mr-1" />
           Add Cell
         </button>
-
-        {isTrained && (
-          <div className="mt-6 p-4 bg-green-50 border border-green-100 rounded-lg text-green-700">
-            Model training completed successfully! You can now view the Dashboard or make Predictions.
-          </div>
-        )}
       </div>
     );
   }
 );
 
 export default SQLNotebook;
+
+// ~~~~~ Helper to compute dynamic editor height ~~~~~
+function calculateEditorHeight(query: string) {
+  const lines = query.split('\n').length;
+  const baseHeight = 150;
+  const lineHeight = 20;
+  const maxHeight = 500;
+  const computed = Math.min(baseHeight + lineHeight * (lines - 1), maxHeight);
+  return `${computed}px`;
+}
