@@ -7,7 +7,9 @@
     "dev": "vite",
     "build": "tsc -b && vite build",
     "lint": "eslint .",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "serve": "npx serve -s dist -l 8080",
+    "start": "npx serve -s dist -l 8080"
   },
   "dependencies": {
     "@emotion/react": "^11.13.3",
@@ -24,7 +26,6 @@
     "codemirror": "^6.0.1",
     "dotenv": "^16.4.5",
     "framer-motion": "^11.11.10",
-    "http-server": "^14.1.1",
     "js-cookie": "^3.0.5",
     "lucide-react": "^0.454.0",
     "monaco-editor": "^0.52.0",
@@ -38,6 +39,7 @@
     "react-router-dom": "^6.27.0",
     "recharts": "^2.14.1",
     "remark-gfm": "^4.0.0",
+    "serve": "^14.2.4",
     "tailwind-merge": "^2.5.5",
     "uuid": "^11.0.2"
   },

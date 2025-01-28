@@ -1,5 +1,5 @@
 // import { defineConfig } from 'vite'
-// import react from '@vitejs/plugin-react-swc'
+import react from '@vitejs/plugin-react-swc'
 
 // // https://vite.dev/config/
 // export default defineConfig({
@@ -7,14 +7,10 @@
 
 // })
 
-
 import { defineConfig } from 'vite';
-import react from '@vitejs/plugin-react-swc';
+// import react from '@vitejs/plugin-react';
 
 export default defineConfig({
-  base: './', // Ensures correct asset paths for Azure
-  build: {
-    outDir: 'dist' // Ensures correct output folder
-  },
   plugins: [react()],
+  base: './', // This ensures paths are relative
 });
