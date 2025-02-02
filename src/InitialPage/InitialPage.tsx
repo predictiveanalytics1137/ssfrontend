@@ -20,6 +20,12 @@ import {
 } from 'lucide-react';
 import Navbar from '../Navbar/Navbar';
 import { useNavigate } from 'react-router-dom';
+import PacxLanding6 from './landing6';
+import PacxLanding7 from './landing7';
+import FeaturesSection from './future/featuresection';
+import FeaturesSection2 from './future/featuresection2';
+import Navbar2 from '../Navbar/navbar2';
+import Navbar3 from '../Navbar/navbar3';
 
 interface FeatureCardProps {
   icon: LucideIcon;
@@ -36,6 +42,9 @@ interface ProcessStepProps {
   description: string;
   index: number;
 }
+
+
+
 
 const FeatureCard: React.FC<FeatureCardProps> = ({
   icon: Icon,
@@ -105,198 +114,27 @@ const InitialPage = () => {
   return (
     <div className="min-h-screen bg-gradient-to-b from-gray-50 to-white pt-16">
       {/* Include Navbar */}
-      <Navbar />
+      {/* <Navbar /> */}
+      <Navbar2 />
+      {/* <Navbar3 />  */}
 
       {/* Hero Section */}
-      <section className="relative overflow-hidden pt-20 pb-16 md:pt-32 md:pb-24">
-        <div className="absolute inset-0 bg-gray-900 z-0">
-          {/* Animated background patterns */}
-          <div className="absolute inset-0">
-            <motion.div
-              initial={{ opacity: 0 }}
-              animate={{ opacity: [0.4, 0.6, 0.4] }}
-              transition={{ duration: 5, repeat: Infinity }}
-              className="absolute inset-0 z-0"
-              style={{
-                backgroundImage:
-                  'radial-gradient(circle at 1% 1%, #0D9488 0.5%, transparent 25%)',
-              }}
-            />
-            <motion.div
-              initial={{ opacity: 0 }}
-              animate={{ opacity: [0.3, 0.5, 0.3] }}
-              transition={{ duration: 7, repeat: Infinity, delay: 1 }}
-              className="absolute inset-0 z-0"
-              style={{
-                backgroundImage:
-                  'radial-gradient(circle at 99% 99%, #0F766E 0.5%, transparent 25%)',
-              }}
-            />
-            <motion.div
-              initial={{ opacity: 0 }}
-              animate={{ opacity: [0.2, 0.4, 0.2] }}
-              transition={{ duration: 6, repeat: Infinity, delay: 2 }}
-              className="absolute inset-0 z-0"
-              style={{
-                backgroundImage:
-                  'radial-gradient(circle at 50% 50%, #14B8A6 0.5%, transparent 25%)',
-              }}
-            />
-          </div>
-        </div>
-        <div className="relative max-w-6xl mx-auto px-4">
-          <motion.h1
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.6 }}
-            className="text-lg font-semibold text-white text-center mb-4"
-          >
-            Making Machine Learning Accessible
-          </motion.h1>
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.6, delay: 0.2 }}
-          >
-            <h1 className="text-xl md:text-3xl font-bold text-white text-center mb-6">
-              The automated predictive analytics platform
-              <br />
-              designed for data analysts
-            </h1>
-          </motion.div>
-          <motion.div
-            className="flex justify-center"
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.6, delay: 0.4 }}
-          >
-            <motion.button
-              whileHover={{ scale: 1.05 }}
-              whileTap={{ scale: 0.95 }}
-              className="bg-teal-600 hover:bg-teal-700 text-white px-6 py-2 rounded-lg font-medium text-sm transition-colors"
-              onClick={handleButtonClick}
-            >
-              Get started
-            </motion.button>
-          </motion.div>
+      {/* <LandingPage />
+      <PacxLanding />
+      <PacxLanding2 />
+      <PacxLanding4 />
+      <PacxLanding5 />
+      <PacxLanding6 /> */}
+      <PacxLanding6 />
+      {/* <PacxLanding7 /> */}
+      {/* <PacxLanding8 />
+      <PacxLanding9 /> */}
 
-          {/* Floating Elements */}
-          <div className="absolute inset-0 pointer-events-none z-0">
-            <motion.div
-              animate={{
-                y: [0, -20, 0],
-                rotate: [0, 5, 0],
-              }}
-              transition={{
-                duration: 5,
-                repeat: Infinity,
-                ease: 'easeInOut',
-              }}
-              className="absolute top-1/4 left-1/4 z-0"
-            >
-              <div className="w-12 h-12 bg-teal-500/30 rounded-lg" />
-            </motion.div>
-            <motion.div
-              animate={{
-                y: [0, 20, 0],
-                rotate: [0, -5, 0],
-              }}
-              transition={{
-                duration: 7,
-                repeat: Infinity,
-                ease: 'easeInOut',
-              }}
-              className="absolute bottom-1/4 right-1/4 z-0"
-            >
-              <div className="w-16 h-16 bg-teal-600/30 rounded-full" />
-            </motion.div>
-          </div>
-        </div>
-      </section>
+
+      {/* <FeaturesSection /> */}
+      <FeaturesSection2 />
 
       {/* Features Section */}
-      <section className="py-12 md:py-20 bg-gray-50">
-        <div className="max-w-6xl mx-auto px-4">
-          <motion.h2
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.6 }}
-            className="text-md md:text-3xl font-bold text-gray-800 text-center mb-4"
-          >
-            Transform Data into Powerful Predictions
-          </motion.h2>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mt-10">
-            {/* Feature Cards */}
-            <FeatureCard
-              icon={Brain}
-              title="Machine Learning"
-              description="Build machine learning models that predict future outcomes."
-              className="bg-gradient-to-br from-purple-500 to-indigo-600"
-              index={0}
-            />
-            <FeatureCard
-              icon={TrendingUp}
-              title="Predictive Analytics"
-              description="Leverage data to predict trends and make better business decisions."
-              className="bg-gradient-to-br from-orange-400 to-pink-500"
-              index={1}
-            />
-            <FeatureCard
-              icon={Clock}
-              title="Time Series Forecasting"
-              description="Forecast future values based on historical time series data."
-              className="bg-gradient-to-br from-teal-400 to-cyan-500"
-              index={2}
-            />
-            <FeatureCard
-              icon={AlertCircle}
-              title="Anomaly Detection"
-              description="Detect outliers and anomalies in your data using AI."
-              className="bg-gradient-to-br from-gray-500 to-gray-700"
-              index={3}
-            />
-            <FeatureCard
-              icon={Users}
-              title="Customer Lifetime Value"
-              description="Predict the future value of a customer's lifetime purchases."
-              className="bg-gradient-to-br from-teal-500 to-emerald-600"
-              index={4}
-            />
-            <FeatureCard
-              icon={UserMinus}
-              title="Churn Prediction"
-              description="Identify customers who are likely to churn and take action."
-              className="bg-gradient-to-br from-emerald-400 to-teal-600"
-              index={5}
-            />
-            <FeatureCard
-              icon={LineChart}
-              title="Demand Forecasting"
-              description="Forecast demand for products and services to optimize inventory."
-              className="bg-gradient-to-br from-blue-400 to-indigo-600"
-              index={6}
-            />
-            <FeatureCard
-              icon={Factory}
-              title="Predictive Maintenance"
-              description="Use predictive analytics to anticipate equipment failures and reduce downtime."
-              className="bg-gradient-to-br from-orange-500 to-red-600"
-              index={7}
-            />
-            <FeatureCard
-              icon={Shield}
-              title="Fraud Detection"
-              description="Detect fraudulent activity using machine learning and predictive modeling."
-              className="bg-gradient-to-br from-pink-400 to-rose-600"
-              index={8}
-            />
-          </div>
-        </div>
-      </section>
 
       {/* How It Works Section */}
       <section className="py-12 md:py-20">

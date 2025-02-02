@@ -29,7 +29,7 @@ const App: React.FC = () => {
 
 const MainContent: React.FC = () => {
   const location = useLocation();
-  const hideNavbarRoutes = ['/home', '/chat', '/notebook', '/Dashboard','/PredictNewData', '/register', '/login', '/training'];
+  const hideNavbarRoutes = ['/home', '/chat', '/notebook', '/Dashboard','/PredictNewData', '/register', '/login', '/training', '/'];
 
   return (
     <>
