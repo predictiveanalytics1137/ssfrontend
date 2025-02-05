@@ -1539,43 +1539,95 @@ const NotebookLayout: React.FC = () => {
     fetchNotebooks();
   }, [user_id, chat_id]);
 
+  // // ------------------------------------------
+  // // B) Parse notebooks => time/entity/features
+  // // ------------------------------------------
+  // let timeBasedNotebookCells: any[] = [];
+  // let entityTargetNotebookCells: any[] = [];
+  // let featuresNotebookCells: any[] = [];
+
+  // let file_url = '';
+  // let entity_column = '';
+  // let target_column = '';
+  // let features: string[] = [];
+
+  // if (fetchedNotebooks.length > 0) {
+  //   // We'll take the first notebook's metadata as common fields
+  //   const nb0 = fetchedNotebooks[0];
+  //   file_url = nb0.file_url;
+  //   entity_column = nb0.entity_column;
+  //   target_column = nb0.target_column;
+  //   features = nb0.features || [];
+
+  //   fetchedNotebooks.forEach((nb) => {
+  //     if (!nb.notebook_json) return;
+  //     try {
+  //       const parsed = JSON.parse(nb.notebook_json);
+  //       const cells = parsed?.cells || [];
+  //       if (nb.time_column) {
+  //         timeBasedNotebookCells = cells;
+  //       } else if (nb.entity_column && nb.target_column && !timeBasedNotebookCells.length) {
+  //         entityTargetNotebookCells = cells;
+  //       } else {
+  //         featuresNotebookCells = cells;
+  //       }
+  //     } catch (err) {
+  //       console.error('Error parsing notebook JSON:', err);
+  //     }
+  //   });
+  // }
+
   // ------------------------------------------
-  // B) Parse notebooks => time/entity/features
-  // ------------------------------------------
-  let timeBasedNotebookCells: any[] = [];
-  let entityTargetNotebookCells: any[] = [];
-  let featuresNotebookCells: any[] = [];
+// B) Parse notebooks => time/entity/features (using order)
+// ------------------------------------------
+let timeBasedNotebookCells: any[] = [];
+let entityTargetNotebookCells: any[] = [];
+let featuresNotebookCells: any[] = [];
 
-  let file_url = '';
-  let entity_column = '';
-  let target_column = '';
-  let features: string[] = [];
+let file_url = '';
+let entity_column = '';
+let target_column = '';
+let features: string[] = [];
 
-  if (fetchedNotebooks.length > 0) {
-    // We'll take the first notebook's metadata as common fields
-    const nb0 = fetchedNotebooks[0];
-    file_url = nb0.file_url;
-    entity_column = nb0.entity_column;
-    target_column = nb0.target_column;
-    features = nb0.features || [];
+// Proceed only if we have fetched notebooks
+if (fetchedNotebooks.length > 0) {
+  // We'll take the first notebook's metadata as common fields
+  const nb0 = fetchedNotebooks[0];
+  file_url = nb0.file_url;
+  entity_column = nb0.entity_column;
+  target_column = nb0.target_column;
+  features = nb0.features || [];
 
-    fetchedNotebooks.forEach((nb) => {
-      if (!nb.notebook_json) return;
-      try {
-        const parsed = JSON.parse(nb.notebook_json);
-        const cells = parsed?.cells || [];
-        if (nb.time_column) {
-          timeBasedNotebookCells = cells;
-        } else if (nb.entity_column && nb.target_column && !timeBasedNotebookCells.length) {
-          entityTargetNotebookCells = cells;
-        } else {
-          featuresNotebookCells = cells;
-        }
-      } catch (err) {
-        console.error('Error parsing notebook JSON:', err);
-      }
-    });
+  // Filter out non-time-based notebooks
+  const nonTimeBasedNotebooks = fetchedNotebooks.filter(nb => !nb.time_column);
+  if (nonTimeBasedNotebooks.length >= 2) {
+    try {
+      // Assume the first is entity-target and the second is features
+      entityTargetNotebookCells = JSON.parse(nonTimeBasedNotebooks[0].notebook_json).cells;
+      featuresNotebookCells = JSON.parse(nonTimeBasedNotebooks[1].notebook_json).cells;
+    } catch (err) {
+      console.error('Error parsing non-time-based notebook JSON:', err);
+    }
+  } else if (nonTimeBasedNotebooks.length === 1) {
+    try {
+      entityTargetNotebookCells = JSON.parse(nonTimeBasedNotebooks[0].notebook_json).cells;
+      featuresNotebookCells = [];
+    } catch (err) {
+      console.error('Error parsing non-time-based notebook JSON:', err);
+    }
   }
+
+  // Additionally, check if there is a time-based notebook
+  const timeBasedNotebooks = fetchedNotebooks.filter(nb => nb.time_column);
+  if (timeBasedNotebooks.length > 0) {
+    try {
+      timeBasedNotebookCells = JSON.parse(timeBasedNotebooks[0].notebook_json).cells;
+    } catch (err) {
+      console.error('Error parsing time-based notebook JSON:', err);
+    }
+  }
+}
+
 
   // ------------------------------------------
   // C) Polling / model training logic
