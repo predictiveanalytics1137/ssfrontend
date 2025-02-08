@@ -2192,42 +2192,98 @@ const NotebookLayout: React.FC = () => {
   // ------------------------------------------
   // D) Save Notebooks – run all cells and persist via API.
   // ------------------------------------------
-  const handleSaveNotebooks = async () => {
-    if (!user_id || !chat_id) {
-      alert('user_id or chat_id is missing, cannot save notebooks.');
-      return;
-    }
-    // Choose time-based cells if available; otherwise, use entity-target cells.
-    const activeNotebookRef = timeBasedNotebookCells.length ? timeNotebookRef : entityNotebookRef;
+  // const handleSaveNotebooks = async () => {
+  //   if (!user_id || !chat_id) {
+  //     alert('user_id or chat_id is missing, cannot save notebooks.');
+  //     return;
+  //   }
+  //   // Choose time-based cells if available; otherwise, use entity-target cells.
+  //   const activeNotebookRef = timeBasedNotebookCells.length ? timeNotebookRef : (entityTargetNotebookCells.length ? entityNotebookRef : featuresNotebookRef);
 
-    if (!activeNotebookRef.current) {
-      alert('No notebook to save. Notebook reference not found.');
-      return;
-    }
-    setSavingNotebooks(true);
-    try {
-      const cellResults = await activeNotebookRef.current.runAllCellsAndGetResults();
-      const resp = await fetch('http://localhost:8000/api/save-notebooks/', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': 'Token d36e47f0e5c0a356d35a7d6d407aab93f6b0d36b',
-        },
-        body: JSON.stringify({ user_id, chat_id, cells: cellResults }),
-      });
+  //   if (!activeNotebookRef.current) {
+  //     alert('No notebook to save. Notebook reference not found.');
+  //     return;
+  //   }
+  //   setSavingNotebooks(true);
+  //   try {
+  //     const cellResults = await activeNotebookRef.current.runAllCellsAndGetResults();
+  //     // console.log('Cell results being sent to SaveNotebooksView:', cellResults);
+  //     const resp = await fetch('http://localhost:8000/api/save-notebooks/', {
+  //       method: 'POST',
+  //       headers: {
+  //         'Content-Type': 'application/json',
+  //         'Authorization': 'Token d36e47f0e5c0a356d35a7d6d407aab93f6b0d36b',
+  //       },
+  //       body: JSON.stringify({ user_id, chat_id, cells: cellResults }),
+  //     });
 
-      if (!resp.ok) {
-        const errData = await resp.json().catch(() => ({}));
-        throw new Error(errData.error || 'Failed to save notebooks.');
-      }
-      alert('Notebooks saved successfully!');
-    } catch (err: any) {
-      console.error('Error saving notebooks:', err);
-      alert(`Error saving notebooks: ${err.message}`);
-    } finally {
-      setSavingNotebooks(false);
+  //     if (!resp.ok) {
+  //       const errData = await resp.json().catch(() => ({}));
+  //       throw new Error(errData.error || 'Failed to save notebooks.');
+  //     }
+  //     alert('Notebooks saved successfully!');
+  //   } catch (err: any) {
+  //     console.error('Error saving notebooks:', err);
+  //     alert(`Error saving notebooks: ${err.message}`);
+  //   } finally {
+  //     setSavingNotebooks(false);
+  //   }
+  // };
+
+  // In NotebookLayout.tsx
+
+const handleSaveNotebooks = async () => {
+  if (!user_id || !chat_id) {
+    alert('user_id or chat_id is missing, cannot save notebooks.');
+    return;
+  }
+
+  let cellResults: any[] = [];
+  
+  // If time-based cells exist, run them.
+  if (timeNotebookRef.current) {
+    const timeCells = await timeNotebookRef.current.runAllCellsAndGetResults();
+    cellResults = cellResults.concat(timeCells);
+  }
+
+  // For non time-based queries, combine both entity_target and features notebook cells.
+  if (entityNotebookRef.current) {
+    const entityCells = await entityNotebookRef.current.runAllCellsAndGetResults();
+    cellResults = cellResults.concat(entityCells);
+  }
+  if (featuresNotebookRef.current) {
+    const featuresCells = await featuresNotebookRef.current.runAllCellsAndGetResults();
+    cellResults = cellResults.concat(featuresCells);
+  }
+
+  console.log('Cell results being sent to SaveNotebooksView:', cellResults);
+  // Now cellResults should contain cells from all rendered notebook components
+
+  setSavingNotebooks(true);
+  try {
+    const resp = await fetch('http://localhost:8000/api/save-notebooks/', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        // Replace with your auth token as needed.
+        'Authorization': 'Token d36e47f0e5c0a356d35a7d6d407aab93f6b0d36b',
+      },
+      body: JSON.stringify({ user_id, chat_id, cells: cellResults }),
+    });
+
+    if (!resp.ok) {
+      const errData = await resp.json().catch(() => ({}));
+      throw new Error(errData.error || 'Failed to save notebooks.');
     }
-  };
+    alert('Notebooks saved successfully!');
+  } catch (err: any) {
+    console.error('Error saving notebooks:', err);
+    alert(`Error saving notebooks: ${err.message}`);
+  } finally {
+    setSavingNotebooks(false);
+  }
+};
+
 
   // ------------------------------------------
   // E) Auto-run all notebooks once they load.

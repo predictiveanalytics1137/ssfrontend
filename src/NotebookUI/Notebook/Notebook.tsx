@@ -6076,6 +6076,7 @@ const SQLNotebook = forwardRef<SQLNotebookRef, SQLNotebookProps>(
         columns: Column[];
         rows: any[];
       }> = [];
+      console.log('Running all cells. Total cells:', cells.length); // Debug log
 
       for (const cell of cells) {
         if (cell.type === 'code') {
@@ -6091,6 +6092,7 @@ const SQLNotebook = forwardRef<SQLNotebookRef, SQLNotebookProps>(
           }
         }
       }
+      console.log('Finished running cells. Returning:', results); // 
       return results;
     };
 
