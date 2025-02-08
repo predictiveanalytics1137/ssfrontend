@@ -4649,7 +4649,7 @@
 
 
 
-
+// // working so far chat ui improved and pushed backend
 
 import React, { useState, useEffect, useRef } from 'react';
 import {
@@ -4900,7 +4900,7 @@ So, what would you like to predict?`;
 
           let confirmationText = `
 Suggested Target Column: ${suggestions.target_column}
-Suggested Entity ID Column: ${suggestions.entity_id_column}
+Suggested Entity ID Column: ${suggestions.entity_column}
 Suggested Feature Columns: ${suggestions.feature_columns.join(', ')}
 
 Please confirm:
