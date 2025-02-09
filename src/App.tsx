@@ -30,18 +30,19 @@ const App: React.FC = () => {
 const MainContent: React.FC = () => {
   const location = useLocation();
   const hideNavbarRoutes = ['/home', '/chat', '/notebook', '/Dashboard','/PredictNewData', '/register', '/login', '/training', '/'];
+  const shouldHideNavbar = hideNavbarRoutes.some(route => location.pathname.startsWith(route));
+
 
   return (
     <>
-      {!hideNavbarRoutes.includes(location.pathname) && (
-        <Navbar
-          
-        />
-      )}
+      {/* {!hideNavbarRoutes.includes(location.pathname) && (<Navbar/> */}
+      {!shouldHideNavbar && <Navbar />}
       <Routes>
         <Route path="/" element={<InitialPage />} />
         <Route path="/home" element={<HomePage />} />
+        {/* <Route path="/chat" element={<ChatInterface />} /> */}
         <Route path="/chat" element={<ChatInterface />} />
+        <Route path="/chat/:user_id/:chat_id" element={<ChatInterface />} />
         {/* <Route path="/Dashboard" element={<Dashboard user_id={''} chat_id={''} />} /> */}
         <Route path="/training" element={<TrainingInProgress />} />
         <Route path="/PredictNewData" element={<PredictionsUI />} />
@@ -67,6 +68,9 @@ const MainContent: React.FC = () => {
     />
         {/* <Route path="/about" element={<About />} /> */}
       </Routes>
+      
+
+      
     </>
   );
 };
