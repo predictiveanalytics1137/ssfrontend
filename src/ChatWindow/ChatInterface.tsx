@@ -7117,14 +7117,41 @@ No date column was detected, so we'll proceed with a non-time-based approach.
   // ---------------------------------------------------------------------------
   // Open Notebook
   // ---------------------------------------------------------------------------
-  const handleOpenNotebook = () => {
-    console.log('Opening notebook...');
-    navigate(`/notebook/${generatedUserId}/${generatedChatId}`, {
+  // const handleOpenNotebook = () => {
+  //   console.log('Opening notebook...');
+  //   navigate(`/notebook/${generatedUserId}/${generatedChatId}`, {
+  //     state: {
+  //       isTrained: false,
+  //     },
+  //   });
+  // };
+
+  // In ChatInterface (e.g. ChatInterface.tsx)
+const handleOpenNotebook = async () => {
+  try {
+    // Use currentChat.id (or generatedChatId) and userId
+    const notebookChatId = currentChat?.id || generatedChatId;
+    const response = await fetch(
+      `http://localhost:8000/api/predictive-settings/${userId}/${notebookChatId}/`
+    );
+    if (!response.ok) {
+      throw new Error("Failed to fetch predictive settings");
+    }
+    const predictiveSettings = await response.json();
+    console.log("Predictive Settings fetched:", predictiveSettings);
+    // Navigate to the Notebook page, passing the predictive settings in state
+    navigate(`/notebook/${userId}/${notebookChatId}`, {
       state: {
         isTrained: false,
+        predictiveSettings,
       },
     });
-  };
+  } catch (error) {
+    console.error("Error fetching predictive settings:", error);
+    alert("Could not fetch notebook details. Please try again.");
+  }
+};
+
 
   // ---------------------------------------------------------------------------
   // Reset Chat
