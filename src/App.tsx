@@ -16,6 +16,7 @@ import TrainingInProgress from './Dashboard/traininginprogress';
 import Dashboard from './Dashboard/Dashboard';
 import PredictionsUI from './Predict/PredictNewData';
 import { AuthProvider } from './Auth/AuthContext';
+import TestDashboard from './Dashboard/testDashboard';
 
 const App: React.FC = () => {
   return (
@@ -43,11 +44,12 @@ const MainContent: React.FC = () => {
         {/* <Route path="/chat" element={<ChatInterface />} /> */}
         <Route path="/chat" element={<ChatInterface />} />
         <Route path="/chat/:user_id/:chat_id" element={<ChatInterface />} />
-        {/* <Route path="/Dashboard" element={<Dashboard user_id={''} chat_id={''} />} /> */}
+        {/* <Route path="/Dashboard" element={<Dashboard user_id={''} chat_id={''}  />} /> */}
         <Route path="/training" element={<TrainingInProgress />} />
         <Route path="/PredictNewData" element={<PredictionsUI />} />
         <Route path="/register" element={<Register />} />
         <Route path="/login" element={<Login />} />
+        {/* <Route path="/Dashboard" element={<TestDashboard />} /> */}
         {/* <Route path="/PerformanceConsistency" element={<PerformanceConsistency />} /> */}
         {/* <Route path="/notebook" element={<NotebookLayout />} /> */}
         {/* <Route
