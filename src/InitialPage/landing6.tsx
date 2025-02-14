@@ -1,8 +1,10 @@
 import React from 'react';
 import { TrendingUp, Boxes, Cpu, Network, ArrowRight, Sparkles } from 'lucide-react';
 import { Card, CardContent } from '../components/ui/card';
+import { useNavigate } from 'react-router-dom';
 
 const PacxLanding6 = () => {
+  const navigate = useNavigate();
   return (
     <div className="relative min-h-screen bg-gradient-to-br from-purple-950 via-purple-900 to-indigo-950 text-white overflow-hidden">
       {/* Gradient overlay for bottom darkening */}
@@ -93,7 +95,7 @@ const PacxLanding6 = () => {
               optimize operations, and stay ahead of market trends.
             </p>
             <div className="flex flex-col sm:flex-row gap-4">
-              <button className="group relative inline-flex items-center justify-center bg-[#5B3557] hover:bg-[#4a2a46] text-white font-bold py-4 px-8 rounded-xl text-lg transition-all duration-300">
+              <button className="group relative inline-flex items-center justify-center bg-[#5B3557] hover:bg-[#4a2a46] text-white font-bold py-4 px-8 rounded-xl text-lg transition-all duration-300" onClick={() => navigate('/bookademo')}>
                 Get Started Now
                 <ArrowRight className="ml-2 w-5 h-5 group-hover:translate-x-1 transition-transform" />
               </button>
