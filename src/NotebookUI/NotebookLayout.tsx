@@ -2580,6 +2580,11 @@ interface MetricsData {
   };
   user_id: string;
   chat_id: string;
+  feature_analysis?: any; // Add appropriate type
+  model_metadata?: any; // Add appropriate type
+  data_characteristics?: any; // Add appropriate type
+  core_statistics?: any; // Add appropriate type
+  attribute_statistics?: any; // Add appropriate type
 }
 
 const NotebookLayout: React.FC = () => {

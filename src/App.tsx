@@ -51,7 +51,7 @@ const MainContent: React.FC = () => {
         <Route path="/register" element={<Register />} />
         <Route path="/login" element={<Login />} />
         <Route path="/bookademo" element={<BookDemoPage />} />
-        {/* <Route path="/Dashboard" element={<TestDashboard />} /> */}
+        <Route path="/Dashboard" element={<TestDashboard />} />
         {/* <Route path="/PerformanceConsistency" element={<PerformanceConsistency />} /> */}
         {/* <Route path="/notebook" element={<NotebookLayout />} /> */}
         {/* <Route
