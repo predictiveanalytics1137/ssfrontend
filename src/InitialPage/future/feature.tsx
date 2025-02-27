@@ -88,7 +88,7 @@ const FeatureCard: React.FC<FeatureCardProps> = ({
       </div>
       <h3 className="font-bold text-[#1A1A1A] text-lg">{title}</h3>
     </div>
-    <p className="text-gray-600 text-sm font-medium">{description}</p>
+    <p className="font-medium">{description}</p>
   </motion.div>
 );
 

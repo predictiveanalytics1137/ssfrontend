@@ -8096,8 +8096,8 @@ No date column was detected, so we'll proceed with a non-time-based approach.
           >
             <div className="p-4 flex items-center justify-between">
               <div className="flex items-center space-x-2">
-                <MessageSquare className="w-5 h-5 text-purple-900" />
-                <h2 className="font-semibold text-purple-900">Chat History</h2>
+                <MessageSquare className="w-5 h-5 " />
+                <h2 className="font-semibold ">Chat History</h2>
               </div>
               <Button
                 variant="ghost"
@@ -8157,9 +8157,9 @@ No date column was detected, so we'll proceed with a non-time-based approach.
               onClick={() => setShowSidebar(!showSidebar)}
               className="text-purple-900 hover:bg-purple-100"
             >
-              <Menu className="w-5 h-5 text-purple-900" />
+              <Menu className="w-5 h-5" />
             </Button>
-            <h3 className="font-medium text-purple-900">{currentChat?.title || 'Select a chat'}</h3>
+            <h3 className="font-medium ">{currentChat?.title || 'Select a chat'}</h3>
           </div>
         </header>
 
@@ -8266,17 +8266,17 @@ No date column was detected, so we'll proceed with a non-time-based approach.
           <div className="p-4 border-t bg-purple-50">
             <div className="flex flex-wrap gap-2">
               {Array.from(selectedFiles).map((file, index) => (
-                <Card key={`${file.name}-${index}`} className="p-2 bg-white border-purple-200">
+                <Card key={`${file.name}-${index}`} className="p-2 bg-white ">
                   <div className="text-sm text-purple-900">
                     <span className="font-medium">{file.name}</span>
-                    <span className="text-purple-600 ml-2">
+                    <span className=" ml-2">
                       ({(file.size / 1024).toFixed(1)} KB)
                     </span>
                   </div>
                 </Card>
               ))}
             </div>
-            <Button onClick={handleFileUpload} className="mt-2 bg-purple-900 text-white hover:bg-purple-950 focus:ring-purple-800">
+            <Button onClick={handleFileUpload} className="mt-2  text-white  focus:ring-purple-800">
               Upload Files
             </Button>
           </div>
