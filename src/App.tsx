@@ -47,7 +47,7 @@ const MainContent: React.FC = () => {
         <Route path="/chat/:user_id/:chat_id" element={<ChatInterface />} />
         {/* <Route path="/Dashboard" element={<Dashboard user_id={''} chat_id={''}  />} /> */}
         <Route path="/training" element={<TrainingInProgress />} />
-        <Route path="/PredictNewData" element={<PredictionsUI />} />
+        {/* <Route path="/PredictNewData" element={<PredictionsUI />} /> */}
         <Route path="/register" element={<Register />} />
         <Route path="/login" element={<Login />} />
         <Route path="/bookademo" element={<BookDemoPage />} />
