@@ -3466,7 +3466,7 @@ interface ModelMetrics {
 export interface MetricsData {
   model_metrics: ModelMetrics;
   feature_importance: Record<string, number>;
-  feature_analysis: {
+  feature_analysis?: {
     top_features: Record<string, number>;
     shap_importance: Record<string, number>;
     attribute_columns: string[];
@@ -3476,7 +3476,7 @@ export interface MetricsData {
     actual: number[];
     predicted: number[];
   };
-  model_metadata: {
+  model_metadata?: {
     timestamp: string;
     model_type: string;
     num_features: number;
@@ -3485,13 +3485,13 @@ export interface MetricsData {
     testing_samples: number;
     evaluation_duration: number;
   };
-  data_characteristics: {
+  data_characteristics?: {
     actual_distribution: { mean: number; std: number; min: number; max: number };
     predicted_distribution: { mean: number; std: number; min: number; max: number };
     feature_correlations: Record<string, number>;
   };
-  core_statistics: Record<string, Record<string, number | string>>;
-  attribute_statistics: Record<string, Record<string, number | string>>;
+  core_statistics?: Record<string, Record<string, number | string>>;
+  attribute_statistics?: Record<string, Record<string, number | string>>;
   user_id: string;
   chat_id: string;
 }
@@ -3644,7 +3644,7 @@ const Dashboard: React.FC<DashboardProps> = ({ user_id, chat_id, data }) => {
   const [progressLoading, setProgressLoading] = useState(true);
   const [progressError, setProgressError] = useState<string | null>(null);
 
-  const [dashboardData, setDashboardData] = useState<MetricsData | null>(data || null);
+  const [dashboardData, setDashboardData] = useState<MetricsData | null>(data ?? null);
   const [loadingData, setLoadingData] = useState(!data);
   const [errorData, setErrorData] = useState<string | null>(null);
 
@@ -3796,19 +3796,19 @@ const Dashboard: React.FC<DashboardProps> = ({ user_id, chat_id, data }) => {
             <ResidualAnalysis residuals={dashboardData.model_metrics.residuals} />
           </ExpandableBox>
           <ExpandableBox title="Model Metadata">
-            <ModelMetadata metadata={dashboardData.model_metadata} />
+            <ModelMetadata metadata={dashboardData.model_metadata ?? null} />
           </ExpandableBox>
           <ExpandableBox title="Data Characteristics">
-            <DataCharacteristics characteristics={dashboardData.data_characteristics} />
+            <DataCharacteristics characteristics={dashboardData.data_characteristics ?? null} />
           </ExpandableBox>
           <ExpandableBox title="Core & Attribute Statistics">
             <CoreAttributeStatistics
-              coreStats={dashboardData.core_statistics}
-              attributeStats={dashboardData.attribute_statistics}
+              coreStats={dashboardData.core_statistics ?? null}
+              attributeStats={dashboardData.attribute_statistics ?? null}
             />
           </ExpandableBox>
           <ExpandableBox title="Extended Feature Analysis">
-            <ExtendedFeatureAnalysis featureAnalysis={dashboardData.feature_analysis} />
+            <ExtendedFeatureAnalysis featureAnalysis={dashboardData.feature_analysis ?? null} />
           </ExpandableBox>
         </>
       )}

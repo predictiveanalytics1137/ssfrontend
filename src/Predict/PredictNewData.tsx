@@ -5367,6 +5367,7 @@ interface PredictionFileInfo {
     sampling_results: any[];
     feature_results: any[];
   };
+  prediction_id?: string; // Add this as an optional property
 }
 
 interface PredictiveSettingsData {
@@ -5702,6 +5703,51 @@ function formatDate(date: Date): string {
 }
 
   // Step 1: Upload CSV & generate queries
+  // const handleQuickPrediction = async () => {
+  //   console.log("[handleQuickPrediction] Start. user_id:", user_id, "chat_id:", chat_id);
+  //   if (!selectedFile) {
+  //     alert("Please select a CSV/XLSX/XLS file first and pass validation.");
+  //     return;
+  //   }
+  //   if (!columnsMatch) {
+  //     alert("File schema doesn't match the required columns. Cannot upload.");
+  //     return;
+  //   }
+
+  //   setIsLoading(true);
+  //   try {
+  //     const formData = new FormData();
+  //     formData.append("file", selectedFile);
+  //     formData.append("user_id", user_id);
+  //     formData.append("chat_id", chat_id);
+
+  //     const response = await fetch("http://127.0.0.1:8000/api/predict/", {
+  //       method: "POST",
+  //       headers: {
+  //         Authorization: `Token ${authToken}`,
+  //       },
+  //       body: formData,
+  //     });
+
+  //     if (!response.ok) {
+  //       const errorText = await response.text();
+  //       throw new Error(errorText);
+  //     }
+  //     const data = await response.json();
+  //     console.log("[handleQuickPrediction] /api/predict/ response:", data);
+
+  //     if (data.uploaded_files && data.uploaded_files.length > 0) {
+  //       setPredictionFileInfo(data.uploaded_files[0]);
+  //     }
+  //   } catch (error: unknown) {
+  //     console.error("[handleQuickPrediction] Error:", error);
+  //     alert(`Prediction failed: ${error instanceof Error ? error.message : "Unknown error"}`);
+  //   } finally {
+  //     setIsLoading(false);
+  //   }
+  // };
+
+
   const handleQuickPrediction = async () => {
     console.log("[handleQuickPrediction] Start. user_id:", user_id, "chat_id:", chat_id);
     if (!selectedFile) {
@@ -5712,14 +5758,14 @@ function formatDate(date: Date): string {
       alert("File schema doesn't match the required columns. Cannot upload.");
       return;
     }
-
+  
     setIsLoading(true);
     try {
       const formData = new FormData();
       formData.append("file", selectedFile);
       formData.append("user_id", user_id);
       formData.append("chat_id", chat_id);
-
+  
       const response = await fetch("http://127.0.0.1:8000/api/predict/", {
         method: "POST",
         headers: {
@@ -5727,18 +5773,22 @@ function formatDate(date: Date): string {
         },
         body: formData,
       });
-
+  
       if (!response.ok) {
         const errorText = await response.text();
         throw new Error(errorText);
       }
       const data = await response.json();
       console.log("[handleQuickPrediction] /api/predict/ response:", data);
-
+  
       if (data.uploaded_files && data.uploaded_files.length > 0) {
-        setPredictionFileInfo(data.uploaded_files[0]);
+        const fileInfoWithId = {
+          ...data.uploaded_files[0],
+          prediction_id: data.uploaded_files[0].prediction_id  // Extract prediction_id
+        };
+        setPredictionFileInfo(fileInfoWithId);
       }
-    } catch (error: unknown) {
+    } catch (error) {
       console.error("[handleQuickPrediction] Error:", error);
       alert(`Prediction failed: ${error instanceof Error ? error.message : "Unknown error"}`);
     } finally {
@@ -5747,18 +5797,94 @@ function formatDate(date: Date): string {
   };
 
   // Step 2: Predict on new data
+  // const handlePredictOnNewData = async () => {
+  //   console.log("[handlePredictOnNewData] Start. user_id:", user_id, "chat_id:", chat_id);
+  //   if (!predictionFileInfo || !notebookRef.current) {
+  //     alert("Please upload a file and review queries before predicting.");
+  //     return;
+  //   }
+
+  //   setIsLoading(true);
+  //   try {
+  //     const cellResults = await notebookRef.current.runAllCellsAndGetResults();
+  //     console.log("[handlePredictOnNewData] cellResults:", cellResults);
+
+  //     const saveResp = await fetch("http://127.0.0.1:8000/api/save_prediction_results/", {
+  //       method: "POST",
+  //       headers: {
+  //         "Content-Type": "application/json",
+  //         Authorization: `Token ${authToken}`,
+  //       },
+  //       body: JSON.stringify({
+  //         user_id,
+  //         chat_id,
+  //         file_id: predictionFileInfo.id,
+  //         cells: cellResults,
+  //       }),
+  //     });
+  //     if (!saveResp.ok) {
+  //       const errText = await saveResp.text();
+  //       throw new Error(errText);
+  //     }
+  //     const saveData = await saveResp.json();
+  //     console.log("[handlePredictOnNewData] Prediction results saved:", saveData);
+
+  //     alert("Prediction Initiated successfully!");
+  //     fetchPredictions();
+  //   } catch (error) {
+  //     console.error("[handlePredictOnNewData] Error:", error);
+  //     alert(`Prediction failed: ${error instanceof Error ? error.message : "Unknown error"}`);
+  //   } finally {
+  //     setIsLoading(false);
+  //     setShowPredictionWizard(false);
+  //     setWizardStep(1);
+  //     setSelectedFile(null);
+  //     setPredictionFileInfo(null);
+  //   }
+  // };
+
+
   const handlePredictOnNewData = async () => {
     console.log("[handlePredictOnNewData] Start. user_id:", user_id, "chat_id:", chat_id);
-    if (!predictionFileInfo || !notebookRef.current) {
+    if (!predictionFileInfo || !notebookRef.current || !predictionFileInfo.prediction_id) {
       alert("Please upload a file and review queries before predicting.");
       return;
     }
-
+  
     setIsLoading(true);
     try {
+      // Step 1: Start the ML process with prediction_id from database
+      const predictionPayload = {
+        file_url: predictionFileInfo.file_url,
+        column_id: "product_id", // Could be dynamic
+        user_id: user_id,
+        chat_id: chat_id,
+        ml_type: true,
+        prediction_id: predictionFileInfo.prediction_id, // Use DB-generated ID
+      };
+      console.log("[handlePredictOnNewData] predictionPayload:", predictionPayload);
+  
+      const predictionResponse = await fetch("http://127.0.0.1:8000/api/prediction/", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Token ${authToken}`,
+        },
+        body: JSON.stringify(predictionPayload),
+      });
+  
+      if (!predictionResponse.ok) {
+        const errText = await predictionResponse.text();
+        throw new Error(`Prediction initiation failed: ${errText}`);
+      }
+  
+      const predictionResult = await predictionResponse.json();
+      console.log("[handlePredictOnNewData] Prediction started:", predictionResult);
+  
+      // Step 2: Run notebook cells and save results
       const cellResults = await notebookRef.current.runAllCellsAndGetResults();
       console.log("[handlePredictOnNewData] cellResults:", cellResults);
-
+  
       const saveResp = await fetch("http://127.0.0.1:8000/api/save_prediction_results/", {
         method: "POST",
         headers: {
@@ -5770,16 +5896,19 @@ function formatDate(date: Date): string {
           chat_id,
           file_id: predictionFileInfo.id,
           cells: cellResults,
+          prediction_id: predictionFileInfo.prediction_id, // Include in save request
         }),
       });
+  
       if (!saveResp.ok) {
         const errText = await saveResp.text();
-        throw new Error(errText);
+        throw new Error(`Saving results failed: ${errText}`);
       }
+  
       const saveData = await saveResp.json();
       console.log("[handlePredictOnNewData] Prediction results saved:", saveData);
-
-      alert("Prediction completed successfully!");
+  
+      alert("Prediction Initiated and Results Saved Successfully!");
       fetchPredictions();
     } catch (error) {
       console.error("[handlePredictOnNewData] Error:", error);
