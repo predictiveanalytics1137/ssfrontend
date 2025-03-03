@@ -5002,6 +5002,7 @@ interface Metrics {
 interface ModelMetrics {
   training: Metrics;
   testing: Metrics;
+  validation: Metrics;
   assessment: string;
 }
 
@@ -5011,6 +5012,8 @@ interface MetricsData {
   predictions: {
     actual: number[];
     predicted: number[];
+    product_id: string[];
+    analysis_time: string[];
   };
   user_id: string;
   chat_id: string;
@@ -5513,7 +5516,7 @@ const NotebookLayout: React.FC = () => {
 
           {/* Dashboard Tab */}
           {activeTab === 'dashboard' && (
-            <div className="p-8 w-full max-w-6xl mx-auto">
+            <div className="p-8 w-full max-w-7xl mx-auto">
               <Dashboard user_id={user_id} chat_id={chat_id} data={dashboardData} />
             </div>
           )}
