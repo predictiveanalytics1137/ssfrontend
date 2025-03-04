@@ -4992,6 +4992,8 @@ import { FiBook, FiBarChart2, FiFlag, FiLoader } from 'react-icons/fi';
 import { motion } from 'framer-motion';
 import Sidebar from '../NotebookUI/Sidebar/Sidebar';
 import { Monitor } from 'lucide-react';
+import { time } from 'console';
+import { machine } from 'os';
 
 interface Metrics {
   rmse: number;
@@ -5073,6 +5075,7 @@ const NotebookLayout: React.FC = () => {
           throw new Error(`Failed to fetch predictive settings: ${response.statusText}`);
         }
         const data = await response.json();
+        console.log('Predictive settings:', data);
         setPredictiveSettings(data);
       } catch (error: any) {
         console.error("Error fetching predictive settings:", error);
@@ -5180,6 +5183,109 @@ const NotebookLayout: React.FC = () => {
   };
 
   const handleTrainModel = async () => {
+
+    if (!user_id || !chat_id) {
+      alert('user_id or chat_id is missing, cannot save notebooks.');
+      return;
+    }
+    let cellResults: any[] = [];
+    if (timeBasedNotebookCells.length > 0 && timeNotebookRef.current) {
+      const timeCells = await timeNotebookRef.current.runAllCellsAndGetResults();
+      cellResults = cellResults.concat(timeCells);
+    } else if (nonTimeBasedNotebookCells.length > 0 && nonTimeBasedNotebookRef.current) {
+      const nonTimeCells = await nonTimeBasedNotebookRef.current.runAllCellsAndGetResults();
+      cellResults = cellResults.concat(nonTimeCells);
+    }
+    console.log('Cell results being sent to SaveNotebooksView:', cellResults);
+    setSavingNotebooks(true);
+    try {
+      const resp = await fetch('http://localhost:8000/api/save-notebooks/', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': 'Token d36e47f0e5c0a356d35a7d6d407aab93f6b0d36b',
+        },
+        body: JSON.stringify({ user_id, chat_id, cells: cellResults }),
+      });
+      if (!resp.ok) {
+        const errData = await resp.json().catch(() => ({}));
+        throw new Error(errData.error || 'Failed to save notebooks.');
+      }
+      const saveResult = await resp.json();
+      alert('Notebooks saved successfully!');
+
+      // Use the saved S3 links (cell8 URL) for training
+      if (fetchedNotebooks.length > 0) {
+        const nb0 = fetchedNotebooks[0];
+        // const cell8Url = nb0.cell_s3_links['cell8'] || nb0.file_url || "s3://testingfiles-pacx/cell_8_2c46f7.csv";
+        const cell8Url = "s3://pa-documents-storage-bucket/notebook_saves/9/43062c6d-278b-4e61-9e2f-e3dc426280b3/cell_8_0756d5.csv"
+        if (!predictiveSettings) {
+          alert('Predictive settings are not loaded yet. Please wait.');
+          return;
+        }
+
+        // const payload = {
+        //   file_url: cell8Url, // Use cell8 S3 link or fallback
+        //   target_column: predictiveSettings.target_column || "target_within_30_days_after",
+        //   user_id: user_id || "000000",
+        //   chat_id: chat_id || "000000",
+        //   entity_column: predictiveSettings.entity_column || "product_id_",
+        //   prediction_type: predictiveSettings.machine_learning_type ?? false,
+        //   time_column:predictiveSettings.time_column || "date",
+        //   time_frame:predictiveSettings.time_frame || "30 days",
+        //   time_frequency:predictiveSettings.time_frequency || "weekly",
+        //   machine_learning_type: predictiveSettings.machine_learning_type || "regression",
+        //   // ml_type: predictiveSettings.machine_learning_type === "true" || predictiveSettings.machine_learning_type === true,
+        //   // ml_type: true
+        // };
+        const payload = {
+          file_url: cell8Url, // Use cell8 S3 link or fallback
+          target_column: predictiveSettings.target_column || "target_within_30_days_after",
+          user_id: user_id || "000000",
+          chat_id: chat_id || "000000",
+          entity_column: predictiveSettings.entity_column || "product_id_",
+          prediction_type: predictiveSettings.prediction_type ?? false,
+          time_frame:predictiveSettings.time_frame || "30 days",
+          time_frequency:predictiveSettings.time_frequency || "weekly",
+          machine_learning_type: predictiveSettings.machine_learning_type || "regression",
+          time_column:predictiveSettings.time_column || "date",
+          new_target_column:predictiveSettings.new_target_column || "target_within_60_days_after",
+          // ml_type: predictiveSettings.machine_learning_type === "true" || predictiveSettings.machine_learning_type === true,
+          // ml_type: true
+        };
+
+        const trainResponse = await fetch('http://127.0.0.1:8000/api/automation/', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': 'Token d36e47f0e5c0a356d35a7d6d407aab93f6b0d36b',
+          },
+          body: JSON.stringify(payload),
+        });
+
+        if (!trainResponse.ok) {
+          const errorText = await trainResponse.text();
+          throw new Error(`Failed to train model: ${errorText}`);
+        }
+
+        const trainResult = await trainResponse.json();
+        console.log('Train model response:', trainResult);
+
+        // Navigate to training page with a delay for polling
+        // navigate('/training', {
+        //   state: { user_id, chat_id, file_url: cell8Url, entity_column, target_column, features },
+        // });
+        // setTimeout(() => {
+        //   pollModelResults();
+        // }, 300000); // 5-minute delay
+      }
+    } catch (err: any) {
+      console.error('Error saving notebooks or training model:', err);
+      alert(`Error: ${err.message}`);
+    } finally {
+      // setSavingNotebooks(false);
+      console.log('Notebooks saved successfully!');
+    }
 
   };
 
@@ -5398,7 +5504,8 @@ const NotebookLayout: React.FC = () => {
           >
             Train Model
           </button>
-          <button
+          {/* commenting it for productions same functionality used on train button */}
+          {/* <button
             onClick={handleSaveNotebooks}
             disabled={savingNotebooks}
             className="flex items-center px-6 py-3 border border-purple-900 text-purple-900 text-sm rounded-md shadow-md hover:bg-purple-900 hover:text-white focus:outline-none focus:ring-2 focus:ring-purple-800 transition-transform transform hover:scale-105"
@@ -5412,7 +5519,7 @@ const NotebookLayout: React.FC = () => {
             ) : (
               'Save Notebooks & Train'
             )}
-          </button>
+          </button> */}
         </motion.div>
       )}
 
