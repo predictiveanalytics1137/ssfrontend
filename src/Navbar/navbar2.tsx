@@ -831,6 +831,204 @@
 
 
 
+// import React, { useState, useEffect } from 'react';
+// import { Menu, X } from 'lucide-react';
+// import { Link, useNavigate } from 'react-router-dom';
+// import { Transition } from '@headlessui/react';
+
+// interface NavItem {
+//   label: string;
+//   href: string;
+// }
+
+// const navItems: NavItem[] = [
+//   { label: 'Product', href: '/product' },
+//   { label: 'Customers', href: '/customers' },
+//   { label: 'Pricing', href: '/pricing' },
+//   { label: 'Resources', href: '/resources' },
+//   { label: 'Company', href: '/company' },
+// ];
+
+// const Navbar2: React.FC = () => {
+//   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+//   const [showAlert, setShowAlert] = useState(false);
+//   const [isLoggedIn, setIsLoggedIn] = useState(false);
+//   const navigate = useNavigate();
+
+//   useEffect(() => {
+//     const token = localStorage.getItem('token');
+//     setIsLoggedIn(!!token);
+//   }, []);
+
+//   const handleLogout = () => {
+//     localStorage.removeItem('token');
+//     setIsLoggedIn(false);
+//     navigate('/');
+//   };
+
+//   const handleAlert = (e: React.MouseEvent) => {
+//     e.preventDefault();
+//     setShowAlert(true);
+//     setTimeout(() => setShowAlert(false), 3000);
+//   };
+
+//   return (
+//     <nav className="fixed top-0 left-0 right-0 bg-white text-[#1A1A1A] z-50 shadow-md border-b border-gray-200">
+//       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center relative">
+        
+//         {/* Floating Particles */}
+//         <div className="absolute inset-0 overflow-hidden pointer-events-none">
+//           {[...Array(10)].map((_, i) => (
+//             <div
+//               key={i}
+//               className="absolute w-1 h-1 bg-gray-300/40 rounded-full"
+//               style={{
+//                 top: `${Math.random() * 100}%`,
+//                 left: `${Math.random() * 100}%`,
+//                 animation: `float ${5 + Math.random() * 5}s linear infinite`,
+//                 animationDelay: `${Math.random() * 5}s`
+//               }}
+//             />
+//           ))}
+//         </div>
+
+//         {/* Logo */}
+//         <div className="flex-shrink-0 flex items-center z-10">
+//           <Link to="/" className="flex items-center space-x-2">
+//             <div className="w-10 h-10 bg-gradient-to-br from-[#5B3557] to-[#9b5de5] rounded-full flex items-center justify-center shadow-md">
+//               <span className="text-white font-bold text-xl">P</span>
+//             </div>
+//             <span className="text-2xl font-bold text-[#5B3557]">PACX.ai</span>
+//           </Link>
+//         </div>
+
+//         {/* Desktop Navigation */}
+//         <div className="hidden md:flex items-center space-x-8 ml-auto z-10">
+//           {navItems.map((item) => (
+//             <Link
+//               key={item.label}
+//               to={item.href}
+//               onClick={handleAlert}
+//               className="relative text-gray-700 hover:text-[#5B3557] transition-colors duration-300 font-medium text-sm"
+//             >
+//               {item.label}
+//             </Link>
+//           ))}
+//         </div>
+
+//         {/* CTA Buttons */}
+//         <div className="hidden md:flex items-center space-x-4 ml-8 z-10">
+//           <Link
+//             to="/chat"
+//             className="bg-[#5B3557] hover:bg-[#4a2a46] text-white px-4 py-2 rounded-full text-sm font-medium shadow-md transition-all duration-300"
+//           >
+//             Chat With Gen AI
+//           </Link>
+//           {isLoggedIn ? (
+//             <button
+//               onClick={handleLogout}
+//               className="border border-[#5B3557] text-[#5B3557] hover:bg-[#5B3557] hover:text-white px-4 py-2 rounded-full text-sm font-medium transition-all duration-300"
+//             >
+//               Logout
+//             </button>
+//           ) : (
+//             <Link
+//               to="/register"
+//               className="border border-[#5B3557] text-[#5B3557] hover:bg-[#5B3557] hover:text-white px-4 py-2 rounded-full text-sm font-medium transition-all duration-300"
+//             >
+//               Sign Up
+//             </Link>
+//           )}
+//         </div>
+
+//         {/* Mobile Menu Button */}
+//         <div className="md:hidden flex items-center space-x-2 ml-auto z-10">
+//           <button
+//             type="button"
+//             className="p-2 rounded-full text-gray-700 hover:text-[#5B3557] hover:bg-gray-200 transition-colors duration-300"
+//             onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+//             aria-controls="mobile-menu"
+//             aria-expanded={isMobileMenuOpen}
+//           >
+//             {isMobileMenuOpen ? <X size={24} /> : <Menu size={24} />}
+//           </button>
+//         </div>
+//       </div>
+
+//       {/* Alert Notification */}
+//       {showAlert && (
+//         <div className="fixed top-20 right-4 bg-[#5B3557] border border-[#4a2a46] text-white px-4 py-2 rounded-lg shadow-lg animate-fade-in">
+//           <span>🚀 Feature under development! Check back later.</span>
+//         </div>
+//       )}
+
+//       {/* Mobile Menu */}
+//       <Transition
+//         show={isMobileMenuOpen}
+//         enter="transition ease-out duration-300 transform"
+//         enterFrom="opacity-0 -translate-y-2"
+//         enterTo="opacity-100 translate-y-0"
+//         leave="transition ease-in duration-200 transform"
+//         leaveFrom="opacity-100 translate-y-0"
+//         leaveTo="opacity-0 -translate-y-2"
+//       >
+//         {(ref) => (
+//           <div className="md:hidden" id="mobile-menu">
+//             <div
+//               ref={ref as React.RefObject<HTMLDivElement>}
+//               className="px-2 pt-2 pb-3 space-y-1 bg-white border-t border-gray-200"
+//             >
+//               {navItems.map((item) => (
+//                 <Link
+//                   key={item.label}
+//                   to={item.href}
+//                   onClick={() => {
+//                     handleAlert;
+//                     setIsMobileMenuOpen(false);
+//                   }}
+//                   className="block px-4 py-3 rounded-lg text-base font-medium text-gray-700 hover:text-[#5B3557] hover:bg-gray-200 transition-colors duration-300"
+//                 >
+//                   {item.label}
+//                 </Link>
+//               ))}
+//               <div className="mt-4 space-y-2 px-2">
+//                 <Link
+//                   to="/chat"
+//                   className="block w-full text-center bg-[#5B3557] hover:bg-[#4a2a46] text-white px-4 py-3 rounded-lg text-base font-medium transition-colors duration-300"
+//                 >
+//                   Chat Now
+//                 </Link>
+//                 {isLoggedIn ? (
+//                   <button
+//                     onClick={() => {
+//                       handleLogout();
+//                       setIsMobileMenuOpen(false);
+//                     }}
+//                     className="block w-full text-center border border-[#5B3557] text-[#5B3557] hover:bg-[#5B3557] hover:text-white px-4 py-3 rounded-lg text-base font-medium transition-colors duration-300"
+//                   >
+//                     Logout
+//                   </button>
+//                 ) : (
+//                   <Link
+//                     to="/register"
+//                     className="block w-full text-center border border-[#5B3557] text-[#5B3557] hover:bg-[#5B3557] hover:text-white px-4 py-3 rounded-lg text-base font-medium transition-colors duration-300"
+//                   >
+//                     Sign Up
+//                   </Link>
+//                 )}
+//               </div>
+//             </div>
+//           </div>
+//         )}
+//       </Transition>
+//     </nav>
+//   );
+// };
+
+// export default Navbar2;
+
+
+
 import React, { useState, useEffect } from 'react';
 import { Menu, X } from 'lucide-react';
 import { Link, useNavigate } from 'react-router-dom';
@@ -870,6 +1068,14 @@ const Navbar2: React.FC = () => {
     e.preventDefault();
     setShowAlert(true);
     setTimeout(() => setShowAlert(false), 3000);
+  };
+
+  const handleChatClick = (e: React.MouseEvent) => {
+    if (!isLoggedIn) {
+      e.preventDefault();
+      setShowAlert(true);
+      setTimeout(() => setShowAlert(false), 3000); // Show alert for 3 seconds
+    }
   };
 
   return (
@@ -920,7 +1126,11 @@ const Navbar2: React.FC = () => {
         <div className="hidden md:flex items-center space-x-4 ml-8 z-10">
           <Link
             to="/chat"
-            className="bg-[#5B3557] hover:bg-[#4a2a46] text-white px-4 py-2 rounded-full text-sm font-medium shadow-md transition-all duration-300"
+            onClick={handleChatClick}
+            className={`bg-[#5B3557] text-white px-4 py-2 rounded-full text-sm font-medium shadow-md transition-all duration-300 ${
+              !isLoggedIn ? 'opacity-50 cursor-not-allowed' : 'hover:bg-[#4a2a46]'
+            }`}
+            aria-disabled={!isLoggedIn}
           >
             Chat With Gen AI
           </Link>
@@ -950,7 +1160,7 @@ const Navbar2: React.FC = () => {
             aria-controls="mobile-menu"
             aria-expanded={isMobileMenuOpen}
           >
-            {isMobileMenuOpen ? <X size={24} /> : <Menu size={24} />}
+            {isLoggedIn ? <X size={24} /> : <Menu size={24} />}
           </button>
         </div>
       </div>
@@ -958,7 +1168,7 @@ const Navbar2: React.FC = () => {
       {/* Alert Notification */}
       {showAlert && (
         <div className="fixed top-20 right-4 bg-[#5B3557] border border-[#4a2a46] text-white px-4 py-2 rounded-lg shadow-lg animate-fade-in">
-          <span>🚀 Feature under development! Check back later.</span>
+          <span>{!isLoggedIn ? "Please login to get started" : "🚀 Feature under development! Check back later."}</span>
         </div>
       )}
 
@@ -994,7 +1204,11 @@ const Navbar2: React.FC = () => {
               <div className="mt-4 space-y-2 px-2">
                 <Link
                   to="/chat"
-                  className="block w-full text-center bg-[#5B3557] hover:bg-[#4a2a46] text-white px-4 py-3 rounded-lg text-base font-medium transition-colors duration-300"
+                  onClick={handleChatClick}
+                  className={`block w-full text-center bg-[#5B3557] text-white px-4 py-3 rounded-lg text-base font-medium transition-colors duration-300 ${
+                    !isLoggedIn ? 'opacity-50 cursor-not-allowed' : 'hover:bg-[#4a2a46]'
+                  }`}
+                  aria-disabled={!isLoggedIn}
                 >
                   Chat Now
                 </Link>
