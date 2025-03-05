@@ -63,7 +63,8 @@ const MainContent: React.FC = () => {
           }
         /> */}
           <Route
-        path="/notebook/:user_id/:chat_id"
+        // path="/notebook/:user_id/:chat_id"
+        path="/notebook/:user_id/:chat_id/:tab?"
           element={
         <ErrorBoundary>
           <NotebookLayout />

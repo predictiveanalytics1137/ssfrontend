@@ -4009,28 +4009,36 @@ function formatAsK(num: number): string {
 const StepProgressBar: React.FC<{ status: string }> = ({ status }) => {
   let stepIndex = 0;
   switch (status) {
-    case "step1":
+    case "inprogress":
       stepIndex = 1;
       break;
-    case "step2":
+    case "feature_engineering_completed":
       stepIndex = 2;
       break;
-    case "step3":
+    case "hyperparameter_tuning_completed":
       stepIndex = 3;
       break;
-    case "success":
+    case "training_completed":
       stepIndex = 4;
       break;
     default:
       stepIndex = 0;
   }
 
+  // const steps = [
+  //   { label: "Step 1" },
+  //   { label: "Step 2" },
+  //   { label: "Step 3" },
+  //   { label: "Finish" },
+  // ];
   const steps = [
-    { label: "Step 1" },
-    { label: "Step 2" },
-    { label: "Step 3" },
-    { label: "Finish" },
-  ];
+    { label: "Data Preprocessing" },  // Step 1: Cleaning & preparing data
+    { label: "Feature Engineering" }, // Step 2: Creating new features
+    { label: "Model Training" },      // Step 3: Training the ML model
+    // { label: "Model Evaluation" },    // Step 4: Validating performance
+    { label: "Prediction & Deployment" } // Step 5: Making predictions & deploying
+];
+
 
   return (
     <div className="flex items-center justify-between w-full max-w-xl mx-auto my-6">
@@ -4181,7 +4189,7 @@ const Dashboard: React.FC<DashboardProps> = ({ user_id, chat_id, data }) => {
   }, [user_id, chat_id]);
 
   useEffect(() => {
-    if (!data && progressStatus === "success") {
+    if (!data && progressStatus === "training_completed") {
       const fetchDashboardData = async () => {
         try {
           setLoadingData(true);
@@ -4218,7 +4226,7 @@ const Dashboard: React.FC<DashboardProps> = ({ user_id, chat_id, data }) => {
     );
   }
 
-  if (progressStatus !== "success") {
+  if (progressStatus !== "training_completed") {
     return (
       <div className="p-6">
         <h2 className="text-xl font-bold mb-2">Model Building Progress</h2>
