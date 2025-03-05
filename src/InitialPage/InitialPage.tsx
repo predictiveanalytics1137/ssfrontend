@@ -253,6 +253,8 @@ import { useNavigate } from 'react-router-dom';
 import Navbar from '../Navbar/navbar2';
 import MainSection from './landing6';
 import FeaturesSection from './future/featuresection2';
+import MiddleSection from './landing7';
+import Footer from './footer';
 
 const InitialPage: React.FC = () => {
   const navigate = useNavigate();
@@ -262,6 +264,9 @@ const InitialPage: React.FC = () => {
       <Navbar />
       <MainSection />
       <FeaturesSection />
+      <MiddleSection />
+      <Footer />
+
     </div>
   );
 };
