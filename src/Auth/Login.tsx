@@ -26,7 +26,7 @@
 //     }
 
 //     try {
-//       const response = await axios.post("http://localhost:8000/api/auth/login/", formData);
+//       const response = await axios.post("http://98.70.25.52/api/auth/login/", formData);
 //       localStorage.setItem("token", response.data.access); // Store the access token
 //       navigate("/dashboard");
 //     } catch (err: any) {
@@ -88,7 +88,7 @@
   //   }
 
   //   try {
-  //     const response = await axios.post("http://localhost:8000/api/auth/login/", formData);
+  //     const response = await axios.post("http://98.70.25.52/api/auth/login/", formData);
   //     localStorage.setItem("token", response.data.access); // Store the access token
   //   //   navigate("/dashboard");
   //     navigate("/");
@@ -117,7 +117,7 @@
 //   }
 
 //   try {
-//     const response = await axios.post("http://localhost:8000/api/auth/login/", formData);
+//     const response = await axios.post("http://98.70.25.52/api/auth/login/", formData);
 
 //     const { access, refresh, user } = response.data;
 
@@ -277,7 +277,7 @@ const Login: React.FC = () => {
     }
 
     try {
-      const response = await axios.post("http://localhost:8000/api/auth/login/", formData);
+      const response = await axios.post("http://98.70.25.52/api/auth/login/", formData);
 
       const { access, refresh, user } = response.data;
 

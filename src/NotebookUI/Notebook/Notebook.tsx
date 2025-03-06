@@ -67,7 +67,7 @@
 // // // // // // // // // // // // // // //     const startTime = Date.now(); // Start time measurement
 
 // // // // // // // // // // // // // // //     try {
-// // // // // // // // // // // // // // //       const response = await fetch('http://127.0.0.1:8000/api/execute-sql/', {
+// // // // // // // // // // // // // // //       const response = await fetch(' http://98.70.25.52/api/execute-sql/', {
 // // // // // // // // // // // // // // //         method: 'POST',
 // // // // // // // // // // // // // // //         headers: {
 // // // // // // // // // // // // // // //           'Content-Type': 'application/json',
@@ -367,7 +367,7 @@
 // // // // // // // // // // // // // //     const startTime = Date.now(); // Start time measurement
 
 // // // // // // // // // // // // // //     try {
-// // // // // // // // // // // // // //       const response = await fetch('http://127.0.0.1:8000/api/execute-sql/', {
+// // // // // // // // // // // // // //       const response = await fetch(' http://98.70.25.52/api/execute-sql/', {
 // // // // // // // // // // // // // //         method: 'POST',
 // // // // // // // // // // // // // //         headers: {
 // // // // // // // // // // // // // //           'Content-Type': 'application/json',
@@ -1125,7 +1125,7 @@
 // // // // // // // // // // // //     const startTime = Date.now(); // Start time measurement
 
 // // // // // // // // // // // //     try {
-// // // // // // // // // // // //       const response = await fetch('http://127.0.0.1:8000/api/execute-sql/', {
+// // // // // // // // // // // //       const response = await fetch(' http://98.70.25.52/api/execute-sql/', {
 // // // // // // // // // // // //         method: 'POST',
 // // // // // // // // // // // //         headers: {
 // // // // // // // // // // // //           'Content-Type': 'application/json',
@@ -1510,7 +1510,7 @@
 // // // // // // // // // // //     const startTime = Date.now(); // Start time measurement
 
 // // // // // // // // // // //     try {
-// // // // // // // // // // //       const response = await fetch('http://127.0.0.1:8000/api/execute-sql/', {
+// // // // // // // // // // //       const response = await fetch(' http://98.70.25.52/api/execute-sql/', {
 // // // // // // // // // // //         method: 'POST',
 // // // // // // // // // // //         headers: {
 // // // // // // // // // // //           'Content-Type': 'application/json',
@@ -1884,7 +1884,7 @@
 // // // // // // // // // //     const startTime = Date.now(); // Start time measurement
 
 // // // // // // // // // //     try {
-// // // // // // // // // //       const response = await fetch('http://127.0.0.1:8000/api/execute-sql/', {
+// // // // // // // // // //       const response = await fetch(' http://98.70.25.52/api/execute-sql/', {
 // // // // // // // // // //         method: 'POST',
 // // // // // // // // // //         headers: {
 // // // // // // // // // //           'Content-Type': 'application/json',
@@ -2271,7 +2271,7 @@
 // // // // // // // //     const startTime = Date.now();
 
 // // // // // // // //     try {
-// // // // // // // //       const response = await fetch('http://127.0.0.1:8000/api/execute-sql/', {
+// // // // // // // //       const response = await fetch(' http://98.70.25.52/api/execute-sql/', {
 // // // // // // // //         method: 'POST',
 // // // // // // // //         headers: {
 // // // // // // // //           'Content-Type': 'application/json',
@@ -2659,7 +2659,7 @@
 // // // // // // //     const startTime = Date.now();
 
 // // // // // // //     try {
-// // // // // // //       const response = await fetch(`http://localhost:8000/api/execute-sql/`, {
+// // // // // // //       const response = await fetch(`http://98.70.25.52/api/execute-sql/`, {
 // // // // // // //         method: 'POST',
 // // // // // // //         headers: {
 // // // // // // //           'Content-Type': 'application/json',
@@ -3000,7 +3000,7 @@
 // // // // // //     const startTime = Date.now();
 
 // // // // // //     try {
-// // // // // //       const response = await fetch(`http://localhost:8000/api/execute-sql/`, {
+// // // // // //       const response = await fetch(`http://98.70.25.52/api/execute-sql/`, {
 // // // // // //         method: 'POST',
 // // // // // //         headers: {
 // // // // // //           'Content-Type': 'application/json',
@@ -3391,7 +3391,7 @@
 // // // // //     const startTime = Date.now();
 
 // // // // //     try {
-// // // // //       const response = await fetch(`http://localhost:8000/api/execute-sql/`, {
+// // // // //       const response = await fetch(`http://98.70.25.52/api/execute-sql/`, {
 // // // // //         method: 'POST',
 // // // // //         headers: {
 // // // // //           'Content-Type': 'application/json',
@@ -3805,7 +3805,7 @@
 // // // //     const startTime = Date.now();
 
 // // // //     try {
-// // // //       const response = await fetch(`http://localhost:8000/api/execute-sql/`, {
+// // // //       const response = await fetch(`http://98.70.25.52/api/execute-sql/`, {
 // // // //         method: 'POST',
 // // // //         headers: {
 // // // //           'Content-Type': 'application/json',
@@ -4302,7 +4302,7 @@
 // // //     const startTime = Date.now();
 
 // // //     try {
-// // //       const response = await fetch('http://localhost:8000/api/execute-sql/', {
+// // //       const response = await fetch('http://98.70.25.52/api/execute-sql/', {
 // // //         method: 'POST',
 // // //         headers: {
 // // //           'Content-Type': 'application/json',
@@ -4899,7 +4899,7 @@
 // // //       const startTime = Date.now();
 
 // // //       try {
-// // //         const response = await fetch('http://localhost:8000/api/execute-sql/', {
+// // //         const response = await fetch('http://98.70.25.52/api/execute-sql/', {
 // // //           method: 'POST',
 // // //           headers: {
 // // //             'Content-Type': 'application/json',
@@ -5462,7 +5462,7 @@
 
 // // //       const startTime = Date.now();
 // // //       try {
-// // //         const response = await fetch('http://localhost:8000/api/execute-sql/', {
+// // //         const response = await fetch('http://98.70.25.52/api/execute-sql/', {
 // // //           method: 'POST',
 // // //           headers: {
 // // //             'Content-Type': 'application/json',
@@ -6019,7 +6019,7 @@
 
 // //       const startTime = Date.now();
 // //       try {
-// //         const response = await fetch('http://localhost:8000/api/execute-sql/', {
+// //         const response = await fetch('http://98.70.25.52/api/execute-sql/', {
 // //           method: 'POST',
 // //           headers: {
 // //             'Content-Type': 'application/json',
@@ -6567,7 +6567,7 @@ const SQLNotebook = forwardRef<SQLNotebookRef, SQLNotebookProps>(
 
       const startTime = Date.now();
       try {
-        const response = await fetch('http://localhost:8000/api/execute-sql/', {
+        const response = await fetch('http://98.70.25.52/api/execute-sql/', {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',

@@ -31,7 +31,7 @@
 // // //         };
 
 // // //         // Make the backend request. This will run train_pipeline.py synchronously until done.
-// // //         const response = await fetch('http://localhost:8000/api/automation/', {
+// // //         const response = await fetch('http://98.70.25.52/api/automation/', {
 // // //           method: 'POST',
 // // //           headers: { 'Content-Type': 'application/json' },
 // // //           body: JSON.stringify(payload),
@@ -119,7 +119,7 @@
 // //           entity_column: entityColumn,
 // //         };
 
-// //         const response = await fetch('http://localhost:8000/api/automation/', {
+// //         const response = await fetch('http://98.70.25.52/api/automation/', {
 // //           method: 'POST',
 // //           headers: { 'Content-Type': 'application/json' },
 // //           body: JSON.stringify(payload),
@@ -222,7 +222,7 @@
 //           entity_column,
 //         };
 
-//         const response = await fetch(`http://localhost:8000/api/automation/`, {
+//         const response = await fetch(`http://98.70.25.52/api/automation/`, {
 //           method: 'POST',
 //           headers: { 'Content-Type': 'application/json' },
 //           body: JSON.stringify(payload),
@@ -331,7 +331,7 @@ const TrainingInProgress: React.FC = () => {
           entity_column,
         };
 
-        const response = await fetch(`http://localhost:8000/api/automation/`, {
+        const response = await fetch(`http://98.70.25.52/api/automation/`, {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify(payload),

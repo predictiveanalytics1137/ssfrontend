@@ -219,7 +219,7 @@ const [error, setError] = useState<string | null>(null);
 //     setError(null);
 
 //     try {
-//       const response = await fetch('http://127.0.0.1:8000/api/bookdemo/', { // Update with actual API URL
+//       const response = await fetch(' http://98.70.25.52/api/bookdemo/', { // Update with actual API URL
 //         method: 'POST',
 //         headers: {
 //           'Content-Type': 'application/json',
@@ -257,7 +257,7 @@ const [error, setError] = useState<string | null>(null);
 //     };
 
 //     try {
-//         const response = await fetch('http://127.0.0.1:8000/api/bookdemo/', {
+//         const response = await fetch(' http://98.70.25.52/api/bookdemo/', {
 //             method: 'POST',
 //             headers: {
 //                 'Content-Type': 'application/json',
@@ -297,7 +297,7 @@ const handleSubmit = async (e: React.FormEvent) => {
     };
 
     try {
-        const response = await fetch('http://127.0.0.1:8000/api/bookdemo/', {
+        const response = await fetch(' http://98.70.25.52/api/bookdemo/', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -618,7 +618,7 @@ export default BookDemoPage;
 //     setError(null);
 
 //     try {
-//       const response = await fetch('http://127.0.0.1:8000/book-demo/', { // Update with actual API URL
+//       const response = await fetch(' http://98.70.25.52/book-demo/', { // Update with actual API URL
 //         method: 'POST',
 //         headers: {
 //           'Content-Type': 'application/json',

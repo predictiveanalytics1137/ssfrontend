@@ -36,7 +36,7 @@
 // // // // // // // // // // // //       };
 
 // // // // // // // // // // // //       try {
-// // // // // // // // // // // //         const response = await fetch("http://127.0.0.1:8000/api/prediction/", {
+// // // // // // // // // // // //         const response = await fetch(" http://98.70.25.52/api/prediction/", {
 // // // // // // // // // // // //           method: "POST",
 // // // // // // // // // // // //           headers: {
 // // // // // // // // // // // //             "Content-Type": "application/json",
@@ -162,8 +162,8 @@
 // // // // // // // // // // // //   useEffect(() => {
 // // // // // // // // // // // //     const fetchPredictions = async () => {
 // // // // // // // // // // // //       try {
-// // // // // // // // // // // //         // const response = await fetch("http://127.0.0.1:8000/api/get_prediction_metadata/?chat_id=IDSH938749&user_id=9938938HHDU", {
-// // // // // // // // // // // //           const response = await fetch("http://127.0.0.1:8000/api/get_prediction_metadata/?user_id=9938938HHDU", {
+// // // // // // // // // // // //         // const response = await fetch(" http://98.70.25.52/api/get_prediction_metadata/?chat_id=IDSH938749&user_id=9938938HHDU", {
+// // // // // // // // // // // //           const response = await fetch(" http://98.70.25.52/api/get_prediction_metadata/?user_id=9938938HHDU", {
 // // // // // // // // // // // //           method: "GET",
 // // // // // // // // // // // //           headers: {
 // // // // // // // // // // // //             "Content-Type": "application/json",
@@ -200,7 +200,7 @@
 // // // // // // // // // // // //       };
 
 // // // // // // // // // // // //       try {
-// // // // // // // // // // // //         const response = await fetch("http://127.0.0.1:8000/api/prediction/", {
+// // // // // // // // // // // //         const response = await fetch(" http://98.70.25.52/api/prediction/", {
 // // // // // // // // // // // //           method: "POST",
 // // // // // // // // // // // //           headers: {
 // // // // // // // // // // // //             "Content-Type": "application/json",
@@ -351,7 +351,7 @@
 
 // // // // // // // // // // //   const fetchPredictions = async () => {
 // // // // // // // // // // //     try {
-// // // // // // // // // // //       const response = await fetch("http://127.0.0.1:8000/api/get_prediction_metadata/?user_id=9938938HHDU", {
+// // // // // // // // // // //       const response = await fetch(" http://98.70.25.52/api/get_prediction_metadata/?user_id=9938938HHDU", {
 // // // // // // // // // // //         method: "GET",
 // // // // // // // // // // //         headers: {
 // // // // // // // // // // //           "Content-Type": "application/json",
@@ -387,7 +387,7 @@
 // // // // // // // // // // //     };
 
 // // // // // // // // // // //     try {
-// // // // // // // // // // //       const response = await fetch("http://127.0.0.1:8000/api/prediction/", {
+// // // // // // // // // // //       const response = await fetch(" http://98.70.25.52/api/prediction/", {
 // // // // // // // // // // //         method: "POST",
 // // // // // // // // // // //         headers: {
 // // // // // // // // // // //           "Content-Type": "application/json",
@@ -567,7 +567,7 @@
 
 // // // // // // // // // //   const fetchPredictions = async () => {
 // // // // // // // // // //     try {
-// // // // // // // // // //       const response = await fetch("http://127.0.0.1:8000/api/get_prediction_metadata/?user_id=9938938HHDU", {
+// // // // // // // // // //       const response = await fetch(" http://98.70.25.52/api/get_prediction_metadata/?user_id=9938938HHDU", {
 // // // // // // // // // //         method: "GET",
 // // // // // // // // // //         headers: {
 // // // // // // // // // //           "Content-Type": "application/json",
@@ -603,7 +603,7 @@
 // // // // // // // // // //     };
 
 // // // // // // // // // //     try {
-// // // // // // // // // //       const response = await fetch("http://127.0.0.1:8000/api/prediction/", {
+// // // // // // // // // //       const response = await fetch(" http://98.70.25.52/api/prediction/", {
 // // // // // // // // // //         method: "POST",
 // // // // // // // // // //         headers: {
 // // // // // // // // // //           "Content-Type": "application/json",
@@ -818,7 +818,7 @@
 // // // // // // // // //     try {
 // // // // // // // // //       // Fetch existing prediction history
 // // // // // // // // //       const response = await fetch(
-// // // // // // // // //         "http://127.0.0.1:8000/api/get_prediction_metadata/?user_id=9938938HHDU",
+// // // // // // // // //         " http://98.70.25.52/api/get_prediction_metadata/?user_id=9938938HHDU",
 // // // // // // // // //         {
 // // // // // // // // //           method: "GET",
 // // // // // // // // //           headers: {
@@ -863,7 +863,7 @@
 // // // // // // // // //     formData.append("chat_id", `pred_${Date.now()}`); // Unique chat_id for the prediction run
 
 // // // // // // // // //     try {
-// // // // // // // // //       const response = await fetch("http://127.0.0.1:8000/api/predict/", {
+// // // // // // // // //       const response = await fetch(" http://98.70.25.52/api/predict/", {
 // // // // // // // // //         method: "POST",
 // // // // // // // // //         body: formData,
 // // // // // // // // //       });
@@ -903,7 +903,7 @@
 
 // // // // // // // // //     setIsLoading(true);
 // // // // // // // // //     try {
-// // // // // // // // //       const response = await fetch("http://127.0.0.1:8000/api/prediction/", {
+// // // // // // // // //       const response = await fetch(" http://98.70.25.52/api/prediction/", {
 // // // // // // // // //         method: "POST",
 // // // // // // // // //         headers: {
 // // // // // // // // //           "Content-Type": "application/json",
@@ -1334,7 +1334,7 @@
 // // // // // // // //     try {
 // // // // // // // //       // Fetch existing prediction history
 // // // // // // // //       const response = await fetch(
-// // // // // // // //         "http://127.0.0.1:8000/api/get_prediction_metadata/?user_id=9938938HHDU",
+// // // // // // // //         " http://98.70.25.52/api/get_prediction_metadata/?user_id=9938938HHDU",
 // // // // // // // //         {
 // // // // // // // //           method: "GET",
 // // // // // // // //           headers: {
@@ -1380,7 +1380,7 @@
 // // // // // // // //     formData.append("chat_id", `pred_${Date.now()}`); // Unique chat_id
 
 // // // // // // // //     try {
-// // // // // // // //       const response = await fetch("http://127.0.0.1:8000/api/predict/", {
+// // // // // // // //       const response = await fetch(" http://98.70.25.52/api/predict/", {
 // // // // // // // //         method: "POST",
 // // // // // // // //         body: formData,
 // // // // // // // //       });
@@ -1420,7 +1420,7 @@
 
 // // // // // // // //     setIsLoading(true);
 // // // // // // // //     try {
-// // // // // // // //       const response = await fetch("http://127.0.0.1:8000/api/prediction/", {
+// // // // // // // //       const response = await fetch(" http://98.70.25.52/api/prediction/", {
 // // // // // // // //         method: "POST",
 // // // // // // // //         headers: {
 // // // // // // // //           "Content-Type": "application/json",
@@ -1858,7 +1858,7 @@
 // // // // // // //   const fetchPredictions = async () => {
 // // // // // // //     try {
 // // // // // // //       const response = await fetch(
-// // // // // // //         "http://127.0.0.1:8000/api/get_prediction_metadata/?user_id=9938938HHDU",
+// // // // // // //         " http://98.70.25.52/api/get_prediction_metadata/?user_id=9938938HHDU",
 // // // // // // //         {
 // // // // // // //           method: "GET",
 // // // // // // //           headers: {
@@ -1900,7 +1900,7 @@
 // // // // // // //     formData.append("chat_id", `pred_${Date.now()}`);
 
 // // // // // // //     try {
-// // // // // // //       const response = await fetch("http://127.0.0.1:8000/api/predict/", {
+// // // // // // //       const response = await fetch(" http://98.70.25.52/api/predict/", {
 // // // // // // //         method: "POST",
 // // // // // // //         body: formData,
 // // // // // // //       });
@@ -1938,7 +1938,7 @@
 
 // // // // // // //     setIsLoading(true);
 // // // // // // //     try {
-// // // // // // //       const response = await fetch("http://127.0.0.1:8000/api/prediction/", {
+// // // // // // //       const response = await fetch(" http://98.70.25.52/api/prediction/", {
 // // // // // // //         method: "POST",
 // // // // // // //         headers: {
 // // // // // // //           "Content-Type": "application/json",
@@ -2385,7 +2385,7 @@
 // // // // // //   const fetchPredictions = async () => {
 // // // // // //     try {
 // // // // // //       const response = await fetch(
-// // // // // //         "http://127.0.0.1:8000/api/get_prediction_metadata/?user_id=9938938HHDU",
+// // // // // //         " http://98.70.25.52/api/get_prediction_metadata/?user_id=9938938HHDU",
 // // // // // //         {
 // // // // // //           method: "GET",
 // // // // // //           headers: {
@@ -2427,7 +2427,7 @@
 // // // // // //     formData.append("chat_id", `pred_${Date.now()}`);
 
 // // // // // //     try {
-// // // // // //       const response = await fetch("http://127.0.0.1:8000/api/predict/", {
+// // // // // //       const response = await fetch(" http://98.70.25.52/api/predict/", {
 // // // // // //         method: "POST",
 // // // // // //         body: formData,
 // // // // // //       });
@@ -2465,7 +2465,7 @@
 
 // // // // // //     setIsLoading(true);
 // // // // // //     try {
-// // // // // //       const response = await fetch("http://127.0.0.1:8000/api/prediction/", {
+// // // // // //       const response = await fetch(" http://98.70.25.52/api/prediction/", {
 // // // // // //         method: "POST",
 // // // // // //         headers: {
 // // // // // //           "Content-Type": "application/json",
@@ -2907,7 +2907,7 @@
 // // // // //   const fetchPredictions = async () => {
 // // // // //     try {
 // // // // //       const response = await fetch(
-// // // // //         "http://127.0.0.1:8000/api/get_prediction_metadata/?user_id=9938938HHDU",
+// // // // //         " http://98.70.25.52/api/get_prediction_metadata/?user_id=9938938HHDU",
 // // // // //         {
 // // // // //           method: "GET",
 // // // // //           headers: {
@@ -2947,7 +2947,7 @@
 // // // // //     formData.append("chat_id", `pred_${Date.now()}`);
 
 // // // // //     try {
-// // // // //       const response = await fetch("http://127.0.0.1:8000/api/predict/", {
+// // // // //       const response = await fetch(" http://98.70.25.52/api/predict/", {
 // // // // //         method: "POST",
 // // // // //         headers: {
 // // // // //           "Authorization": `Token ${authToken}`,
@@ -2985,7 +2985,7 @@
 // // // // //       const cellResults = await notebookRef.current.runAllCellsAndGetResults();
 
 // // // // //       // Save results to S3 and update PredictionFileInfo
-// // // // //       const saveResultsResponse = await fetch("http://127.0.0.1:8000/api/save_prediction_results/", {
+// // // // //       const saveResultsResponse = await fetch(" http://98.70.25.52/api/save_prediction_results/", {
 // // // // //         method: "POST",
 // // // // //         headers: {
 // // // // //           "Content-Type": "application/json",
@@ -3411,7 +3411,7 @@
 // // // //   const fetchPredictions = async () => {
 // // // //     try {
 // // // //       const response = await fetch(
-// // // //         "http://127.0.0.1:8000/api/get_prediction_metadata/?user_id=9938938HHDU",
+// // // //         " http://98.70.25.52/api/get_prediction_metadata/?user_id=9938938HHDU",
 // // // //         {
 // // // //           method: "GET",
 // // // //           headers: {
@@ -3454,7 +3454,7 @@
 // // // //     formData.append("chat_id", `pred_${Date.now()}`);
 
 // // // //     try {
-// // // //       const response = await fetch("http://127.0.0.1:8000/api/predict/", {
+// // // //       const response = await fetch(" http://98.70.25.52/api/predict/", {
 // // // //         method: "POST",
 // // // //         headers: {
 // // // //           Authorization: `Token ${authToken}`,
@@ -3495,7 +3495,7 @@
 // // // //       const cellResults = await notebookRef.current.runAllCellsAndGetResults();
 
 // // // //       // Save results to S3 and update PredictionFileInfo (your custom endpoint)
-// // // //       const saveResultsResponse = await fetch("http://127.0.0.1:8000/api/save_prediction_results/", {
+// // // //       const saveResultsResponse = await fetch(" http://98.70.25.52/api/save_prediction_results/", {
 // // // //         method: "POST",
 // // // //         headers: {
 // // // //           "Content-Type": "application/json",
@@ -3999,7 +3999,7 @@
 
 // // //     try {
 // // //       const response = await fetch(
-// // //         `http://127.0.0.1:8000/api/get_prediction_metadata/?user_id=${user_id}&chat_id=${chat_id}`,
+// // //         ` http://98.70.25.52/api/get_prediction_metadata/?user_id=${user_id}&chat_id=${chat_id}`,
 // // //         {
 // // //           method: "GET",
 // // //           headers: {
@@ -4046,7 +4046,7 @@
 // // //     formData.append("chat_id", chat_id);
 
 // // //     try {
-// // //       const response = await fetch("http://127.0.0.1:8000/api/predict/", {
+// // //       const response = await fetch(" http://98.70.25.52/api/predict/", {
 // // //         method: "POST",
 // // //         headers: {
 // // //           Authorization: `Token ${authToken}`,
@@ -4092,7 +4092,7 @@
 // // //       console.log("[handlePredictOnNewData] cellResults:", cellResults);
 
 // // //       // Save results to S3 and update PredictionFileInfo (your custom endpoint)
-// // //       const saveResultsResponse = await fetch("http://127.0.0.1:8000/api/save_prediction_results/", {
+// // //       const saveResultsResponse = await fetch(" http://98.70.25.52/api/save_prediction_results/", {
 // // //         method: "POST",
 // // //         headers: {
 // // //           "Content-Type": "application/json",
@@ -4617,7 +4617,7 @@
 // //     console.log("[fetchPredictions] Start. user_id:", user_id, "chat_id:", chat_id);
 // //     try {
 // //       const response = await fetch(
-// //         `http://127.0.0.1:8000/api/get_prediction_metadata/?user_id=${user_id}&chat_id=${chat_id}`,
+// //         ` http://98.70.25.52/api/get_prediction_metadata/?user_id=${user_id}&chat_id=${chat_id}`,
 // //         {
 // //           method: "GET",
 // //           headers: {
@@ -4645,7 +4645,7 @@
 // //     const fetchPredictiveSettings = async () => {
 // //       console.log("[fetchPredictiveSettings] Start. user_id:", user_id, "chat_id:", chat_id);
 // //       try {
-// //         const url = `http://127.0.0.1:8000/api/predictive-settings/${user_id}/${chat_id}`;
+// //         const url = ` http://98.70.25.52/api/predictive-settings/${user_id}/${chat_id}`;
 // //         const resp = await fetch(url);
 // //         if (!resp.ok) {
 // //           throw new Error(`[fetchPredictiveSettings] Failed: ${resp.statusText}`);
@@ -4859,7 +4859,7 @@
 // //       formData.append("user_id", user_id);
 // //       formData.append("chat_id", chat_id);
 
-// //       const response = await fetch("http://127.0.0.1:8000/api/predict/", {
+// //       const response = await fetch(" http://98.70.25.52/api/predict/", {
 // //         method: "POST",
 // //         headers: {
 // //           Authorization: `Token ${authToken}`,
@@ -4898,7 +4898,7 @@
 // //       const cellResults = await notebookRef.current.runAllCellsAndGetResults();
 // //       console.log("[handlePredictOnNewData] cellResults:", cellResults);
 
-// //       const saveResp = await fetch("http://127.0.0.1:8000/api/save_prediction_results/", {
+// //       const saveResp = await fetch(" http://98.70.25.52/api/save_prediction_results/", {
 // //         method: "POST",
 // //         headers: {
 // //           "Content-Type": "application/json",
@@ -5417,7 +5417,7 @@
 //     console.log("[fetchPredictions] Start. user_id:", user_id, "chat_id:", chat_id);
 //     try {
 //       const response = await fetch(
-//         `http://127.0.0.1:8000/api/get_prediction_metadata/?user_id=${user_id}&chat_id=${chat_id}`,
+//         ` http://98.70.25.52/api/get_prediction_metadata/?user_id=${user_id}&chat_id=${chat_id}`,
 //         {
 //           method: "GET",
 //           headers: {
@@ -5445,7 +5445,7 @@
 //     const fetchPredictiveSettings = async () => {
 //       console.log("[fetchPredictiveSettings] Start. user_id:", user_id, "chat_id:", chat_id);
 //       try {
-//         const url = `http://127.0.0.1:8000/api/predictive-settings/${user_id}/${chat_id}`;
+//         const url = ` http://98.70.25.52/api/predictive-settings/${user_id}/${chat_id}`;
 //         const resp = await fetch(url);
 //         if (!resp.ok) {
 //           throw new Error(`[fetchPredictiveSettings] Failed: ${resp.statusText}`);
@@ -5721,7 +5721,7 @@
 //   //     formData.append("user_id", user_id);
 //   //     formData.append("chat_id", chat_id);
 
-//   //     const response = await fetch("http://127.0.0.1:8000/api/predict/", {
+//   //     const response = await fetch(" http://98.70.25.52/api/predict/", {
 //   //       method: "POST",
 //   //       headers: {
 //   //         Authorization: `Token ${authToken}`,
@@ -5766,7 +5766,7 @@
 //       formData.append("user_id", user_id);
 //       formData.append("chat_id", chat_id);
   
-//       const response = await fetch("http://127.0.0.1:8000/api/predict/", {
+//       const response = await fetch(" http://98.70.25.52/api/predict/", {
 //         method: "POST",
 //         headers: {
 //           Authorization: `Token ${authToken}`,
@@ -5809,7 +5809,7 @@
 //   //     const cellResults = await notebookRef.current.runAllCellsAndGetResults();
 //   //     console.log("[handlePredictOnNewData] cellResults:", cellResults);
 
-//   //     const saveResp = await fetch("http://127.0.0.1:8000/api/save_prediction_results/", {
+//   //     const saveResp = await fetch(" http://98.70.25.52/api/save_prediction_results/", {
 //   //       method: "POST",
 //   //       headers: {
 //   //         "Content-Type": "application/json",
@@ -5864,7 +5864,7 @@
 //       };
 //       console.log("[handlePredictOnNewData] predictionPayload:", predictionPayload);
   
-//       const predictionResponse = await fetch("http://127.0.0.1:8000/api/prediction/", {
+//       const predictionResponse = await fetch(" http://98.70.25.52/api/prediction/", {
 //         method: "POST",
 //         headers: {
 //           "Content-Type": "application/json",
@@ -5885,7 +5885,7 @@
 //       const cellResults = await notebookRef.current.runAllCellsAndGetResults();
 //       console.log("[handlePredictOnNewData] cellResults:", cellResults);
   
-//       const saveResp = await fetch("http://127.0.0.1:8000/api/save_prediction_results/", {
+//       const saveResp = await fetch(" http://98.70.25.52/api/save_prediction_results/", {
 //         method: "POST",
 //         headers: {
 //           "Content-Type": "application/json",
@@ -6409,7 +6409,7 @@ const PredictionsUI: React.FC<PredictionsUIProps> = ({ user_id, chat_id }) => {
     console.log("[fetchPredictions] Start. user_id:", user_id, "chat_id:", chat_id);
     try {
       const response = await fetch(
-        `http://127.0.0.1:8000/api/get_prediction_metadata/?user_id=${user_id}&chat_id=${chat_id}`,
+        ` http://98.70.25.52/api/get_prediction_metadata/?user_id=${user_id}&chat_id=${chat_id}`,
         {
           method: "GET",
           headers: {
@@ -6438,7 +6438,7 @@ const PredictionsUI: React.FC<PredictionsUIProps> = ({ user_id, chat_id }) => {
     const fetchPredictiveSettings = async () => {
       console.log("[fetchPredictiveSettings] Start. user_id:", user_id, "chat_id:", chat_id);
       try {
-        const url = `http://127.0.0.1:8000/api/predictive-settings/${user_id}/${chat_id}`;
+        const url = ` http://98.70.25.52/api/predictive-settings/${user_id}/${chat_id}`;
         const resp = await fetch(url);
         if (!resp.ok) {
           throw new Error(`[fetchPredictiveSettings] Failed: ${resp.statusText}`);
@@ -6684,7 +6684,7 @@ const PredictionsUI: React.FC<PredictionsUIProps> = ({ user_id, chat_id }) => {
       formData.append("user_id", user_id);
       formData.append("chat_id", chat_id);
   
-      const response = await fetch("http://127.0.0.1:8000/api/predict/", {
+      const response = await fetch(" http://98.70.25.52/api/predict/", {
         method: "POST",
         headers: {
           Authorization: `Token ${authToken}`,
@@ -6741,7 +6741,7 @@ const PredictionsUI: React.FC<PredictionsUIProps> = ({ user_id, chat_id }) => {
       };
       console.log("[handlePredictOnNewData] predictionPayload:", predictionPayload);
   
-      const predictionResponse = await fetch("http://127.0.0.1:8000/api/prediction/", {
+      const predictionResponse = await fetch(" http://98.70.25.52/api/prediction/", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -6762,7 +6762,7 @@ const PredictionsUI: React.FC<PredictionsUIProps> = ({ user_id, chat_id }) => {
       const cellResults = await notebookRef.current.runAllCellsAndGetResults();
       console.log("[handlePredictOnNewData] cellResults:", cellResults);
   
-      const saveResp = await fetch("http://127.0.0.1:8000/api/save_prediction_results/", {
+      const saveResp = await fetch(" http://98.70.25.52/api/save_prediction_results/", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

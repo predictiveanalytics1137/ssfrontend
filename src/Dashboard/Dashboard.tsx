@@ -182,7 +182,7 @@
 
 // // // // // // // // // // // // //     const fetchData = async () => {
 // // // // // // // // // // // // //       try {
-// // // // // // // // // // // // //         const url = `http://127.0.0.1:8000/model/modelget/?user_id=${userId}&chat_id=${chatId}`;
+// // // // // // // // // // // // //         const url = ` http://98.70.25.52/model/modelget/?user_id=${userId}&chat_id=${chatId}`;
       
 // // // // // // // // // // // // //         const response = await fetch(url);
 // // // // // // // // // // // // //         if (!response.ok) {
@@ -347,7 +347,7 @@
 
 // // // // // // // // // // // //     const fetchData = async () => {
 // // // // // // // // // // // //       try {
-// // // // // // // // // // // //         const url = `http://127.0.0.1:8000/model/modelget/?user_id=${userId}&chat_id=${chatId}`;
+// // // // // // // // // // // //         const url = ` http://98.70.25.52/model/modelget/?user_id=${userId}&chat_id=${chatId}`;
 
 // // // // // // // // // // // //         const response = await fetch(url);
 // // // // // // // // // // // //         if (!response.ok) {
@@ -540,7 +540,7 @@
 
 // // // // // // // // // // //     const fetchData = async () => {
 // // // // // // // // // // //       try {
-// // // // // // // // // // //         const url = `http://127.0.0.1:8000/model/modelget/?user_id=${userId}&chat_id=${chatId}`;
+// // // // // // // // // // //         const url = ` http://98.70.25.52/model/modelget/?user_id=${userId}&chat_id=${chatId}`;
 
 // // // // // // // // // // //         const response = await fetch(url);
 // // // // // // // // // // //         if (!response.ok) {
@@ -767,7 +767,7 @@
 // // // // // // // // // //   useEffect(() => {
 // // // // // // // // // //     const fetchData = async () => {
 // // // // // // // // // //       try {
-// // // // // // // // // //         const url = `http://127.0.0.1:8000/model/modelget/?user_id=${userId}&chat_id=${chatId}`;
+// // // // // // // // // //         const url = ` http://98.70.25.52/model/modelget/?user_id=${userId}&chat_id=${chatId}`;
 
 // // // // // // // // // //         const response = await fetch(url);
 // // // // // // // // // //         if (!response.ok) {
@@ -998,7 +998,7 @@
 // // // // // // // // //   useEffect(() => {
 // // // // // // // // //     const fetchData = async () => {
 // // // // // // // // //       try {
-// // // // // // // // //         const url = `http://127.0.0.1:8000/model/modelget/?user_id=${userId}&chat_id=${chatId}`;
+// // // // // // // // //         const url = ` http://98.70.25.52/model/modelget/?user_id=${userId}&chat_id=${chatId}`;
 // // // // // // // // //         const response = await fetch(url);
 
 // // // // // // // // //         if (!response.ok) {
@@ -1183,7 +1183,7 @@
 // // // // // // //   useEffect(() => {
 // // // // // // //     const fetchData = async () => {
 // // // // // // //       try {
-// // // // // // //         const url = `http://127.0.0.1:8000/model/modelget/?user_id=${user_id}&chat_id=${chat_id}`;
+// // // // // // //         const url = ` http://98.70.25.52/model/modelget/?user_id=${user_id}&chat_id=${chat_id}`;
 // // // // // // //         const response = await fetch(url);
 // // // // // // //         if (!response.ok) throw new Error("Failed to fetch dashboard data");
 // // // // // // //         const result = await response.json();
@@ -1273,7 +1273,7 @@
 // // // // // // // //   useEffect(() => {
 // // // // // // // //     const fetchMetrics = async () => {
 // // // // // // // //       try {
-// // // // // // // //         const response = await fetch(`http://127.0.0.1:8000/model/modelget/?user_id=${user_id}&chat_id=${chat_id}`);
+// // // // // // // //         const response = await fetch(` http://98.70.25.52/model/modelget/?user_id=${user_id}&chat_id=${chat_id}`);
 // // // // // // // //         if (!response.ok) throw new Error('Failed to fetch model metrics');
 // // // // // // // //         const result: MetricsData = await response.json();
 // // // // // // // //         setData(result);
@@ -1445,7 +1445,7 @@
 // // // // // // //       const fetchData = async () => {
 // // // // // // //         try {
 // // // // // // //           console.log("Fetching data for Dashboard...");
-// // // // // // //           const url = `http://127.0.0.1:8000/model/modelget/?user_id=${user_id}&chat_id=${chat_id}`;
+// // // // // // //           const url = ` http://98.70.25.52/model/modelget/?user_id=${user_id}&chat_id=${chat_id}`;
 // // // // // // //           const response = await fetch(url);
 // // // // // // //           if (!response.ok) throw new Error("Failed to fetch dashboard data");
 // // // // // // //           const result = await response.json();
@@ -1673,7 +1673,7 @@
 // // // // // //   //   const fetchMetadata = async () => {
 // // // // // //   //     try {
 // // // // // //   //       setProgressLoading(true);
-// // // // // //   //       const url = `http://127.0.0.1:8000/api/get_prediction_metadata/?user_id=${user_id}&chat_id=${chat_id}`;
+// // // // // //   //       const url = ` http://98.70.25.52/api/get_prediction_metadata/?user_id=${user_id}&chat_id=${chat_id}`;
 // // // // // //   //       const resp = await fetch(url);
 // // // // // //   //       if (!resp.ok) {
 // // // // // //   //         throw new Error(`Failed to fetch prediction metadata: ${resp.statusText}`);
@@ -1705,7 +1705,7 @@
 // // // // // //       const fetchDashboardData = async () => {
 // // // // // //         try {
 // // // // // //           setLoadingData(true);
-// // // // // //           const url = `http://127.0.0.1:8000/model/modelget/?user_id=${user_id}&chat_id=${chat_id}`;
+// // // // // //           const url = ` http://98.70.25.52/model/modelget/?user_id=${user_id}&chat_id=${chat_id}`;
 // // // // // //           const response = await fetch(url);
 // // // // // //           if (!response.ok) {
 // // // // // //             throw new Error("Failed to fetch dashboard data");
@@ -2001,7 +2001,7 @@
 // // // //   //   const fetchMetadata = async () => {
 // // // //   //     try {
 // // // //   //       setProgressLoading(true);
-// // // //   //       const url = `http://127.0.0.1:8000/api/get_prediction_metadata/?user_id=${user_id}&chat_id=${chat_id}`;
+// // // //   //       const url = ` http://98.70.25.52/api/get_prediction_metadata/?user_id=${user_id}&chat_id=${chat_id}`;
 // // // //   //       const resp = await fetch(url);
 // // // //   //       if (!resp.ok) {
 // // // //   //         throw new Error(`Failed to fetch prediction metadata: ${resp.statusText}`);
@@ -2033,7 +2033,7 @@
 // // // //       const fetchDashboardData = async () => {
 // // // //         try {
 // // // //           setLoadingData(true);
-// // // //           const url = `http://127.0.0.1:8000/model/modelget/?user_id=${user_id}&chat_id=${chat_id}`;
+// // // //           const url = ` http://98.70.25.52/model/modelget/?user_id=${user_id}&chat_id=${chat_id}`;
 // // // //           const response = await fetch(url);
 // // // //           if (!response.ok) {
 // // // //             throw new Error("Failed to fetch dashboard data");
@@ -2349,7 +2349,7 @@
 // // // // //       const fetchDashboardData = async () => {
 // // // // //         try {
 // // // // //           setLoadingData(true);
-// // // // //           const url = `http://127.0.0.1:8000/model/modelget/?user_id=${user_id}&chat_id=${chat_id}`;
+// // // // //           const url = ` http://98.70.25.52/model/modelget/?user_id=${user_id}&chat_id=${chat_id}`;
 // // // // //           const response = await fetch(url);
 // // // // //           if (!response.ok) {
 // // // // //             throw new Error("Failed to fetch dashboard data");
@@ -2693,7 +2693,7 @@
 // // //     const fetchMetadata = async () => {
 // // //       try {
 // // //         setProgressLoading(true);
-// // //         const url = `http://127.0.0.1:8000/api/get_prediction_metadata/?user_id=${user_id}&chat_id=${chat_id}`;
+// // //         const url = ` http://98.70.25.52/api/get_prediction_metadata/?user_id=${user_id}&chat_id=${chat_id}`;
 // // //         const resp = await fetch(url);
 // // //         if (!resp.ok) {
 // // //           throw new Error(`Failed to fetch prediction metadata: ${resp.statusText}`);
@@ -2723,7 +2723,7 @@
 // // //       const fetchDashboardData = async () => {
 // // //         try {
 // // //           setLoadingData(true);
-// // //           const url = `http://127.0.0.1:8000/model/modelget/?user_id=${user_id}&chat_id=${chat_id}`;
+// // //           const url = ` http://98.70.25.52/model/modelget/?user_id=${user_id}&chat_id=${chat_id}`;
 // // //           const response = await fetch(url);
 // // //           if (!response.ok) {
 // // //             throw new Error("Failed to fetch dashboard data");
@@ -3164,7 +3164,7 @@
 // //     const fetchMetadata = async () => {
 // //       try {
 // //         setProgressLoading(true);
-// //         const url = `http://127.0.0.1:8000/api/get_prediction_metadata/?user_id=${user_id}&chat_id=${chat_id}`;
+// //         const url = ` http://98.70.25.52/api/get_prediction_metadata/?user_id=${user_id}&chat_id=${chat_id}`;
 // //         const resp = await fetch(url);
 // //         if (!resp.ok) {
 // //           if (resp.status === 404) {
@@ -3199,7 +3199,7 @@
 // //       const fetchDashboardData = async () => {
 // //         try {
 // //           setLoadingData(true);
-// //           const url = `http://127.0.0.1:8000/model/modelget/?user_id=${user_id}&chat_id=${chat_id}`;
+// //           const url = ` http://98.70.25.52/model/modelget/?user_id=${user_id}&chat_id=${chat_id}`;
 // //           const response = await fetch(url);
 // //           if (!response.ok) {
 // //             throw new Error("Failed to fetch dashboard data");
@@ -3654,7 +3654,7 @@
 //     const fetchMetadata = async () => {
 //       try {
 //         setProgressLoading(true);
-//         const url = `http://127.0.0.1:8000/api/get_prediction_metadata/?user_id=${user_id}&chat_id=${chat_id}`;
+//         const url = ` http://98.70.25.52/api/get_prediction_metadata/?user_id=${user_id}&chat_id=${chat_id}`;
 //         const resp = await fetch(url);
 //         if (!resp.ok) {
 //           if (resp.status === 404) {
@@ -3689,7 +3689,7 @@
 //       const fetchDashboardData = async () => {
 //         try {
 //           setLoadingData(true);
-//           const url = `http://127.0.0.1:8000/model/modelget/?user_id=${user_id}&chat_id=${chat_id}`;
+//           const url = ` http://98.70.25.52/model/modelget/?user_id=${user_id}&chat_id=${chat_id}`;
 //           const response = await fetch(url);
 //           if (!response.ok) {
 //             throw new Error("Failed to fetch dashboard data");
@@ -4158,7 +4158,7 @@ const Dashboard: React.FC<DashboardProps> = ({ user_id, chat_id, data }) => {
     const fetchMetadata = async () => {
       try {
         setProgressLoading(true);
-        const url = `http://127.0.0.1:8000/api/get_prediction_metadata/?user_id=${user_id}&chat_id=${chat_id}`;
+        const url = ` http://98.70.25.52/api/get_prediction_metadata/?user_id=${user_id}&chat_id=${chat_id}`;
         const resp = await fetch(url);
         if (!resp.ok) {
           if (resp.status === 404) {
@@ -4193,7 +4193,7 @@ const Dashboard: React.FC<DashboardProps> = ({ user_id, chat_id, data }) => {
       const fetchDashboardData = async () => {
         try {
           setLoadingData(true);
-          const url = `http://127.0.0.1:8000/model/modelget/?user_id=${user_id}&chat_id=${chat_id}`;
+          const url = ` http://98.70.25.52/model/modelget/?user_id=${user_id}&chat_id=${chat_id}`;
           const response = await fetch(url);
           if (!response.ok) {
             throw new Error("Failed to fetch dashboard data");

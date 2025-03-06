@@ -24,7 +24,7 @@
 // // //   useEffect(() => {
 // // //     const fetchData = async () => {
 // // //       try {
-// // //         const response = await fetch("http://127.0.0.1:8000/model/modelget/4");
+// // //         const response = await fetch(" http://98.70.25.52/model/modelget/4");
 // // //         if (!response.ok) {
 // // //           throw new Error(`Error fetching data: ${response.statusText}`);
 // // //         }

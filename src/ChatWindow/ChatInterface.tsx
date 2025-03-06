@@ -88,7 +88,7 @@
 // // // // // // //   // Fetch Chat History (merging user/assistant messages in chronological order)
 // // // // // // //   // ---------------------------------------------------------------------------
 // // // // // // //   const fetchChatHistory = async (user_id: string): Promise<Chat[]> => {
-// // // // // // //     const response = await fetch(`http://localhost:8000/api/chat_history/?user_id=${user_id}`);
+// // // // // // //     const response = await fetch(`http://98.70.25.52/api/chat_history/?user_id=${user_id}`);
 // // // // // // //     if (!response.ok) {
 // // // // // // //       throw new Error('Failed to fetch chat history');
 // // // // // // //     }
@@ -192,7 +192,7 @@
 // // // // // // //       formData.append('user_id', userId.toString());
 // // // // // // //     }
 
-// // // // // // //     const response = await fetch(`http://localhost:8000/api/chatgpt/`, {
+// // // // // // //     const response = await fetch(`http://98.70.25.52/api/chatgpt/`, {
 // // // // // // //       method: 'POST',
 // // // // // // //       body: formData,
 // // // // // // //     });
@@ -338,7 +338,7 @@
 // // // // // // //   // Send Message
 // // // // // // //   // ---------------------------------------------------------------------------
 // // // // // // //   const sendMessage = async (message: string, user_id: string, chat_id?: string): Promise<any> => {
-// // // // // // //     const response = await fetch(`http://localhost:8000/api/chatgpt/`, {
+// // // // // // //     const response = await fetch(`http://98.70.25.52/api/chatgpt/`, {
 // // // // // // //       method: 'POST',
 // // // // // // //       headers: { 'Content-Type': 'application/json' },
 // // // // // // //       body: JSON.stringify({ message, user_id, chat_id }),
@@ -474,7 +474,7 @@
 // // // // // // //     setIsGeneratingNotebook(true);
 
 // // // // // // //     try {
-// // // // // // //       const response = await fetch('http://localhost:8000/api/chatgpt/', {
+// // // // // // //       const response = await fetch('http://98.70.25.52/api/chatgpt/', {
 // // // // // // //         method: 'POST',
 // // // // // // //         headers: { 'Content-Type': 'application/json' },
 // // // // // // //         body: JSON.stringify({
@@ -559,7 +559,7 @@
 // // // // // // //   // Reset Chat
 // // // // // // //   // ---------------------------------------------------------------------------
 // // // // // // //   const resetChat = async (user_id: string): Promise<void> => {
-// // // // // // //     const response = await fetch(`http://localhost:8000/api/chatgpt/`, {
+// // // // // // //     const response = await fetch(`http://98.70.25.52/api/chatgpt/`, {
 // // // // // // //       method: 'POST',
 // // // // // // //       headers: { 'Content-Type': 'application/json' },
 // // // // // // //       body: JSON.stringify({ action: 'reset', user_id }),
@@ -1004,7 +1004,7 @@
 // // // // // //   // Fetch Chat History (merging user/assistant messages in chronological order)
 // // // // // //   // ---------------------------------------------------------------------------
 // // // // // //   const fetchChatHistory = async (user_id: string): Promise<Chat[]> => {
-// // // // // //     const response = await fetch(`http://localhost:8000/api/chat_history/?user_id=${user_id}`);
+// // // // // //     const response = await fetch(`http://98.70.25.52/api/chat_history/?user_id=${user_id}`);
 // // // // // //     if (!response.ok) {
 // // // // // //       throw new Error('Failed to fetch chat history');
 // // // // // //     }
@@ -1108,7 +1108,7 @@
 // // // // // //       formData.append('user_id', userId.toString());
 // // // // // //     }
 
-// // // // // //     const response = await fetch(`http://localhost:8000/api/chatgpt/`, {
+// // // // // //     const response = await fetch(`http://98.70.25.52/api/chatgpt/`, {
 // // // // // //       method: 'POST',
 // // // // // //       body: formData,
 // // // // // //     });
@@ -1254,7 +1254,7 @@
 // // // // // //   // Send Message
 // // // // // //   // ---------------------------------------------------------------------------
 // // // // // //   const sendMessage = async (message: string, user_id: string, chat_id?: string): Promise<any> => {
-// // // // // //     const response = await fetch(`http://localhost:8000/api/chatgpt/`, {
+// // // // // //     const response = await fetch(`http://98.70.25.52/api/chatgpt/`, {
 // // // // // //       method: 'POST',
 // // // // // //       headers: { 'Content-Type': 'application/json' },
 // // // // // //       body: JSON.stringify({ message, user_id, chat_id }),
@@ -1393,7 +1393,7 @@
 // // // // // //   //   console.log(currentChat.id);
 
 // // // // // //   //   try {
-// // // // // //   //     const response = await fetch('http://localhost:8000/api/chatgpt/', {
+// // // // // //   //     const response = await fetch('http://98.70.25.52/api/chatgpt/', {
 // // // // // //   //       method: 'POST',
 // // // // // //   //       headers: { 'Content-Type': 'application/json' },
 // // // // // //   //       body: JSON.stringify({
@@ -1495,7 +1495,7 @@
 // // // // // //   console.log('Generated Chat ID setting:', generatedChatId);
 
 // // // // // //   try {
-// // // // // //     const response = await fetch('http://localhost:8000/api/chatgpt/', {
+// // // // // //     const response = await fetch('http://98.70.25.52/api/chatgpt/', {
 // // // // // //       method: 'POST',
 // // // // // //       headers: { 'Content-Type': 'application/json' },
 // // // // // //       body: JSON.stringify({
@@ -1617,7 +1617,7 @@
 // // // // // //   // Reset Chat
 // // // // // //   // ---------------------------------------------------------------------------
 // // // // // //   const resetChat = async (user_id: string): Promise<void> => {
-// // // // // //     const response = await fetch(`http://localhost:8000/api/chatgpt/`, {
+// // // // // //     const response = await fetch(`http://98.70.25.52/api/chatgpt/`, {
 // // // // // //       method: 'POST',
 // // // // // //       headers: { 'Content-Type': 'application/json' },
 // // // // // //       body: JSON.stringify({ action: 'reset', user_id }),
@@ -2058,7 +2058,7 @@
 // // // // // //   // Fetch Chat History
 // // // // // //   // ---------------------------------------------------------------------------
 // // // // // //   const fetchChatHistory = async (user_id: string): Promise<Chat[]> => {
-// // // // // //     const response = await fetch(`http://localhost:8000/api/chat_history/?user_id=${user_id}`);
+// // // // // //     const response = await fetch(`http://98.70.25.52/api/chat_history/?user_id=${user_id}`);
 // // // // // //     if (!response.ok) {
 // // // // // //       throw new Error('Failed to fetch chat history');
 // // // // // //     }
@@ -2161,7 +2161,7 @@
 // // // // // //       formData.append('user_id', userId.toString());
 // // // // // //     }
 
-// // // // // //     const response = await fetch(`http://localhost:8000/api/chatgpt/`, {
+// // // // // //     const response = await fetch(`http://98.70.25.52/api/chatgpt/`, {
 // // // // // //       method: 'POST',
 // // // // // //       body: formData,
 // // // // // //     });
@@ -2298,7 +2298,7 @@
 // // // // // //   // Send Message
 // // // // // //   // ---------------------------------------------------------------------------
 // // // // // //   const sendMessage = async (message: string, user_id: string, chat_id?: string): Promise<any> => {
-// // // // // //     const response = await fetch(`http://localhost:8000/api/chatgpt/`, {
+// // // // // //     const response = await fetch(`http://98.70.25.52/api/chatgpt/`, {
 // // // // // //       method: 'POST',
 // // // // // //       headers: { 'Content-Type': 'application/json' },
 // // // // // //       body: JSON.stringify({ message, user_id, chat_id }),
@@ -2439,7 +2439,7 @@
 // // // // // //     setGeneratedChatId(currentChat.id);
 
 // // // // // //     try {
-// // // // // //       const response = await fetch('http://localhost:8000/api/chatgpt/', {
+// // // // // //       const response = await fetch('http://98.70.25.52/api/chatgpt/', {
 // // // // // //         method: 'POST',
 // // // // // //         headers: { 'Content-Type': 'application/json' },
 // // // // // //         body: JSON.stringify({
@@ -2501,7 +2501,7 @@
 // // // // // //   // Reset Chat
 // // // // // //   // ---------------------------------------------------------------------------
 // // // // // //   const resetChat = async (user_id: string): Promise<void> => {
-// // // // // //     const response = await fetch(`http://localhost:8000/api/chatgpt/`, {
+// // // // // //     const response = await fetch(`http://98.70.25.52/api/chatgpt/`, {
 // // // // // //       method: 'POST',
 // // // // // //       headers: { 'Content-Type': 'application/json' },
 // // // // // //       body: JSON.stringify({ action: 'reset', user_id }),
@@ -2948,7 +2948,7 @@
 // // // // //   }
 
 // // // // //   const fetchChatHistory = async (user_id: string): Promise<Chat[]> => {
-// // // // //     const response = await fetch(`http://localhost:8000/api/chat_history/?user_id=${user_id}`);
+// // // // //     const response = await fetch(`http://98.70.25.52/api/chat_history/?user_id=${user_id}`);
 // // // // //     if (!response.ok) {
 // // // // //       throw new Error('Failed to fetch chat history');
 // // // // //     }
@@ -3052,7 +3052,7 @@
 // // // // //       formData.append('user_id', userId.toString());
 // // // // //     }
 
-// // // // //     const response = await fetch(`http://localhost:8000/api/chatgpt/`, {
+// // // // //     const response = await fetch(`http://98.70.25.52/api/chatgpt/`, {
 // // // // //       method: 'POST',
 // // // // //       body: formData,
 // // // // //     });
@@ -3192,7 +3192,7 @@
 // // // // //   // Send Message
 // // // // //   // ---------------------------------------------------------------------------
 // // // // //   const sendMessage = async (message: string, user_id: string, chat_id?: string): Promise<any> => {
-// // // // //     const response = await fetch(`http://localhost:8000/api/chatgpt/`, {
+// // // // //     const response = await fetch(`http://98.70.25.52/api/chatgpt/`, {
 // // // // //       method: 'POST',
 // // // // //       headers: { 'Content-Type': 'application/json' },
 // // // // //       body: JSON.stringify({ message, user_id, chat_id }),
@@ -3337,7 +3337,7 @@
 // // // // //     setGeneratedChatId(currentChat.id);
 
 // // // // //     try {
-// // // // //       const response = await fetch('http://localhost:8000/api/chatgpt/', {
+// // // // //       const response = await fetch('http://98.70.25.52/api/chatgpt/', {
 // // // // //         method: 'POST',
 // // // // //         headers: { 'Content-Type': 'application/json' },
 // // // // //         body: JSON.stringify({
@@ -3402,7 +3402,7 @@
 // // // // //   // Reset Chat
 // // // // //   // ---------------------------------------------------------------------------
 // // // // //   const resetChat = async (user_id: string): Promise<void> => {
-// // // // //     const response = await fetch(`http://localhost:8000/api/chatgpt/`, {
+// // // // //     const response = await fetch(`http://98.70.25.52/api/chatgpt/`, {
 // // // // //       method: 'POST',
 // // // // //       headers: { 'Content-Type': 'application/json' },
 // // // // //       body: JSON.stringify({ action: 'reset', user_id }),
@@ -3855,7 +3855,7 @@
 // // // //   }
 
 // // // //   const fetchChatHistory = async (user_id: string): Promise<Chat[]> => {
-// // // //     const response = await fetch(`http://localhost:8000/api/chat_history/?user_id=${user_id}`);
+// // // //     const response = await fetch(`http://98.70.25.52/api/chat_history/?user_id=${user_id}`);
 // // // //     if (!response.ok) {
 // // // //       throw new Error('Failed to fetch chat history');
 // // // //     }
@@ -3958,7 +3958,7 @@
 // // // //       formData.append('user_id', userId.toString());
 // // // //     }
 
-// // // //     const response = await fetch(`http://localhost:8000/api/chatgpt/`, {
+// // // //     const response = await fetch(`http://98.70.25.52/api/chatgpt/`, {
 // // // //       method: 'POST',
 // // // //       body: formData,
 // // // //     });
@@ -4095,7 +4095,7 @@
 // // // //   // Send Message
 // // // //   // ---------------------------------------------------------------------------
 // // // //   const sendMessage = async (message: string, user_id: string, chat_id?: string): Promise<any> => {
-// // // //     const response = await fetch(`http://localhost:8000/api/chatgpt/`, {
+// // // //     const response = await fetch(`http://98.70.25.52/api/chatgpt/`, {
 // // // //       method: 'POST',
 // // // //       headers: { 'Content-Type': 'application/json' },
 // // // //       body: JSON.stringify({ message, user_id, chat_id }),
@@ -4237,7 +4237,7 @@
 // // // //     setGeneratedChatId(currentChat.id);
 
 // // // //     try {
-// // // //       const response = await fetch('http://localhost:8000/api/chatgpt/', {
+// // // //       const response = await fetch('http://98.70.25.52/api/chatgpt/', {
 // // // //         method: 'POST',
 // // // //         headers: { 'Content-Type': 'application/json' },
 // // // //         body: JSON.stringify({
@@ -4301,7 +4301,7 @@
 // // // //   // Reset Chat
 // // // //   // ---------------------------------------------------------------------------
 // // // //   const resetChat = async (user_id: string): Promise<void> => {
-// // // //     const response = await fetch(`http://localhost:8000/api/chatgpt/`, {
+// // // //     const response = await fetch(`http://98.70.25.52/api/chatgpt/`, {
 // // // //       method: 'POST',
 // // // //       headers: { 'Content-Type': 'application/json' },
 // // // //       body: JSON.stringify({ action: 'reset', user_id }),
@@ -4745,7 +4745,7 @@
 // // //   }
 
 // // //   const fetchChatHistory = async (user_id: string): Promise<Chat[]> => {
-// // //     const response = await fetch(`http://localhost:8000/api/chat_history/?user_id=${user_id}`);
+// // //     const response = await fetch(`http://98.70.25.52/api/chat_history/?user_id=${user_id}`);
 // // //     if (!response.ok) {
 // // //       throw new Error('Failed to fetch chat history');
 // // //     }
@@ -4848,7 +4848,7 @@
 // // //       formData.append('user_id', userId.toString());
 // // //     }
 
-// // //     const response = await fetch(`http://localhost:8000/api/chatgpt/`, {
+// // //     const response = await fetch(`http://98.70.25.52/api/chatgpt/`, {
 // // //       method: 'POST',
 // // //       body: formData,
 // // //     });
@@ -4985,7 +4985,7 @@
 // // //   // Send Message
 // // //   // ---------------------------------------------------------------------------
 // // //   const sendMessage = async (message: string, user_id: string, chat_id?: string): Promise<any> => {
-// // //     const response = await fetch(`http://localhost:8000/api/chatgpt/`, {
+// // //     const response = await fetch(`http://98.70.25.52/api/chatgpt/`, {
 // // //       method: 'POST',
 // // //       headers: { 'Content-Type': 'application/json' },
 // // //       body: JSON.stringify({ message, user_id, chat_id }),
@@ -5127,7 +5127,7 @@
 // // //     setGeneratedChatId(currentChat.id);
 
 // // //     try {
-// // //       const response = await fetch('http://localhost:8000/api/chatgpt/', {
+// // //       const response = await fetch('http://98.70.25.52/api/chatgpt/', {
 // // //         method: 'POST',
 // // //         headers: { 'Content-Type': 'application/json' },
 // // //         body: JSON.stringify({
@@ -5191,7 +5191,7 @@
 // // //   // Reset Chat
 // // //   // ---------------------------------------------------------------------------
 // // //   // const resetChat = async (user_id: string): Promise<void> => {
-// // //   //   const response = await fetch(`http://localhost:8000/api/chatgpt/`, {
+// // //   //   const response = await fetch(`http://98.70.25.52/api/chatgpt/`, {
 // // //   //     method: 'POST',
 // // //   //     headers: { 'Content-Type': 'application/json' },
 // // //   //     body: JSON.stringify({ action: 'reset', user_id }),
@@ -5639,7 +5639,7 @@
 // //   }
 
 // //   const fetchChatHistory = async (user_id: string): Promise<Chat[]> => {
-// //     const response = await fetch(`http://localhost:8000/api/chat_history/?user_id=${user_id}`);
+// //     const response = await fetch(`http://98.70.25.52/api/chat_history/?user_id=${user_id}`);
 // //     if (!response.ok) {
 // //       throw new Error('Failed to fetch chat history');
 // //     }
@@ -5742,7 +5742,7 @@
 // //       formData.append('user_id', userId.toString());
 // //     }
 
-// //     const response = await fetch(`http://localhost:8000/api/chatgpt/`, {
+// //     const response = await fetch(`http://98.70.25.52/api/chatgpt/`, {
 // //       method: 'POST',
 // //       body: formData,
 // //     });
@@ -5879,7 +5879,7 @@
 // //   // Send Message
 // //   // ---------------------------------------------------------------------------
 // //   const sendMessage = async (message: string, user_id: string, chat_id?: string): Promise<any> => {
-// //     const response = await fetch(`http://localhost:8000/api/chatgpt/`, {
+// //     const response = await fetch(`http://98.70.25.52/api/chatgpt/`, {
 // //       method: 'POST',
 // //       headers: { 'Content-Type': 'application/json' },
 // //       body: JSON.stringify({ message, user_id, chat_id }),
@@ -6029,7 +6029,7 @@
 // //     setGeneratedChatId(currentChat.id);
 
 // //     try {
-// //       const response = await fetch('http://localhost:8000/api/chatgpt/', {
+// //       const response = await fetch('http://98.70.25.52/api/chatgpt/', {
 // //         method: 'POST',
 // //         headers: { 'Content-Type': 'application/json' },
 // //         body: JSON.stringify({
@@ -6531,7 +6531,7 @@
 //   }
 
 //   const fetchChatHistory = async (user_id: string): Promise<Chat[]> => {
-//     const response = await fetch(`http://localhost:8000/api/chat_history/?user_id=${user_id}`);
+//     const response = await fetch(`http://98.70.25.52/api/chat_history/?user_id=${user_id}`);
 //     if (!response.ok) {
 //       throw new Error('Failed to fetch chat history');
 //     }
@@ -6668,7 +6668,7 @@
 //     if (userId) {
 //       formData.append('user_id', userId.toString());
 //     }
-//     const response = await fetch(`http://localhost:8000/api/chatgpt/`, {
+//     const response = await fetch(`http://98.70.25.52/api/chatgpt/`, {
 //       method: 'POST',
 //       body: formData,
 //     });
@@ -6794,7 +6794,7 @@
 //   // Send Message (unchanged except URL update on first message)
 //   // ---------------------------------------------------------------------------
 //   // const sendMessage = async (message: string, user_id: string, chat_id?: string): Promise<any> => {
-//   //   const response = await fetch(`http://localhost:8000/api/chatgpt/`, {
+//   //   const response = await fetch(`http://98.70.25.52/api/chatgpt/`, {
 //   //     method: 'POST',
 //   //     headers: { 'Content-Type': 'application/json' },
 //   //     body: JSON.stringify({ message, user_id, chat_id }),
@@ -6815,7 +6815,7 @@
 //     if (chat_id) payload.chat_id = chat_id;
 //     if (new_chat) payload.new_chat = true; // Include the new_chat flag when needed
   
-//     const response = await fetch(`http://localhost:8000/api/chatgpt/`, {
+//     const response = await fetch(`http://98.70.25.52/api/chatgpt/`, {
 //       method: 'POST',
 //       headers: { 'Content-Type': 'application/json' },
 //       body: JSON.stringify(payload),
@@ -7069,7 +7069,7 @@
 //     setGeneratedChatId(currentChat.id);
 
 //     try {
-//       const response = await fetch('http://localhost:8000/api/chatgpt/', {
+//       const response = await fetch('http://98.70.25.52/api/chatgpt/', {
 //         method: 'POST',
 //         headers: { 'Content-Type': 'application/json' },
 //         body: JSON.stringify({
@@ -7132,7 +7132,7 @@
 //     // Use currentChat.id (or generatedChatId) and userId
 //     const notebookChatId = currentChat?.id || generatedChatId;
 //     const response = await fetch(
-//       `http://localhost:8000/api/predictive-settings/${userId}/${notebookChatId}/`
+//       `http://98.70.25.52/api/predictive-settings/${userId}/${notebookChatId}/`
 //     );
 //     if (!response.ok) {
 //       throw new Error("Failed to fetch predictive settings");
@@ -7577,7 +7577,7 @@ So, what would you like to predict?`;
   }
 
   const fetchChatHistory = async (user_id: string): Promise<Chat[]> => {
-    const response = await fetch(`http://localhost:8000/api/chat_history/?user_id=${user_id}`);
+    const response = await fetch(`http://98.70.25.52/api/chat_history/?user_id=${user_id}`);
     if (!response.ok) {
       throw new Error('Failed to fetch chat history');
     }
@@ -7704,7 +7704,7 @@ So, what would you like to predict?`;
     if (userId) {
       formData.append('user_id', userId.toString());
     }
-    const response = await fetch(`http://localhost:8000/api/chatgpt/`, {
+    const response = await fetch(`http://98.70.25.52/api/chatgpt/`, {
       method: 'POST',
       body: formData,
     });
@@ -7839,7 +7839,7 @@ No date column was detected, so we'll proceed with a non-time-based approach.
     if (chat_id) payload.chat_id = chat_id;
     if (new_chat) payload.new_chat = true;
 
-    const response = await fetch(`http://localhost:8000/api/chatgpt/`, {
+    const response = await fetch(`http://98.70.25.52/api/chatgpt/`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(payload),
@@ -7986,7 +7986,7 @@ No date column was detected, so we'll proceed with a non-time-based approach.
     setGeneratedChatId(currentChat.id);
 
     try {
-      const response = await fetch('http://localhost:8000/api/chatgpt/', {
+      const response = await fetch('http://98.70.25.52/api/chatgpt/', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
@@ -8038,7 +8038,7 @@ No date column was detected, so we'll proceed with a non-time-based approach.
     try {
       const notebookChatId = currentChat?.id || generatedChatId;
       const response = await fetch(
-        `http://localhost:8000/api/predictive-settings/${userId}/${notebookChatId}/`
+        `http://98.70.25.52/api/predictive-settings/${userId}/${notebookChatId}/`
       );
       if (!response.ok) {
         throw new Error("Failed to fetch predictive settings");

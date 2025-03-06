@@ -17,7 +17,7 @@
 
 // // // // // //   useEffect(() => {
 // // // // // //     // Fetch data from the API
-// // // // // //     fetch("http://127.0.0.1:8000/model/modelget/4")
+// // // // // //     fetch(" http://98.70.25.52/model/modelget/4")
 // // // // // //       .then((response) => response.json())
 // // // // // //       .then((data) => {
 // // // // // //         setMetrics(data.model_metrics);

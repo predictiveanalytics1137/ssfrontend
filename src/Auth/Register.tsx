@@ -27,7 +27,7 @@
 // //     }
 
 // //     try {
-// //       await axios.post("http://localhost:8000/api/auth/register/", formData);
+// //       await axios.post("http://98.70.25.52/api/auth/register/", formData);
 // //       navigate("/login");
 // //     } catch (err: any) {
 // //       if (err.response && err.response.data) {
@@ -109,7 +109,7 @@
 //     }
 
 //     try {
-//       await axios.post("http://localhost:8000/api/auth/register/", formData);
+//       await axios.post("http://98.70.25.52/api/auth/register/", formData);
 //       navigate("/login");
 //     } catch (err: any) {
 //       if (err.response && err.response.data) {
@@ -252,7 +252,7 @@
 //     }
 
 //     try {
-//       const response = await axios.post("http://localhost:8000/api/auth/login/", formData);
+//       const response = await axios.post("http://98.70.25.52/api/auth/login/", formData);
 //       localStorage.setItem("token", response.data.access); // Store the access token
 //       navigate("/dashboard");
 //     } catch (err: any) {
@@ -337,7 +337,7 @@ const Register: React.FC = () => {
   //   }
 
   //   try {
-  //     await axios.post("http://localhost:8000/api/auth/register/", formData);
+  //     await axios.post("http://98.70.25.52/api/auth/register/", formData);
   //     navigate("/login");
   //   } catch (err: any) {
   //     if (err.response && err.response.data) {
@@ -377,7 +377,7 @@ const Register: React.FC = () => {
     }
 
     try {
-        const response = await axios.post("http://localhost:8000/api/auth/register/", formData);
+        const response = await axios.post("http://98.70.25.52/api/auth/register/", formData);
 
         // Log and display user_id or other data
         console.log("Response from server:", response.data);

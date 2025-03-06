@@ -330,7 +330,7 @@
 //     const fetchNotebooks = async () => {
 //       setLoading(true);
 //       try {
-//         const url = `http://localhost:8000/api/notebooks/?user_id=${HARDCODED_USER_ID}`;
+//         const url = `http://98.70.25.52/api/notebooks/?user_id=${HARDCODED_USER_ID}`;
 //         const resp = await fetch(url);
 //         if (!resp.ok) {
 //           throw new Error(`Failed to fetch notebooks: ${resp.statusText}`);
@@ -342,7 +342,7 @@
 //         const rawNotebooks: Notebook[] = data.notebooks;
 
 //         // 2) For each notebook, we also fetch the status from the second endpoint
-//         //    http://127.0.0.1:8000/api/get_prediction_metadata/?user_id=xxx&chat_id=yyy
+//         //     http://98.70.25.52/api/get_prediction_metadata/?user_id=xxx&chat_id=yyy
 //         //    If we have a 'user_id' and 'chat_id', we can do that.
 //         //    But if your backend doesn't store chat_id in the Notebook table, you'll need to adapt.
 //         //    For demonstration, let's assume "chat_id" is the same as "id" or stored somehow.
@@ -359,10 +359,10 @@
 //           console.log("....................");
 
 //           try {
-//             const metaUrl = `http://127.0.0.1:8000/api/get_prediction_metadata/?user_id=${user_id_str}&chat_id=${chat_id}`;
+//             const metaUrl = ` http://98.70.25.52/api/get_prediction_metadata/?user_id=${user_id_str}&chat_id=${chat_id}`;
 //             console.log(metaUrl);
 //             console.log(" this is meta url....................");
-//             // const metaUrl = "http://127.0.0.1:8000/api/get_prediction_metadata/?user_id=9&chat_id=cc2ea5cc-0805-4c2d-b79b-47b4751c03d1"
+//             // const metaUrl = " http://98.70.25.52/api/get_prediction_metadata/?user_id=9&chat_id=cc2ea5cc-0805-4c2d-b79b-47b4751c03d1"
 //             const metaResp = await fetch(metaUrl);
 //             if (metaResp.ok) {
 //               const metaData = await metaResp.json();
@@ -752,7 +752,7 @@ const Homepage = () => {
     const fetchNotebooks = async () => {
       setLoading(true);
       try {
-        const url = `http://localhost:8000/api/notebooks/?user_id=${HARDCODED_USER_ID}`;
+        const url = `http://98.70.25.52/api/notebooks/?user_id=${HARDCODED_USER_ID}`;
         const resp = await fetch(url);
         if (!resp.ok) {
           throw new Error(`Failed to fetch notebooks: ${resp.statusText}`);
@@ -764,7 +764,7 @@ const Homepage = () => {
         const rawNotebooks: Notebook[] = data.notebooks;
 
         // 2) For each notebook, we also fetch the status from the second endpoint
-        //    http://127.0.0.1:8000/api/get_prediction_metadata/?user_id=xxx&chat_id=yyy
+        //     http://98.70.25.52/api/get_prediction_metadata/?user_id=xxx&chat_id=yyy
         //    If we have a 'user_id' and 'chat_id', we can do that.
         //    But if your backend doesn't store chat_id in the Notebook table, you'll need to adapt.
         //    For demonstration, let's assume "chat_id" is the same as "id" or stored somehow.
@@ -781,10 +781,10 @@ const Homepage = () => {
           console.log("....................");
 
           try {
-            const metaUrl = `http://127.0.0.1:8000/api/get_prediction_metadata/?user_id=${user_id_str}&chat_id=${chat_id}`;
+            const metaUrl = ` http://98.70.25.52/api/get_prediction_metadata/?user_id=${user_id_str}&chat_id=${chat_id}`;
             console.log(metaUrl);
             console.log(" this is meta url....................");
-            // const metaUrl = "http://127.0.0.1:8000/api/get_prediction_metadata/?user_id=9&chat_id=cc2ea5cc-0805-4c2d-b79b-47b4751c03d1"
+            // const metaUrl = " http://98.70.25.52/api/get_prediction_metadata/?user_id=9&chat_id=cc2ea5cc-0805-4c2d-b79b-47b4751c03d1"
             const metaResp = await fetch(metaUrl);
             if (metaResp.ok) {
               const metaData = await metaResp.json();
