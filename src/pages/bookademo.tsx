@@ -358,7 +358,7 @@ const handleSubmit = async (e: React.FormEvent) => {
             </div>
 
             {/* Feature Cards */}
-            <div className="grid grid-cols-2 gap-6">
+            {/* <div className="grid grid-cols-2 gap-6">
               <Card className="bg-gradient-to-br from-indigo-500 to-indigo-600 text-white p-6">
                 <div className="space-y-2">
                   <div className="flex justify-between items-start">
@@ -378,7 +378,7 @@ const handleSubmit = async (e: React.FormEvent) => {
                   <p className="text-sm text-purple-100">Reduction in forecast errors</p>
                 </div>
               </Card>
-            </div>
+            </div> */}
 
             {/* Benefits Section */}
             <div className="space-y-6">
@@ -415,7 +415,7 @@ const handleSubmit = async (e: React.FormEvent) => {
             </div>
 
             {/* Social Proof */}
-            <div className="space-y-6">
+            {/* <div className="space-y-6">
               <div className="flex items-center space-x-8">
                 <div className="flex items-center space-x-2">
                   <div className="flex -space-x-2">
@@ -445,10 +445,10 @@ const handleSubmit = async (e: React.FormEvent) => {
                   </div>
                 </div>
               </div>
-            </div>
+            </div> */}
 
             {/* Video Preview */}
-            <div className="relative rounded-2xl overflow-hidden bg-gradient-to-br from-indigo-100 to-purple-100 p-1">
+            {/* <div className="relative rounded-2xl overflow-hidden bg-gradient-to-br from-indigo-100 to-purple-100 p-1">
               <div className="relative aspect-video rounded-xl overflow-hidden bg-gray-900">
                 <img 
                   src="/api/placeholder/800/450"
@@ -464,7 +464,7 @@ const handleSubmit = async (e: React.FormEvent) => {
                   <Play className="h-8 w-8 text-indigo-600" />
                 </Button>
               </div>
-            </div>
+            </div> */}
           </div>
 
           {/* Right Section - Form (Unchanged) */}
@@ -488,7 +488,7 @@ const handleSubmit = async (e: React.FormEvent) => {
                         id="firstName"
                         value={formData.firstName}
                         onChange={(e) => setFormData({ ...formData, firstName: e.target.value })}
-                        placeholder="John"
+                        placeholder="sai"
                         required
                         className="h-12"
                       />
@@ -499,7 +499,7 @@ const handleSubmit = async (e: React.FormEvent) => {
                         id="lastName"
                         value={formData.lastName}
                         onChange={(e) => setFormData({ ...formData, lastName: e.target.value })}
-                        placeholder="Doe"
+                        placeholder="ram"
                         required
                         className="h-12"
                       />
@@ -513,7 +513,7 @@ const handleSubmit = async (e: React.FormEvent) => {
                       id="email"
                       value={formData.email}
                       onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-                      placeholder="john@company.com"
+                      placeholder="sr@company.com"
                       required
                       className="h-12"
                     />
@@ -537,7 +537,7 @@ const handleSubmit = async (e: React.FormEvent) => {
                       id="contact"
                       value={formData.contact}
                       onChange={(e) => setFormData({ ...formData, contact: e.target.value })}
-                      placeholder="+1 (555) 123-4567"
+                      placeholder="+91 (789) 923-4567"
                       required
                       className="h-12"
                     />
