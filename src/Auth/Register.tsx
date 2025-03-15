@@ -6,6 +6,7 @@ import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import { Eye, EyeOff, Lock, User, Mail } from 'lucide-react';
+import { API_BASE_URL } from "../constants";
 
 const Register: React.FC = () => {
   const [formData, setFormData] = useState({ 
@@ -51,7 +52,8 @@ const Register: React.FC = () => {
 
     try {
         // const response = await axios.post("https://98.70.25.52/api/auth/register/", formData);
-        const response = await axios.post("https://api.pacx.ai/api/auth/register/", formData);
+        // const response = await axios.post("https://api.pacx.ai/api/auth/register/", formData);
+        const response = await axios.post(`${API_BASE_URL}/api/auth/register/`, formData);
         
 
         // Log and display user_id or other data
