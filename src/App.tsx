@@ -18,6 +18,7 @@ import PredictionsUI from './Predict/PredictNewData';
 import { AuthProvider } from './Auth/AuthContext';
 import TestDashboard from './Dashboard/testDashboard';
 import BookDemoPage from './pages/bookademo';
+import PredictionDashboard from './Predict/PredictionDashboard';
 
 const App: React.FC = () => {
   return (
@@ -52,6 +53,7 @@ const MainContent: React.FC = () => {
         <Route path="/login" element={<Login />} />
         <Route path="/bookademo" element={<BookDemoPage />} />
         <Route path="/Dashboard" element={<TestDashboard />} />
+        <Route path="/dashboard/:prediction_id" element={<PredictionDashboard />} />
         {/* <Route path="/PerformanceConsistency" element={<PerformanceConsistency />} /> */}
         {/* <Route path="/notebook" element={<NotebookLayout />} /> */}
         {/* <Route
