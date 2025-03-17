@@ -69,7 +69,8 @@ const PredictionsUI: React.FC<PredictionsUIProps> = ({ user_id, chat_id }) => {
   const [predictionFileInfo, setPredictionFileInfo] = useState<PredictionFileInfo | null>(null);
   const [predictiveSettings, setPredictiveSettings] = useState<PredictiveSettingsData | null>(null);
 
-  const notebookRef = useRef<SQLNotebookRef>(null);
+  // const notebookRef = useRef<SQLNotebookRef>(null);
+  const notebookRef = useRef<SQLNotebookRef | null>(null);
 
   // Hard-coded auth token
   const authToken = "d36e47f0e5c0a356d35a7d6d407aab93f6b0d36b";
@@ -395,6 +396,187 @@ const PredictionsUI: React.FC<PredictionsUIProps> = ({ user_id, chat_id }) => {
     }
   };
 
+  // const handlePredictOnNewData = async () => {
+  //   console.log("[handlePredictOnNewData] Start. user_id:", user_id, "chat_id:", chat_id);
+  //   if (!predictionFileInfo || !notebookRef.current || !predictionFileInfo.prediction_id) {
+  //     alert("Please upload a file and review queries before predicting.");
+  //     return;
+  //   }
+  
+  //   setIsLoading(true);
+  //   try {
+  //     // Step 1: Start the ML process with prediction_id from database
+  //     const predictionPayload = {
+  //       file_url: predictionFileInfo.file_url,
+  //       entity_column: predictiveSettings?.entity_column || "product_id", // Dynamic from PredictiveSettings
+  //       user_id: user_id,
+  //       chat_id: chat_id,
+  //       machine_learning_type: predictiveSettings?.machine_learning_type || "regression", // Map to boolean
+  //       prediction_id: predictionFileInfo.prediction_id, // Use DB-generated ID
+  //       target_column: predictiveSettings?.target_column || "", // Include for backend context
+  //       time_column: predictiveSettings?.time_column || "", // Include for context if needed
+  //       new_target_column:predictiveSettings?.new_target_column || "",
+  //       prediction_type:predictiveSettings?.prediction_type || "",
+  //       // time_frame: predictiveSettings?.time_frame || "30 days", // Default if not set
+  //       // time_frequency: predictiveSettings?.time_frequency || "weekly", // Default if not set
+  //       features: predictiveSettings?.features || [], // Dynamic features
+  //     };
+  //     console.log("[handlePredictOnNewData] predictionPayload:", predictionPayload);
+  
+  //     const predictionResponse = await fetch(`${API_BASE_URL}/api/prediction/`, {
+  //       method: "POST",
+  //       headers: {
+  //         "Content-Type": "application/json",
+  //         Authorization: `Token ${authToken}`,
+  //       },
+  //       body: JSON.stringify(predictionPayload),
+  //     });
+  
+  //     if (!predictionResponse.ok) {
+  //       const errText = await predictionResponse.text();
+  //       throw new Error(`Prediction initiation failed: ${errText}`);
+  //     }
+  
+  //     const predictionResult = await predictionResponse.json();
+  //     console.log("[handlePredictOnNewData] Prediction started:", predictionResult);
+  
+  //     // Step 2: Run notebook cells and save results
+  //     const cellResults = await notebookRef.current.runAllCellsAndGetResults();
+  //     console.log("[handlePredictOnNewData] cellResults:", cellResults);
+  
+  //     const saveResp = await fetch(`${API_BASE_URL}/api/save_prediction_results/`, {
+  //       method: "POST",
+  //       headers: {
+  //         "Content-Type": "application/json",
+  //         Authorization: `Token ${authToken}`,
+  //       },
+  //       body: JSON.stringify({
+  //         user_id,
+  //         chat_id,
+  //         file_id: predictionFileInfo.id,
+  //         cells: cellResults,
+  //         prediction_id: predictionFileInfo.prediction_id, // Include in save request
+  //       }),
+  //     });
+  
+  //     if (!saveResp.ok) {
+  //       const errText = await saveResp.text();
+  //       throw new Error(`Saving results failed: ${errText}`);
+  //     }
+  
+  //     const saveData = await saveResp.json();
+  //     console.log("[handlePredictOnNewData] Prediction results saved:", saveData);
+  
+  //     alert("Prediction Initiated and Results Saved Successfully!");
+  //     fetchPredictions();
+  //   } catch (error) {
+  //     console.error("[handlePredictOnNewData] Error:", error);
+  //     alert(`Prediction failed: ${error instanceof Error ? error.message : "Unknown error"}`);
+  //   } finally {
+  //     setIsLoading(false);
+  //     setShowPredictionWizard(false);
+  //     setWizardStep(1);
+  //     setSelectedFile(null);
+  //     setPredictionFileInfo(null);
+  //   }
+  // };
+
+
+  // const handlePredictOnNewData = async () => {
+  //   console.log("[handlePredictOnNewData] Start. user_id:", user_id, "chat_id:", chat_id);
+  //   if (!predictionFileInfo || !notebookRef.current || !predictionFileInfo.prediction_id) {
+  //     alert("Please upload a file and review queries before predicting.");
+  //     return;
+  //   }
+  
+  //   setIsLoading(true);
+  //   try {
+  //     let Results: any[] = [];
+  //     // Step 1: Run notebook cells and save results
+  //     const cellResults = await notebookRef.current.runAllCellsAndGetResults();
+  //     Results = cellResults.concat(cellResults);
+  //     console.log("[handlePredictOnNewData] cellResults:", cellResults);
+  
+  //     const saveResp = await fetch(`${API_BASE_URL}/api/save_prediction_results/`, {
+  //       method: "POST",
+  //       headers: {
+  //         "Content-Type": "application/json",
+  //         Authorization: `Token ${authToken}`,
+  //       },
+  //       body: JSON.stringify({
+  //         user_id,
+  //         chat_id,
+  //         file_id: predictionFileInfo.id,
+  //         cells: cellResults,
+  //         prediction_id: predictionFileInfo.prediction_id,
+  //       }),
+  //     });
+  
+  //     if (!saveResp.ok) {
+  //       const errText = await saveResp.text();
+  //       throw new Error(`Saving results failed: ${errText}`);
+  //     }
+  
+  //     const saveData = await saveResp.json();
+  //     console.log("[handlePredictOnNewData] Prediction results saved:", saveData);
+  
+  //     // Step 2: Use the modified file URL from saveData (File B)
+  //     const modifiedFileUrls = saveData.files; // Object like { "cell1": "s3://bucket/prediction_saves/..." }
+  //     const modifiedFileUrl = modifiedFileUrls[Object.keys(modifiedFileUrls)[1]]; // Take the first modified file URL (e.g., cell1)
+  
+  //     if (!modifiedFileUrl) {
+  //       throw new Error("No modified file URL returned from save_prediction_results");
+  //     }
+  
+  //     // Step 3: Start the ML process with the modified file URL
+  //     const predictionPayload = {
+  //       file_url: modifiedFileUrl, // Use File B instead of predictionFileInfo.file_url (File A)
+  //       entity_column: predictiveSettings?.entity_column || "product_id",
+  //       user_id: user_id,
+  //       chat_id: chat_id,
+  //       machine_learning_type: predictiveSettings?.machine_learning_type || "regression",
+  //       prediction_id: predictionFileInfo.prediction_id,
+  //       target_column: predictiveSettings?.target_column || "",
+  //       time_column: predictiveSettings?.time_column || "",
+  //       new_target_column: predictiveSettings?.new_target_column || "",
+  //       prediction_type: predictiveSettings?.prediction_type || "",
+  //       features: predictiveSettings?.features || [],
+  //     };
+  //     console.log("[handlePredictOnNewData] predictionPayload:", predictionPayload);
+  
+  //     const predictionResponse = await fetch(`${API_BASE_URL}/api/prediction/`, {
+  //       method: "POST",
+  //       headers: {
+  //         "Content-Type": "application/json",
+  //         Authorization: `Token ${authToken}`,
+  //       },
+  //       body: JSON.stringify(predictionPayload),
+  //     });
+  
+  //     if (!predictionResponse.ok) {
+  //       const errText = await predictionResponse.text();
+  //       throw new Error(`Prediction initiation failed: ${errText}`);
+  //     }
+  
+  //     const predictionResult = await predictionResponse.json();
+  //     console.log("[handlePredictOnNewData] Prediction started:", predictionResult);
+  
+  //     alert("Prediction Initiated and Results Saved Successfully!");
+  //     fetchPredictions();
+  //   } catch (error) {
+  //     console.error("[handlePredictOnNewData] Error:", error);
+  //     alert(`Prediction failed: ${error instanceof Error ? error.message : "Unknown error"}`);
+  //   } finally {
+  //     setIsLoading(false);
+  //     setShowPredictionWizard(false);
+  //     setWizardStep(1);
+  //     setSelectedFile(null);
+  //     setPredictionFileInfo(null);
+  //   }
+  // };
+
+  
+
   const handlePredictOnNewData = async () => {
     console.log("[handlePredictOnNewData] Start. user_id:", user_id, "chat_id:", chat_id);
     if (!predictionFileInfo || !notebookRef.current || !predictionFileInfo.prediction_id) {
@@ -404,21 +586,81 @@ const PredictionsUI: React.FC<PredictionsUIProps> = ({ user_id, chat_id }) => {
   
     setIsLoading(true);
     try {
-      // Step 1: Start the ML process with prediction_id from database
+      // Step 1: Run notebook cells and gather results
+      console.log("[handlePredictOnNewData] Running all notebook cells...");
+      let cellResults: any[] = [];
+      try {
+        cellResults = await notebookRef.current.runAllCellsAndGetResults();
+        console.log("[handlePredictOnNewData] Cell execution completed. Results:", cellResults);
+      } catch (err) {
+        console.error("[handlePredictOnNewData] Error running notebook cells:", err);
+        throw new Error("Failed to execute notebook cells. Please check the queries.");
+      }
+  
+      // Step 2: Validate cell results
+      if (!cellResults || cellResults.length < 2) {
+        throw new Error("Insufficient cell results. Expected 2 cells (sampling and feature queries).");
+      }
+  
+      const samplingCellResult = cellResults[0]; // Cell 1: sampling_query
+      const featureCellResult = cellResults[1]; // Cell 2: feature_query
+  
+      // Validate Cell 1 (sampling query)
+      if (!samplingCellResult || !samplingCellResult.rows || samplingCellResult.rows.length === 0) {
+        throw new Error("Sampling cell (Cell 1) returned no rows. Please check the sampling query or data availability.");
+      }
+  
+      // Validate Cell 2 (feature query)
+      if (!featureCellResult || !featureCellResult.rows || featureCellResult.rows.length === 0) {
+        throw new Error("Feature cell (Cell 2) returned no rows. Please check the feature query or data availability.");
+      }
+  
+      // Step 3: Save the results to S3
+      console.log("[handlePredictOnNewData] Saving prediction results to S3...");
+      const saveResp = await fetch(`${API_BASE_URL}/api/save_prediction_results/`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Token ${authToken}`,
+        },
+        body: JSON.stringify({
+          user_id,
+          chat_id,
+          file_id: predictionFileInfo.id,
+          cells: cellResults,
+          prediction_id: predictionFileInfo.prediction_id,
+        }),
+      });
+  
+      if (!saveResp.ok) {
+        const errText = await saveResp.text();
+        throw new Error(`Saving results failed: ${errText}`);
+      }
+  
+      const saveData = await saveResp.json();
+      console.log("[handlePredictOnNewData] Prediction results saved:", saveData);
+  
+      // Step 4: Use the modified file URL from saveData (File B)
+      const modifiedFileUrls = saveData.files;
+      const modifiedFileUrl = modifiedFileUrls[Object.keys(modifiedFileUrls)[1]]; // Cell 2's output
+  
+      if (!modifiedFileUrl) {
+        throw new Error("No modified file URL returned from save_prediction_results for Cell 2.");
+      }
+  
+      // Step 5: Start the ML process with the modified file URL
       const predictionPayload = {
-        file_url: predictionFileInfo.file_url,
-        entity_column: predictiveSettings?.entity_column || "product_id", // Dynamic from PredictiveSettings
+        file_url: modifiedFileUrl,
+        entity_column: predictiveSettings?.entity_column || "product_id",
         user_id: user_id,
         chat_id: chat_id,
-        machine_learning_type: predictiveSettings?.machine_learning_type || "regression", // Map to boolean
-        prediction_id: predictionFileInfo.prediction_id, // Use DB-generated ID
-        target_column: predictiveSettings?.target_column || "", // Include for backend context
-        time_column: predictiveSettings?.time_column || "", // Include for context if needed
-        new_target_column:predictiveSettings?.new_target_column || "",
-        prediction_type:predictiveSettings?.prediction_type || "",
-        // time_frame: predictiveSettings?.time_frame || "30 days", // Default if not set
-        // time_frequency: predictiveSettings?.time_frequency || "weekly", // Default if not set
-        features: predictiveSettings?.features || [], // Dynamic features
+        machine_learning_type: predictiveSettings?.machine_learning_type || "regression",
+        prediction_id: predictionFileInfo.prediction_id,
+        target_column: predictiveSettings?.target_column || "",
+        time_column: predictiveSettings?.time_column || "",
+        new_target_column: predictiveSettings?.new_target_column || "",
+        prediction_type: predictiveSettings?.prediction_type || "",
+        features: predictiveSettings?.features || [],
       };
       console.log("[handlePredictOnNewData] predictionPayload:", predictionPayload);
   
@@ -438,33 +680,6 @@ const PredictionsUI: React.FC<PredictionsUIProps> = ({ user_id, chat_id }) => {
   
       const predictionResult = await predictionResponse.json();
       console.log("[handlePredictOnNewData] Prediction started:", predictionResult);
-  
-      // Step 2: Run notebook cells and save results
-      const cellResults = await notebookRef.current.runAllCellsAndGetResults();
-      console.log("[handlePredictOnNewData] cellResults:", cellResults);
-  
-      const saveResp = await fetch(`${API_BASE_URL}/api/save_prediction_results/`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Token ${authToken}`,
-        },
-        body: JSON.stringify({
-          user_id,
-          chat_id,
-          file_id: predictionFileInfo.id,
-          cells: cellResults,
-          prediction_id: predictionFileInfo.prediction_id, // Include in save request
-        }),
-      });
-  
-      if (!saveResp.ok) {
-        const errText = await saveResp.text();
-        throw new Error(`Saving results failed: ${errText}`);
-      }
-  
-      const saveData = await saveResp.json();
-      console.log("[handlePredictOnNewData] Prediction results saved:", saveData);
   
       alert("Prediction Initiated and Results Saved Successfully!");
       fetchPredictions();

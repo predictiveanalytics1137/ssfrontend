@@ -411,14 +411,26 @@ const NotebookLayout: React.FC = () => {
       alert('user_id or chat_id is missing, cannot save notebooks.');
       return;
     }
-    let cellResults: any[] = [];
+    // let cellResults: any[] = [];
+    // if (timeBasedNotebookCells.length > 0 && timeNotebookRef.current) {
+    //   const timeCells = await timeNotebookRef.current.runAllCellsAndGetResults();
+    //   cellResults = cellResults.concat(timeCells);
+    // } else if (nonTimeBasedNotebookCells.length > 0 && nonTimeBasedNotebookRef.current) {
+    //   const nonTimeCells = await nonTimeBasedNotebookRef.current.runAllCellsAndGetResults();
+    //   cellResults = cellResults.concat(nonTimeCells);
+    // }
+
+    let timeCells: any[] = [];
     if (timeBasedNotebookCells.length > 0 && timeNotebookRef.current) {
-      const timeCells = await timeNotebookRef.current.runAllCellsAndGetResults();
-      cellResults = cellResults.concat(timeCells);
-    } else if (nonTimeBasedNotebookCells.length > 0 && nonTimeBasedNotebookRef.current) {
-      const nonTimeCells = await nonTimeBasedNotebookRef.current.runAllCellsAndGetResults();
-      cellResults = cellResults.concat(nonTimeCells);
+      timeCells = await timeNotebookRef.current.runAllCellsAndGetResults();
     }
+
+    let nonTimeCells: any[] = [];
+    if (nonTimeBasedNotebookCells.length > 0 && nonTimeBasedNotebookRef.current) {
+      nonTimeCells = await nonTimeBasedNotebookRef.current.runAllCellsAndGetResults();
+    }
+
+    const cellResults = [...timeCells, ...nonTimeCells];
     console.log('Cell results being sent to SaveNotebooksView:', cellResults);
     setSavingNotebooks(true);
     try {
