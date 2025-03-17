@@ -13,6 +13,7 @@ import CoreAttributeStatistics from "./CoreAttributeStatistics";
 import ExtendedFeatureAnalysis from "./ExtendedFeatureAnalysis";
 import FeatureImportanceDashboard from "./FeatureImportanceProps";
 import { API_BASE_URL } from "../constants";
+import ModelBuildingProgress from "./ModelBuildingProgress";
 
 // ~~~--- Types ---~~~
 interface Metrics {
@@ -306,16 +307,20 @@ const Dashboard: React.FC<DashboardProps> = ({ user_id, chat_id, data }) => {
     );
   }
 
+  // if (progressStatus !== "training_completed") {
+  //   return (
+  //     <div className="p-6">
+  //       <h2 className="text-xl font-bold mb-2">Model Building Progress</h2>
+  //       <p className="text-sm text-gray-600 mb-4">
+  //         Hang tight! Your model/predictions are still processing...
+  //       </p>
+  //       <StepProgressBar status={progressStatus} />
+  //     </div>
+  //   );
+  // }
+
   if (progressStatus !== "training_completed") {
-    return (
-      <div className="p-6">
-        <h2 className="text-xl font-bold mb-2">Model Building Progress</h2>
-        <p className="text-sm text-gray-600 mb-4">
-          Hang tight! Your model/predictions are still processing...
-        </p>
-        <StepProgressBar status={progressStatus} />
-      </div>
-    );
+    return <ModelBuildingProgress status={progressStatus} />;
   }
 
   if (loadingData) {
