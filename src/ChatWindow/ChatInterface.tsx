@@ -849,12 +849,43 @@ No date column was detected, so we'll proceed with a non-time-based approach.
 };
 
 // AnimatedMessage Component
+// const AnimatedMessage: React.FC<{ text: string; sender: 'user' | 'assistant'; animated?: boolean }> = ({
+//   text,
+//   sender,
+//   animated,
+// }) => {
+//   return <pre className="whitespace-pre-wrap font-sans text-sm m-0">{text}</pre>;
+// };
+// AnimatedMessage Component
 const AnimatedMessage: React.FC<{ text: string; sender: 'user' | 'assistant'; animated?: boolean }> = ({
   text,
   sender,
   animated,
 }) => {
-  return <pre className="whitespace-pre-wrap font-sans text-sm m-0">{text}</pre>;
+  // Function to parse the text and render bold text for **word**
+  const parseText = (text: string) => {
+    // Split the text by ** to identify bold sections
+    const parts = text.split(/\*\*(.*?)\*\*/g);
+
+    return parts.map((part, index) => {
+      // If the index is odd, this part was between ** and should be bold
+      if (index % 2 === 1) {
+        return (
+          <span key={index} className="font-bold">
+            {part}
+          </span>
+        );
+      }
+      // Even-indexed parts are regular text
+      return <span key={index}>{part}</span>;
+    });
+  };
+
+  return (
+    <pre className="whitespace-pre-wrap font-sans text-sm m-0">
+      {parseText(text)}
+    </pre>
+  );
 };
 
 const SchemaTable: React.FC<{
