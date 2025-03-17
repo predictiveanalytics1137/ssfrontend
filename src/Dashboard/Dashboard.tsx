@@ -239,7 +239,7 @@ const Dashboard: React.FC<DashboardProps> = ({ user_id, chat_id, data }) => {
     const fetchMetadata = async () => {
       try {
         setProgressLoading(true);
-        const url = `${API_BASE_URL}/api/get_prediction_metadata/?user_id=${user_id}&chat_id=${chat_id}`;
+        const url = `${API_BASE_URL}/api/get_prediction_metadata/?user_id=${user_id}&chat_id=${chat_id}&workflow=training`;
         const resp = await fetch(url);
         if (!resp.ok) {
           if (resp.status === 404) {
