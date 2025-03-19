@@ -236,42 +236,193 @@ const NotebookLayout: React.FC = () => {
     }, 90000);
   };
 
+  // const handleTrainModel = async () => {
+  //   console.log("DEBUG: handleTrainModel invoked with user_id:", user_id, " chat_id:", chat_id);
+
+  //   if (!user_id || !chat_id) {
+  //     alert('user_id or chat_id is missing, cannot save notebooks.');
+  //     console.log("DEBUG: Missing user_id or chat_id. Exiting handleTrainModel.");
+  //     return;
+  //   }
+
+  //   // Gather all cell results
+  //   let cellResults: any[] = [];
+  //   console.log("DEBUG: timeBasedNotebookCells length:", timeBasedNotebookCells.length);
+  //   console.log("DEBUG: nonTimeBasedNotebookCells length:", nonTimeBasedNotebookCells.length);
+
+  //   if (timeBasedNotebookCells.length > 0 && timeNotebookRef.current) {
+  //     console.log("DEBUG: Running all time-based notebook cells...");
+  //     const timeCells = await timeNotebookRef.current.runAllCellsAndGetResults();
+  //     console.log("DEBUG: timeCells result =>", timeCells);
+  //     cellResults = cellResults.concat(timeCells);
+  //   } else if (nonTimeBasedNotebookCells.length > 0 && nonTimeBasedNotebookRef.current) {
+  //     console.log("DEBUG: Running all non-time-based notebook cells...");
+  //     const nonTimeCells = await nonTimeBasedNotebookRef.current.runAllCellsAndGetResults();
+  //     console.log("DEBUG: nonTimeCells result =>", nonTimeCells);
+  //     cellResults = cellResults.concat(nonTimeCells);
+  //   }
+
+  //   console.log('DEBUG: cellResults to be sent to /api/save-notebooks =>', cellResults);
+
+  //   setSavingNotebooks(true);
+  //   try {
+  //     console.log("DEBUG: About to call /api/save-notebooks/ with payload:", {
+  //       user_id,
+  //       chat_id,
+  //       cells: cellResults
+  //     });
+
+  //     // 1) Save notebooks
+  //     const resp = await fetch(`${API_BASE_URL}/api/save-notebooks/`, {
+  //       method: 'POST',
+  //       headers: {
+  //         'Content-Type': 'application/json',
+  //         'Authorization': 'Token d36e47f0e5c0a356d35a7d6d407aab93f6b0d36b',
+  //       },
+  //       body: JSON.stringify({ user_id, chat_id, cells: cellResults }),
+  //     });
+
+  //     console.log("DEBUG: /api/save-notebooks/ response status:", resp.status);
+
+  //     if (!resp.ok) {
+  //       const errData = await resp.json().catch(() => ({}));
+  //       throw new Error(errData.error || 'Failed to save notebooks.');
+  //     }
+
+  //     const saveResult = await resp.json();
+  //     console.log("DEBUG: /api/save-notebooks/ returned =>", saveResult);
+  //     alert('Notebooks saved successfully!');
+
+  //     // 2) Trigger training if we have at least one notebook
+  //     if (fetchedNotebooks.length > 0) {
+  //       const nb0 = fetchedNotebooks[0];
+  //       // Instead of immediately accessing cell8, we check its availability:
+  //       let cell8Url = null;
+  //       if (nb0.cell_s3_links && nb0.cell_s3_links['cell8']) {
+  //         cell8Url = nb0.cell_s3_links['cell8'];
+  //         console.log("DEBUG: cell8 link found immediately:", cell8Url);
+  //       } else {
+  //         console.log("DEBUG: cell8 link not available yet. Polling for cell8 link...");
+  //         cell8Url = await waitForCell8Link(user_id, chat_id);
+  //         if (cell8Url) {
+  //           console.log("DEBUG: cell8 link obtained after polling:", cell8Url);
+  //         }
+  //       }
+  //       if (!cell8Url) {
+  //         alert("S3 link for cell8 is still not available. Please wait a bit longer and try again.");
+  //         return;
+  //       }
+
+  //       if (!predictiveSettings) {
+  //         alert('Predictive settings are not loaded yet. Please wait.');
+  //         console.log("DEBUG: predictiveSettings is null, skipping training.");
+  //         return;
+  //       }
+
+  //       // Build training payload
+  //       const payload = {
+  //         file_url: cell8Url, // Use the valid cell8 S3 link
+  //         target_column: predictiveSettings.target_column || "null",
+  //         user_id: user_id || "000000",
+  //         chat_id: chat_id || "000000",
+  //         entity_column: predictiveSettings.entity_column || "product_id_",
+  //         prediction_type: predictiveSettings.prediction_type ?? false,
+  //         time_frame: predictiveSettings.time_frame || "null",
+  //         time_frequency: predictiveSettings.time_frequency || "null",
+  //         machine_learning_type: predictiveSettings.machine_learning_type || "regression",
+  //         time_column: predictiveSettings.time_column || "null",
+  //         new_target_column: predictiveSettings.new_target_column || "null",
+
+  //       };
+
+  //       console.log("DEBUG: About to call /api/automation/ with payload =>", payload);
+
+  //       // 3) Start training
+  //       const trainResponse = await fetch(`${API_BASE_URL}/api/automation/`, {
+  //         method: 'POST',
+  //         headers: {
+  //           'Content-Type': 'application/json',
+  //           'Authorization': 'Token d36e47f0e5c0a356d35a7d6d407aab93f6b0d36b',
+  //         },
+  //         body: JSON.stringify(payload),
+  //       });
+
+  //       console.log("DEBUG: /api/automation/ response status:", trainResponse.status);
+
+  //       if (!trainResponse.ok) {
+  //         const errorText = await trainResponse.text();
+  //         console.error("DEBUG: /api/automation/ returned error text =>", errorText);
+  //         throw new Error(`Failed to train model: ${errorText}`);
+  //       }
+
+  //       const trainResult = await trainResponse.json();
+  //       console.log('DEBUG: Train model response =>', trainResult);
+
+  //       // Navigate to the dashboard tab after training is initiated
+  //       navigate(`/notebook/${user_id}/${chat_id}/dashboard`);
+
+  //       // Optional: Set up polling for training status using task_id
+  //       if (trainResult.task_id) {
+  //         pollTrainingStatus(trainResult.task_id);
+  //       }
+  //     } else {
+  //       console.log("DEBUG: fetchedNotebooks is empty, skipping training request.");
+  //     }
+  //   } catch (err: any) {
+  //     console.error('Error saving notebooks or training model:', err);
+  //     alert(`Error: ${err.message}`);
+  //   } finally {
+  //     console.log('DEBUG: handleTrainModel finally block => Notebooks process complete.');
+  //     setSavingNotebooks(false);
+  //   }
+  // };
+
   const handleTrainModel = async () => {
     console.log("DEBUG: handleTrainModel invoked with user_id:", user_id, " chat_id:", chat_id);
-
+  
     if (!user_id || !chat_id) {
       alert('user_id or chat_id is missing, cannot save notebooks.');
       console.log("DEBUG: Missing user_id or chat_id. Exiting handleTrainModel.");
       return;
     }
-
+  
     // Gather all cell results
     let cellResults: any[] = [];
+    let isTimeSeries = false;
+  
     console.log("DEBUG: timeBasedNotebookCells length:", timeBasedNotebookCells.length);
     console.log("DEBUG: nonTimeBasedNotebookCells length:", nonTimeBasedNotebookCells.length);
-
+  
     if (timeBasedNotebookCells.length > 0 && timeNotebookRef.current) {
       console.log("DEBUG: Running all time-based notebook cells...");
       const timeCells = await timeNotebookRef.current.runAllCellsAndGetResults();
       console.log("DEBUG: timeCells result =>", timeCells);
       cellResults = cellResults.concat(timeCells);
+      isTimeSeries = true;
     } else if (nonTimeBasedNotebookCells.length > 0 && nonTimeBasedNotebookRef.current) {
       console.log("DEBUG: Running all non-time-based notebook cells...");
       const nonTimeCells = await nonTimeBasedNotebookRef.current.runAllCellsAndGetResults();
       console.log("DEBUG: nonTimeCells result =>", nonTimeCells);
       cellResults = cellResults.concat(nonTimeCells);
+      isTimeSeries = false;
     }
-
+  
+    if (cellResults.length === 0) {
+      alert('No notebook cells to process.');
+      console.log("DEBUG: No cell results to save.");
+      return;
+    }
+  
     console.log('DEBUG: cellResults to be sent to /api/save-notebooks =>', cellResults);
-
+  
     setSavingNotebooks(true);
     try {
       console.log("DEBUG: About to call /api/save-notebooks/ with payload:", {
         user_id,
         chat_id,
-        cells: cellResults
+        cells: cellResults,
       });
-
+  
       // 1) Save notebooks
       const resp = await fetch(`${API_BASE_URL}/api/save-notebooks/`, {
         method: 'POST',
@@ -281,92 +432,101 @@ const NotebookLayout: React.FC = () => {
         },
         body: JSON.stringify({ user_id, chat_id, cells: cellResults }),
       });
-
-      console.log("DEBUG: /api/save-notebooks/ response status:", resp.status);
-
+  
       if (!resp.ok) {
         const errData = await resp.json().catch(() => ({}));
         throw new Error(errData.error || 'Failed to save notebooks.');
       }
-
+  
       const saveResult = await resp.json();
       console.log("DEBUG: /api/save-notebooks/ returned =>", saveResult);
+  
+      // Update fetchedNotebooks state
+      if (saveResult.notebooks && saveResult.notebooks.length > 0) {
+        setFetchedNotebooks(saveResult.notebooks);
+        console.log("DEBUG: Updated fetchedNotebooks with new data:", saveResult.notebooks);
+      } else {
+        throw new Error('No notebook data returned from save operation.');
+      }
+  
       alert('Notebooks saved successfully!');
-
-      // 2) Trigger training if we have at least one notebook
-      if (fetchedNotebooks.length > 0) {
-        const nb0 = fetchedNotebooks[0];
-        // Instead of immediately accessing cell8, we check its availability:
-        let cell8Url = null;
-        if (nb0.cell_s3_links && nb0.cell_s3_links['cell8']) {
-          cell8Url = nb0.cell_s3_links['cell8'];
-          console.log("DEBUG: cell8 link found immediately:", cell8Url);
-        } else {
-          console.log("DEBUG: cell8 link not available yet. Polling for cell8 link...");
-          cell8Url = await waitForCell8Link(user_id, chat_id);
-          if (cell8Url) {
-            console.log("DEBUG: cell8 link obtained after polling:", cell8Url);
-          }
-        }
+  
+      // 2) Trigger training
+      if (!predictiveSettings) {
+        alert('Predictive settings are not loaded yet. Please wait.');
+        console.log("DEBUG: predictiveSettings is null, skipping training.");
+        return;
+      }
+  
+      const latestNotebook = saveResult.notebooks[0];
+      let payload: any;
+  
+      if (isTimeSeries) {
+        const cell8Url = latestNotebook.cell_s3_links?.['cell8'];
         if (!cell8Url) {
-          alert("S3 link for cell8 is still not available. Please wait a bit longer and try again.");
-          return;
+          throw new Error("S3 link for cell8 is not available after save.");
         }
-
-        if (!predictiveSettings) {
-          alert('Predictive settings are not loaded yet. Please wait.');
-          console.log("DEBUG: predictiveSettings is null, skipping training.");
-          return;
-        }
-
-        // Build training payload
-        const payload = {
-          file_url: cell8Url, // Use the valid cell8 S3 link
-          target_column: predictiveSettings.target_column || "target_within_30_days_after",
+        console.log("DEBUG: Using cell8 link from saveResult:", cell8Url);
+        payload = {
+          file_url: cell8Url,
+          target_column: predictiveSettings.target_column || "null",
           user_id: user_id || "000000",
           chat_id: chat_id || "000000",
           entity_column: predictiveSettings.entity_column || "product_id_",
           prediction_type: predictiveSettings.prediction_type ?? false,
-          time_frame: predictiveSettings.time_frame || "30 days",
-          time_frequency: predictiveSettings.time_frequency || "weekly",
+          time_frame: predictiveSettings.time_frame || "null",
+          time_frequency: predictiveSettings.time_frequency || "null",
           machine_learning_type: predictiveSettings.machine_learning_type || "regression",
-          time_column: predictiveSettings.time_column || "date",
-          new_target_column: predictiveSettings.new_target_column || "target_within_60_days_after",
+          time_column: predictiveSettings.time_column || "null",
+          new_target_column: predictiveSettings.new_target_column || "null",
         };
-
-        console.log("DEBUG: About to call /api/automation/ with payload =>", payload);
-
-        // 3) Start training
-        const trainResponse = await fetch(`${API_BASE_URL}/api/automation/`, {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-            'Authorization': 'Token d36e47f0e5c0a356d35a7d6d407aab93f6b0d36b',
-          },
-          body: JSON.stringify(payload),
-        });
-
-        console.log("DEBUG: /api/automation/ response status:", trainResponse.status);
-
-        if (!trainResponse.ok) {
-          const errorText = await trainResponse.text();
-          console.error("DEBUG: /api/automation/ returned error text =>", errorText);
-          throw new Error(`Failed to train model: ${errorText}`);
-        }
-
-        const trainResult = await trainResponse.json();
-        console.log('DEBUG: Train model response =>', trainResult);
-
-        // Navigate to the dashboard tab after training is initiated
-        navigate(`/notebook/${user_id}/${chat_id}/dashboard`);
-
-        // Optional: Set up polling for training status using task_id
-        if (trainResult.task_id) {
-          pollTrainingStatus(trainResult.task_id);
-        }
       } else {
-        console.log("DEBUG: fetchedNotebooks is empty, skipping training request.");
+        const cell1Url = latestNotebook.cell_s3_links?.['cell1'];
+        const cell2Url = latestNotebook.cell_s3_links?.['cell2'];
+        if (!cell1Url || !cell2Url) {
+          throw new Error("S3 links for cell1 and cell2 are required for non-time-series training.");
+        }
+        console.log("DEBUG: Using cell1 and cell2 links from saveResult:", { cell1Url, cell2Url });
+        payload = {
+          file_url: cell1Url,
+          additional_file_url: cell2Url,
+          target_column: predictiveSettings.target_column || "null",
+          user_id: user_id || "000000",
+          chat_id: chat_id || "000000",
+          entity_column: predictiveSettings.entity_column || "product_id_",
+          prediction_type: predictiveSettings.prediction_type ?? false,
+          machine_learning_type: predictiveSettings.machine_learning_type || "regression",
+        };
       }
+  
+      console.log("DEBUG: About to call /api/automation/ with payload =>", payload);
+  
+      // 3) Start training
+      const trainResponse = await fetch(`${API_BASE_URL}/api/automation/`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': 'Token d36e47f0e5c0a356d35a7d6d407aab93f6b0d36b',
+        },
+        body: JSON.stringify(payload),
+      });
+  
+      if (!trainResponse.ok) {
+        const errorText = await trainResponse.text();
+        console.error("DEBUG: /api/automation/ returned error text =>", errorText);
+        throw new Error(`Failed to train model: ${errorText}`);
+      }
+  
+      const trainResult = await trainResponse.json();
+      console.log('DEBUG: Train model response =>', trainResult);
+  
+      // Navigate to the dashboard tab
+      navigate(`/notebook/${user_id}/${chat_id}/dashboard`);
+  
+      // Optional: Poll training status
+      // if (trainResult.task_id) {
+      //   // pollTrainingStatus(trainResult.task_id);
+      // }
     } catch (err: any) {
       console.error('Error saving notebooks or training model:', err);
       alert(`Error: ${err.message}`);
@@ -375,8 +535,7 @@ const NotebookLayout: React.FC = () => {
       setSavingNotebooks(false);
     }
   };
-
-  // Optional polling function (uncomment and adjust if needed)
+  // // Optional polling function (uncomment and adjust if needed)
   const pollTrainingStatus = async (taskId: string) => {
     setPolling(true);
     const interval = setInterval(async () => {
