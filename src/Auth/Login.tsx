@@ -74,7 +74,7 @@ const Login: React.FC = () => {
   };
 
   const handleSignUp = () => {
-    navigate("/signup");
+    navigate("/register");
   };
 
   return (
