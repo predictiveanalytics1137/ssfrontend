@@ -138,6 +138,7 @@ const NotebookLayout: React.FC = () => {
     fetchPredictiveSettings();
   }, [user_id, chat_id]);
 
+
   // Fetch notebooks
   useEffect(() => {
     if (!user_id || !chat_id) return;
@@ -167,6 +168,8 @@ const NotebookLayout: React.FC = () => {
     };
     fetchNotebooks();
   }, [user_id, chat_id]);
+
+
 
   // Parse notebooks
   let timeBasedNotebookCells: any[] = [];
@@ -202,6 +205,8 @@ const NotebookLayout: React.FC = () => {
     }
   }
 
+
+
   // Polling / model training
   const fetchModelResults = async () => {
     try {
@@ -235,6 +240,8 @@ const NotebookLayout: React.FC = () => {
       }
     }, 90000);
   };
+
+  
 
   // const handleTrainModel = async () => {
   //   console.log("DEBUG: handleTrainModel invoked with user_id:", user_id, " chat_id:", chat_id);
