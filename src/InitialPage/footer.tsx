@@ -38,7 +38,7 @@ const Footer = () => {
         </motion.div>
 
         {/* Footer Columns */}
-        <motion.div
+        {/* <motion.div
           className="grid grid-cols-2 md:grid-cols-4 gap-8 text-left mb-10"
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
@@ -46,7 +46,7 @@ const Footer = () => {
           transition={{ duration: 0.6, delay: 0.1 }}
         >
           {/* Column 1: Company */}
-          <div>
+          {/* <div>
             <h3 className="font-semibold mb-3">Company</h3>
             <ul className="space-y-2 text-white/80">
               <li>
@@ -70,10 +70,10 @@ const Footer = () => {
                 </a>
               </li>
             </ul>
-          </div>
+          </div> */}
 
           {/* Column 2: Product */}
-          <div>
+          {/* <div>
             <h3 className="font-semibold mb-3">Product</h3>
             <ul className="space-y-2 text-white/80">
               <li>
@@ -97,10 +97,10 @@ const Footer = () => {
                 </a>
               </li>
             </ul>
-          </div>
+          </div> */}
 
           {/* Column 3: Resources */}
-          <div>
+          {/* <div>
             <h3 className="font-semibold mb-3">Resources</h3>
             <ul className="space-y-2 text-white/80">
               <li>
@@ -124,10 +124,10 @@ const Footer = () => {
                 </a>
               </li>
             </ul>
-          </div>
+          </div> */}
 
           {/* Column 4: Follow Us */}
-          <div>
+          {/* <div>
             <h3 className="font-semibold mb-3">Follow Us</h3>
             <ul className="space-y-2 text-white/80">
               <li>
@@ -162,7 +162,7 @@ const Footer = () => {
               </li>
             </ul>
           </div>
-        </motion.div>
+        </motion.div>  */}
 
         {/* Copyright */}
         <motion.div

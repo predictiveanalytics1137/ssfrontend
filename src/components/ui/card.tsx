@@ -48,3 +48,12 @@ export const CardContent: React.FC<CardProps> = ({ children, className }) => {
     </div>
   );
 };
+
+
+export const CardTitle: React.FC<CardProps> = ({ children, className }) => {
+  return (
+    <h2 className={`text-2xl font-bold ${className || ''}`}>
+      {children}
+    </h2>
+  );
+};

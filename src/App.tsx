@@ -19,6 +19,8 @@ import { AuthProvider } from './Auth/AuthContext';
 import TestDashboard from './Dashboard/testDashboard';
 import BookDemoPage from './pages/bookademo';
 import PredictionDashboard from './Predict/PredictionDashboard';
+import AboutPage from './InitialPage/About';
+import ContactPage from './InitialPage/contact';
 
 const App: React.FC = () => {
   return (
@@ -54,6 +56,9 @@ const MainContent: React.FC = () => {
         <Route path="/bookademo" element={<BookDemoPage />} />
         <Route path="/Dashboard" element={<TestDashboard />} />
         <Route path="/dashboard/:prediction_id" element={<PredictionDashboard />} />
+        <Route path="/about" element={<AboutPage />} />
+        <Route path="/contact" element={<ContactPage />} />
+        {/* <Route path="/PerformanceConsistency" element={<PerformanceConsistency />} /> */}
         {/* <Route path="/PerformanceConsistency" element={<PerformanceConsistency />} /> */}
         {/* <Route path="/notebook" element={<NotebookLayout />} /> */}
         {/* <Route
