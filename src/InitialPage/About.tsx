@@ -251,6 +251,7 @@ import React, { useState } from 'react';
 import Navbar2 from '../Navbar/navbar2';
 import { FaLinkedin } from 'react-icons/fa'; // Import LinkedIn icon from react-icons
 
+
 // Team Member Interface
 interface TeamMember {
   name: string;
@@ -268,7 +269,7 @@ const teamMembers: TeamMember[] = [
     role: "Co-founder | Developer",
     shortBio: "Helping build PACX to make AI/ML easy for everyone",
     fullBio: "Sandeep, a co-founder of PACX, is a seasoned software developer with a deep passion for crafting innovative solutions. With years of hands-on experience in the industry, he has honed his skills in building software that tackles real-world challenges. His work in machine learning sparked the vision for PACX—a platform that makes predictive analytics simple and accessible for businesses. Sandeep thrives on turning complex ideas into practical tools, driven by a commitment to empower users with technology that delivers results.",
-    imageUrl: "src/assets/sandeep.jpg", // Replace with actual image
+    imageUrl: "/sandeep.jpg", // Replace with actual image
     linkedinUrl: "https://www.linkedin.com/in/sandeep-raju-7a17521b5/", // Replace with actual LinkedIn URL
   },
   {
@@ -276,7 +277,7 @@ const teamMembers: TeamMember[] = [
     role: "Co-founder | Developer",
     shortBio: "Working on PACX to bring AI/ML to non-experts",
     fullBio: "Sai Ram, co-founder of PACX, is an experienced software developer fueled by a passion for making technology work for everyone. Through years of coding and exploring AI and Machine Learning, he identified a gap: powerful analytics were out of reach for most businesses. This inspired him to co-create PACX, where he focuses on developing software that simplifies AI and Machine Learning without sacrificing impact. Sai ram is dedicated to building intuitive solutions that help users solve problems and make decisions with confidence",
-    imageUrl: "src/assets/sai.jpg", // Replace with actual image
+    imageUrl: "/sai.jpg", // Replace with actual image
     linkedinUrl: "https://www.linkedin.com/in/sai-ram-7150a1169/", // Replace with actual LinkedIn URL
   },
 ];

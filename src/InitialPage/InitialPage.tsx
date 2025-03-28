@@ -255,6 +255,7 @@ import MainSection from './landing6';
 import FeaturesSection from './future/featuresection2';
 import MiddleSection from './landing7';
 import Footer from './footer';
+import AIBusinessCards from './testing';
 
 const InitialPage: React.FC = () => {
   const navigate = useNavigate();
@@ -265,6 +266,7 @@ const InitialPage: React.FC = () => {
       <MainSection />
       <FeaturesSection />
       <MiddleSection />
+      {/* <AIBusinessCards /> */}
       <Footer />
 
     </div>
